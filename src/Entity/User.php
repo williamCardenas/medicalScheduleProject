@@ -38,9 +38,20 @@ class User implements UserInterface, \Serializable
     private $email;
 
     /**
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(name="is_active", type="boolean",options={"default" : 1})
      */
     private $isActive;
+
+    /**
+     * @ORM\Column(name="is_admin", type="boolean")
+     */
+    private $isAdmin;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Client", inversedBy="user")
+     * @ORM\JoinColumn(name="client_id", referencedColumnName="id")
+     */
+    private $clientId;
 
 
     public function getId()
@@ -48,12 +59,12 @@ class User implements UserInterface, \Serializable
         return $this->id;
     }
 
-    public function getUserName(): ?string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    public function setUserName(string $name): self
+    public function setUsername(string $name): self
     {
         $this->username = $name;
 
@@ -144,6 +155,16 @@ class User implements UserInterface, \Serializable
     public function isEnabled()
     {
         return $this->isActive;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->clientId;
+    }
+
+    public function setClient(Client $client = null)
+    {
+        $this->clientId = $client;
     }
 
 }
