@@ -20,6 +20,8 @@ class UserController extends Controller
      */
     public function index(UserRepository $userRepository): Response
     {
+        $this->denyAccessUnlessGranted('LIST',new User());
+
         return $this->render('user/index.html.twig', ['users' => $userRepository->findAll()]);
     }
 

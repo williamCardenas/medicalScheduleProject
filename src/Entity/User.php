@@ -53,6 +53,11 @@ class User implements UserInterface, \Serializable
      */
     private $clientId;
 
+    /**
+     * @ORM\Column(name="roles", type="json")
+     */
+    private $roles;
+
 
     public function getId()
     {
@@ -83,6 +88,18 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
     public function getPassword(): ?string
     {
         return $this->password;
@@ -104,7 +121,14 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return $this->roles;
+    }
+
+    public function setRoles(Array $roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function eraseCredentials()
@@ -152,9 +176,24 @@ class User implements UserInterface, \Serializable
         return true;
     }
 
-    public function isEnabled()
+    public function isActive()
     {
         return $this->isActive;
+    }
+
+    public function setIsActive(boolean $isActive)
+    {
+        return $this->isActive = $isActive;
+    }
+
+    public function isAdmin()
+    {
+        return $this->isAdmin;
+    }
+
+    public function setIsAdmin($isAdmin)
+    {
+        return $this->isAdmin = $isAdmin;
     }
 
     public function getClient(): ?Client

@@ -17,11 +17,15 @@ class UserType extends AbstractType
         $builder
             ->add('username')
             ->add('login')
-            ->add('password',PasswordType::class);
+            ->add('password',PasswordType::class)
+            ->add('email')
+            ->add('isActive')
+            ->add('isAdmin');
 
         $builder->add('client', EntityType::class, array(
           'class' => Client::class,
           'choice_label' => 'name',
+          'placeholder' => 'Choose an option',
         ));
     }
 
