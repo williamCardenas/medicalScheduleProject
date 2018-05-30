@@ -23,3 +23,8 @@
 ###> phpunit/phpunit ###
 /phpunit.xml
 ###< phpunit/phpunit ###
+
+###> composer ###
+composer.phar
+###> composer ###
+
