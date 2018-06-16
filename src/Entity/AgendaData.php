@@ -69,14 +69,14 @@ class AgendaData
         return $this->id;
     }
 
-    public function getAgendaId(): ?int
+    public function getAgenda(): ?Agenda
     {
-        return $this->agendaId;
+        return $this->agenda;
     }
 
-    public function setAgendaId(int $agendaId): self
+    public function setAgenda(Agenda $agenda): self
     {
-        $this->agendaId = $agendaId;
+        $this->agenda = $agenda;
 
         return $this;
     }
