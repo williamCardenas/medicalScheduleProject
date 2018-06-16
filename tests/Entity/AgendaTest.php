@@ -16,9 +16,9 @@ class AgendaTest extends TestCase
     /**
     * {@inheritDoc}
     */
-   protected function setUp()
-   {
-   }
+    protected function setUp()
+    {
+    }
 
     public function testNovaAgenda(): Agenda
     {
