@@ -81,14 +81,14 @@ class AgendaData
         return $this;
     }
 
-    public function getPacienteId(): ?int
+    public function getPaciente(): ?Paciente
     {
-        return $this->pacienteId;
+        return $this->paciente;
     }
 
-    public function setPacienteId(int $pacienteId): self
+    public function setPaciente(Paciente $paciente): self
     {
-        $this->pacienteId = $pacienteId;
+        $this->paciente = $paciente;
 
         return $this;
     }
