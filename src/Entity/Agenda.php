@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AgendaRepository")
@@ -48,19 +51,23 @@ class Agenda
      */
     private $agendaData;
 
+    public function __construct(){
+        $this->agendaData = new ArrayCollection();
+    }
+
     public function getId()
     {
         return $this->id;
     }
 
-    public function getMedicoId(): ?int
+    public function getMedico(): ?Medico
     {
-        return $this->medicoId;
+        return $this->medico;
     }
 
-    public function setMedicoId(int $medicoId): self
+    public function setMedico(Medico $medico): self
     {
-        $this->medicoId = $medicoId;
+        $this->medico = $medico;
 
         return $this;
     }
@@ -98,6 +105,32 @@ class Agenda
     {
         $this->fimDeSemana = $fimDeSemana;
 
+        return $this;
+    }
+
+    public function getAgendaConfig(): ?AgendaConfig
+    {
+        return $this->agendaConfig;
+    }
+
+    public function setAgendaConfig(AgendaConfig $agendaConfig): self
+    {
+        $this->agendaConfig = $agendaConfig;
+
+        return $this;
+    }
+
+    public function getAgendaData(): ?Collection
+    {
+        return $this->agendaData;
+    }
+
+    public function addAgendaData(AgendaData $agendaData) :self
+    {
+        if(!$this->agendaData->contains($agendaData)){
+            $this->agendaData[] = $agendaData;
+            $agendaData->setAgenda($this);
+        }
         return $this;
     }
 }
