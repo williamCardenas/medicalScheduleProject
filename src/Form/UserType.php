@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
-use App\Entity\Client;
+use App\Entity\Cliente;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,8 +22,8 @@ class UserType extends AbstractType
             ->add('isActive')
             ->add('isAdmin');
 
-        $builder->add('client', EntityType::class, array(
-          'class' => Client::class,
+        $builder->add('cliente', EntityType::class, array(
+          'class' => Cliente::class,
           'choice_label' => 'name',
           'placeholder' => 'Choose an option',
         ));

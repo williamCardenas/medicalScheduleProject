@@ -25,7 +25,7 @@ class Version20180616170158 extends AbstractMigration
         $this->addSql('ALTER TABLE agenda_data ADD CONSTRAINT FK_90D65113A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE agenda ADD CONSTRAINT FK_2CEDC877A7FB1C0C FOREIGN KEY (medico_id) REFERENCES medico (id)');
         $this->addSql('ALTER TABLE agenda ADD CONSTRAINT FK_2CEDC877EA67784A FOREIGN KEY (agenda_id) REFERENCES agenda_config (id)');
-        $this->addSql('ALTER TABLE user CHANGE client_id client_id INT DEFAULT NULL, CHANGE roles roles JSON NOT NULL');
+        $this->addSql('ALTER TABLE user CHANGE cliente_id cliente_id INT DEFAULT NULL, CHANGE roles roles JSON NOT NULL');
     }
 
     public function down(Schema $schema)
@@ -42,6 +42,6 @@ class Version20180616170158 extends AbstractMigration
         $this->addSql('DROP TABLE agenda_data');
         $this->addSql('DROP TABLE agenda');
         $this->addSql('DROP TABLE medico');
-        $this->addSql('ALTER TABLE user CHANGE client_id client_id INT DEFAULT NULL, CHANGE roles roles LONGTEXT NOT NULL COLLATE utf8mb4_bin');
+        $this->addSql('ALTER TABLE user CHANGE cliente_id cliente_id INT DEFAULT NULL, CHANGE roles roles LONGTEXT NOT NULL COLLATE utf8mb4_bin');
     }
 }

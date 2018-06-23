@@ -5,11 +5,11 @@ namespace App\Tests\Entity;
 use PHPUnit\Framework\TestCase;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use App\Entity\Client;
+use App\Entity\Cliente;
 use App\Entity\Clinica;
 use App\Entity\User;
 
-class ClientTest extends TestCase
+class ClienteTest extends TestCase
 {
 
     /**
@@ -19,39 +19,39 @@ class ClientTest extends TestCase
    {
    }
 
-   public function testNovoCliente() :Client
+   public function testNovoClientee() :Cliente
    {
-       $cliente = new Client();
-       $this->assertInstanceOf("App\Entity\Client",$cliente);
-       return $cliente;
+       $clientee = new Cliente();
+       $this->assertInstanceOf("App\Entity\Cliente",$clientee);
+       return $clientee;
    }
 
    /**
-    * @depends testNovoCliente
+    * @depends testNovoClientee
     */
-   public function testAddClinica($cliente) :Client 
+   public function testAddClinica($clientee) :Cliente 
    {
-       $this->assertInstanceOf("Doctrine\Common\Collections\Collection",$cliente->getClinic());
-       $this->assertCount(0,$cliente->getClinic());
+       $this->assertInstanceOf("Doctrine\Common\Collections\Collection",$clientee->getClinic());
+       $this->assertCount(0,$clientee->getClinic());
 
         $clinica = new Clinica();
-        $client->addClinic($clinica);
-        $this->assertcount(1,$cliente->getClinic());
-        return $cliente;
+        $cliente->addClinic($clinica);
+        $this->assertcount(1,$clientee->getClinic());
+        return $clientee;
    }
 /*
     public function testUnicName(): void
     {
         $pearson = \Faker\Factory::create();
 
-        $client = new Client();
-        $client->setName($pearson->name);
+        $cliente = new Cliente();
+        $cliente->setName($pearson->name);
 
         $employeeRepository = $this->createMock(ObjectRepository::class);
 
         $employeeRepository->expects($this->any())
             ->method('find')
-            ->willReturn($client);
+            ->willReturn($cliente);
 
         $objectManager = $this->createMock(ObjectManager::class);
 
@@ -59,10 +59,10 @@ class ClientTest extends TestCase
             ->method('getRepository')
             ->willReturn($employeeRepository);
 
-        $objectManager->persist($client);
+        $objectManager->persist($cliente);
         $objectManager->flush();
 
-        $objectManager->persist($client);
+        $objectManager->persist($cliente);
         $objectManager->flush();
 
     }

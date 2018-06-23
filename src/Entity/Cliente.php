@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ClienteRepository")
  */
-class Client
+class Cliente
 {
     /**
      * @ORM\Id()
@@ -20,16 +20,16 @@ class Client
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $name;
+    private $nome;
 
     /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="clientId", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="User", mappedBy="clienteId", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
      */
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="Clinica", mappedBy="client", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Clinica", mappedBy="cliente", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
      */
     private $clinica;
@@ -45,14 +45,14 @@ class Client
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getNome(): ?string
     {
-        return $this->name;
+        return $this->nome;
     }
 
-    public function setName(string $name): self
+    public function setNome(string $nome): self
     {
-        $this->name = $name;
+        $this->nome = $nome;
 
         return $this;
     }
@@ -73,7 +73,7 @@ class Client
         }
 
         $this->user[] = $user;
-        $user->setClient($this);
+        $user->setCliente($this);
     }
 
     public function removeUser(User $user)
@@ -87,14 +87,14 @@ class Client
         return $this->getClinica;
     }
 
-    public function addClinica(Clinica $clinica) :Client
+    public function addClinica(Clinica $clinica) :Cliente
     {
         if (!$this->clinica->contains($clinica)) {
            return $this;
         }
 
         $this->user[] = $user;
-        $user->setClient($this);
+        $user->setCliente($this);
         return $this;
     }
 

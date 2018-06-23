@@ -22,10 +22,10 @@ class Clinica
     private $nome;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Client", inversedBy="clinica")
+     * @ORM\ManyToOne(targetEntity="Cliente", inversedBy="clinica")
      * @ORM\JoinColumn(name="clinica_id", referencedColumnName="id")
      */
-    private $client;
+    private $cliente;
 
     public function getId()
     {
@@ -44,14 +44,14 @@ class Clinica
         return $this;
     }
 
-    public function getClientId(): ?int
+    public function getClienteId(): ?int
     {
-        return $this->clientId;
+        return $this->clienteId;
     }
 
-    public function setClientId(int $clientId): self
+    public function setClienteId(int $clienteId): self
     {
-        $this->clientId = $clientId;
+        $this->clienteId = $clienteId;
 
         return $this;
     }

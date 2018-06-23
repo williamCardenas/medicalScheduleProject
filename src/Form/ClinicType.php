@@ -13,7 +13,7 @@ class ClinicType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('clientId')
+            ->add('clienteId')
         ;
     }
 

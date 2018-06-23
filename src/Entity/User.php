@@ -48,10 +48,10 @@ class User implements UserInterface, \Serializable
     private $isAdmin;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Client", inversedBy="user")
-     * @ORM\JoinColumn(name="client_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Cliente", inversedBy="user")
+     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
      */
-    private $clientId;
+    private $clienteId;
 
     /**
      * @ORM\Column(name="roles", type="json")
@@ -196,14 +196,14 @@ class User implements UserInterface, \Serializable
         return $this->isAdmin = $isAdmin;
     }
 
-    public function getClient(): ?Client
+    public function getCliente(): ?Cliente
     {
-        return $this->clientId;
+        return $this->clienteId;
     }
 
-    public function setClient(Client $client = null)
+    public function setCliente(Cliente $cliente = null)
     {
-        $this->clientId = $client;
+        $this->clienteId = $cliente;
     }
 
 }
