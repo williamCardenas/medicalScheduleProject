@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClinicRepository")
  */
-class Clinic
+class Clinica
 {
     /**
      * @ORM\Id()
@@ -19,26 +19,27 @@ class Clinic
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $nome;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="Client", inversedBy="clinica")
+     * @ORM\JoinColumn(name="clinica_id", referencedColumnName="id")
      */
-    private $clientId;
+    private $client;
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getNome(): ?string
     {
-        return $this->name;
+        return $this->nome;
     }
 
-    public function setName(string $name): self
+    public function setNome(string $nome): self
     {
-        $this->name = $name;
+        $this->nome = $nome;
 
         return $this;
     }

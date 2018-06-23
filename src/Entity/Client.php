@@ -28,9 +28,16 @@ class Client
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Clinica", mappedBy="client", orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $clinica;
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
+        $this->clinica = new ArrayCollection();
     }
 
     public function getId()
@@ -66,15 +73,29 @@ class Client
         }
 
         $this->user[] = $user;
-        // set the *owning* side!
         $user->setClient($this);
     }
 
     public function removeUser(User $user)
     {
         $this->user->removeElement($user);
-        // set the owning side to null
         $user->setCategory(null);
+    }
+
+    public function getClinica() :Collection
+    {
+        return $this->getClinica;
+    }
+
+    public function addClinica(Clinica $clinica) :Client
+    {
+        if (!$this->clinica->contains($clinica)) {
+           return $this;
+        }
+
+        $this->user[] = $user;
+        $user->setClient($this);
+        return $this;
     }
 
 }

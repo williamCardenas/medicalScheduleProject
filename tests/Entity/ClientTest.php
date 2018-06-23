@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Entity;
 
 use PHPUnit\Framework\TestCase;
-use App\Entity\Client;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use App\Entity\Client;
+use App\Entity\Clinica;
+use App\Entity\User;
 
 class ClientTest extends TestCase
 {
@@ -15,6 +17,27 @@ class ClientTest extends TestCase
     */
    protected function setUp()
    {
+   }
+
+   public function testNovoCliente() :Client
+   {
+       $cliente = new Client();
+       $this->assertInstanceOf("App\Entity\Client",$cliente);
+       return $cliente;
+   }
+
+   /**
+    * @depends testNovoCliente
+    */
+   public function testAddClinica($cliente) :Client 
+   {
+       $this->assertInstanceOf("Doctrine\Common\Collections\Collection",$cliente->getClinic());
+       $this->assertCount(0,$cliente->getClinic());
+
+        $clinica = new Clinica();
+        $client->addClinic($clinica);
+        $this->assertcount(1,$cliente->getClinic());
+        return $cliente;
    }
 /*
     public function testUnicName(): void
