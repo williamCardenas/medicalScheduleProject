@@ -24,10 +24,10 @@ class ClienteController extends Controller
     }
 
     /**
-     * @Route("/new", name="cliente_new", methods="GET|POST")
+     * @Route("/novo", name="cliente_new", methods="GET|POST")
      */
     public function new(Request $request): Response
-    {
+    { 
         $cliente = new Cliente();
         $form = $this->createForm(ClienteType::class, $cliente);
         $form->handleRequest($request);

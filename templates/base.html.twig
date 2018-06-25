@@ -8,7 +8,7 @@
     <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <![endif]-->
-    <title>{% block title %}{% endblock %}</title>
+    <title>{{ 'titulo.sistema'|trans }} - {% block title %}{% endblock %}</title>
     <!-- BOOTSTRAP CORE STYLE  -->
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" />
     <!-- FONT AWESOME ICONS  -->
@@ -109,7 +109,7 @@
                                     {{'menu.administracao'|trans}}
                                 </a>
                                 <div class="dropdown-menu dropdown-settings" aria-labelledby="adm-menu">
-                                    <a class="dropdown-item" href="#">{{'menu.clientes'|trans}}</a>
+                                    <a class="dropdown-item" href="{{ path('cliente_index') }}">{{'menu.clientes'|trans}}</a>
                                 </div>
                             </li>
                             {% endif %}
@@ -123,7 +123,10 @@
     {% endblock %}
     <!-- MENU SECTION END-->
 
-    {% block body %}{% endblock %}
+    {% block body %}
+    <div class="content-wrapper">
+    </div>
+    {% endblock %}
 
 
     <footer>

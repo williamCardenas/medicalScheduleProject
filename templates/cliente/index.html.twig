@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %} 
+
+{% block title %}{{ 'titulo.cliente.index'|trans }}{% endblock %} 
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="page-head-line">{{ 'titulo.cliente.index'|trans }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="{{ path('cliente_new') }}" class="btn btn-primary">{{ 'botao.novo'|trans }}</a>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Nome</th>
+                                    <th>actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cliente in clientes %}
+                                <tr>
+                                    <td>{{ cliente.id }}</td>
+                                    <td>{{ cliente.nome }}</td>
+                                    <td>
+                                        <a class="btn btn-default" href="{{ path('cliente_show', {'id': cliente.id}) }}">
+                                            {{'botao.exibir'|trans}}
+                                        </a>
+                                        <a class="btn btn-default" href="{{ path('cliente_edit', {'id': cliente.id}) }}">
+                                            {{'botao.editar'|trans}}
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="3">no records found</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}

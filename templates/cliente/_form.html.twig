@@ -1,0 +1,8 @@
+{{ form_start(form) }}
+    <div class="form-group">
+        {{ form_label(form.nome) }}
+        {{ form_errors(form.nome) }}
+        {{ form_widget(form.nome) }}
+    </div>
+    <button class="btn">{{ button_label|default('botao.adicionar'|trans) }}</button>
+{{ form_end(form) }}

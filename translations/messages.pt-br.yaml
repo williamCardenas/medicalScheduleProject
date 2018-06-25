@@ -1,6 +1,21 @@
+botao:
+  adicionar: Adicionar
+  editar: Editar
+  exibir: Exibir
+  voltar: Voltar
+
 info:
   email: Email
-
 menu:
   administracao: Administração do sistema
   clientes: Clientes
+
+mensagem:
+  deletar: Deseja excluir este _entidade ?
+titulo:
+  cliente:
+    editar: Editar cliente
+    index: Lista de clientes
+    novo: Novo cliente
+    show: Detalhes do cliente
+  sistema: Tcc
