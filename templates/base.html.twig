@@ -104,7 +104,14 @@
                             <li><a href="login.html">Login Page</a></li>
                             <li><a class="menu-top-active" href="blank.html">Blank Page</a></li>
                             {% if constant('App\\Security\\Voter\\AdminVoter::ADMIN') in app.user.roles %}
-                                <li><a href="index.html">{{'menu.administracao'|trans}}</a></li>
+                            <li class="dropdown show">
+                                <a href="#" class="dropdown-toggle" id="adm-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{'menu.administracao'|trans}}
+                                </a>
+                                <div class="dropdown-menu dropdown-settings" aria-labelledby="adm-menu">
+                                    <a class="dropdown-item" href="#">{{'menu.clientes'|trans}}</a>
+                                </div>
+                            </li>
                             {% endif %}
                         </ul>
                     </div>

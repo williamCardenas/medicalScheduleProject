@@ -169,6 +169,10 @@ header {
     text-transform: uppercase;
 }
 
+#menu-top .dropdown-menu {
+    background-color: #3D3D3D;
+}
+
 .menu-top-active {
     background-color: #1bc7d8;
 }
