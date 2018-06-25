@@ -10,6 +10,7 @@ use App\Entity\User;
 
 class AdminVoter extends Voter
 {
+    const ADMIN = 'ADMIN_ROLER';
     private $decisionManager;
 
     public function __construct(AccessDecisionManagerInterface $decisionManager)
@@ -34,7 +35,7 @@ class AdminVoter extends Voter
             return false;
         }
 
-        if (in_array('ROLE_ADMIN', $user->getRoles())){
+        if (in_array(self::ADMIN, $user->getRoles())){
             return true;
         }
 
@@ -53,7 +54,7 @@ class AdminVoter extends Voter
 
     private function canEdit(TokenInterface $token)
     {
-        if ($this->decisionManager->decide($token, array('ROLE_ADMIN'))) {
+        if ($this->decisionManager->decide($token, array(self::ADMIN))) {
             return true;
         }
 
@@ -62,7 +63,7 @@ class AdminVoter extends Voter
 
     private function canView(TokenInterface $token)
     {
-        if ($this->decisionManager->decide($token, array('ROLE_ADMIN'))) {
+        if ($this->decisionManager->decide($token, array(self::ADMIN))) {
             return true;
         }
 
@@ -71,7 +72,7 @@ class AdminVoter extends Voter
 
     private function canList(TokenInterface $token)
     {
-        if ($this->decisionManager->decide($token, array('ROLE_ADMIN'))) {
+        if ($this->decisionManager->decide($token, array(self::ADMIN))) {
             return true;
         }
 
