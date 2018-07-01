@@ -2,16 +2,30 @@ botao:
   adicionar: Adicionar
   editar: Editar
   exibir: Exibir
+  novo: Novo
   voltar: Voltar
+
+entidade:
+  cliente: cliente
 
 info:
   email: Email
+
 menu:
   administracao: Administração do sistema
   clientes: Clientes
 
 mensagem:
   deletar: Deseja excluir este _entidade ?
+  sucesso: 
+    novo: _entidade cadastrado(a) com sucesso.
+    editado: _entidade alterado com sucesso.
+
+status:
+  sucesso: Sucesso
+  erro: Erro
+  informacao: Atenção
+
 titulo:
   cliente:
     editar: Editar cliente

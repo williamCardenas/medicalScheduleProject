@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Cliente
 {
+    const CLASS_NAME = 'cliente';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
