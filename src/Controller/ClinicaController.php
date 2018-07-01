@@ -9,9 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
- * @Route("/clinica")
+ * @Route("/admin/clinica")
  */
 class ClinicaController extends Controller
 {
@@ -26,7 +27,7 @@ class ClinicaController extends Controller
     /**
      * @Route("/new", name="clinica_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, SessionInterface $session): Response
     {
         $clinica = new Clinica();
         $form = $this->createForm(ClinicaType::class, $clinica);
@@ -36,6 +37,9 @@ class ClinicaController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($clinica);
             $em->flush();
+
+            $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');
+            $session->getFlashBag()->add('_entidade', Clinica::CLASS_NAME );
 
             return $this->redirectToRoute('clinica_index');
         }
@@ -57,13 +61,16 @@ class ClinicaController extends Controller
     /**
      * @Route("/{id}/edit", name="clinica_edit", methods="GET|POST")
      */
-    public function edit(Request $request, Clinica $clinica): Response
+    public function edit(Request $request, SessionInterface $session, Clinica $clinica): Response
     {
         $form = $this->createForm(ClinicaType::class, $clinica);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $session->getFlashBag()->add('success', 'mensagem.sucesso.editado');
+            $session->getFlashBag()->add('_entidade', Clinica::CLASS_NAME );
 
             return $this->redirectToRoute('clinica_edit', ['id' => $clinica->getId()]);
         }
@@ -77,12 +84,15 @@ class ClinicaController extends Controller
     /**
      * @Route("/{id}", name="clinica_delete", methods="DELETE")
      */
-    public function delete(Request $request, Clinica $clinica): Response
+    public function delete(Request $request, SessionInterface $session, Clinica $clinica): Response
     {
         if ($this->isCsrfTokenValid('delete'.$clinica->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($clinica);
             $em->flush();
+
+            $session->getFlashBag()->add('success', 'mensagem.sucesso.deletar');
+            $session->getFlashBag()->add('_entidade', Clinica::CLASS_NAME );
         }
 
         return $this->redirectToRoute('clinica_index');

@@ -124,9 +124,17 @@
                                                 {{'menu.administracao'|trans}}
                                             </a>
                                             <div class="dropdown-menu dropdown-settings" aria-labelledby="adm-menu">
-                                                <a class="dropdown-item" href="{{ path('cliente_index') }}">{{'menu.clientes'|trans}}</a>
+                                                <ol>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ path('cliente_index') }}">{{'menu.clientes'|trans}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ path('clinica_index') }}">{{'menu.clinicas'|trans}}</a>
+                                                    </li>
+                                                </ol>
+                                            
                                             </div>
-                                        </li>
+                                        </li>   
                                     {% endif %}
                                 </ul>
                             </div>

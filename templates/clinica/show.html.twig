@@ -1,30 +1,49 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} 
 
-{% block title %}Clinic{% endblock %}
+{% block title %}{{ 'titulo.clinica.show'|trans }}{% endblock %} 
 
 {% block body %}
-    <h1>Clinic</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="page-head-line">{{ 'titulo.clinica.show'|trans }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <tbody>
+                                <tr>
+                                    <th>Id</th>
+                                    <td>{{ clinica.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nome</th>
+                                    <td>{{ clinica.nome }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <td>{{ clinica.cliente.nome }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ clinic.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ clinic.name }}</td>
-            </tr>
-            <tr>
-                <th>ClientId</th>
-                <td>{{ clinic.clientId }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <a class="btn btn-default" href="{{ path('clinica_index') }}">
+        {{'botao.voltar'|trans}}
+    </a>
 
-    <a href="{{ path('clinic_index') }}">back to list</a>
+    <a class="btn btn-default" href="{{ path('clinica_edit', {'id': clinica.id}) }}">
+        {{'botao.editar'|trans}}
+    </a>
 
-    <a href="{{ path('clinic_edit', {'id': clinic.id}) }}">edit</a>
-
-    {{ include('clinic/_delete_form.html.twig') }}
+    {{ include('clinica/_delete_form.html.twig') }}
+</div>
 {% endblock %}

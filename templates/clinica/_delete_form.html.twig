@@ -1,5 +1,5 @@
-<form method="post" action="{{ path('clinic_delete', {'id': clinic.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+<form method="post" action="{{ path('clinica_delete', {'id': clinica.id}) }}" onsubmit="return confirm('{% trans with {'_entidade':'clinica'} %}mensagem.deletar{% endtrans %}');">
     <input type="hidden" name="_method" value="DELETE">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ clinic.id) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ clinica.id) }}">
     <button class="btn">Delete</button>
 </form>

@@ -1,37 +1,55 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} 
 
-{% block title %}Clinic index{% endblock %}
+{% block title %}{{ 'titulo.cliente.index'|trans }}{% endblock %} 
 
 {% block body %}
-    <h1>Clinic index</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="page-head-line">{{ 'titulo.cliente.index'|trans }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="{{ path('clinica_new') }}" class="btn btn-primary">{{ 'botao.novo'|trans }}</a>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Nome</th>
+                                    <th>Cliente</th>
+                                    <th>actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for clinica in clinicas %}
+                                    <tr>
+                                        <td>{{ clinica.id }}</td>
+                                        <td>{{ clinica.nome }}</td>
+                                        <td>{{ clinica.cliente.nome }}</td>
+                                        <td>
+                                            <a href="{{ path('clinica_show', {'id': clinica.id}) }}">show</a>
+                                            <a href="{{ path('clinica_edit', {'id': clinica.id}) }}">edit</a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4">no records found</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>ClientId</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for clinic in clinics %}
-            <tr>
-                <td>{{ clinic.id }}</td>
-                <td>{{ clinic.name }}</td>
-                <td>{{ clinic.clientId }}</td>
-                <td>
-                    <a href="{{ path('clinic_show', {'id': clinic.id}) }}">show</a>
-                    <a href="{{ path('clinic_edit', {'id': clinic.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-    <a href="{{ path('clinic_new') }}">Create new</a>
+</div>
 {% endblock %}

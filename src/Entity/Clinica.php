@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use app\Entity\Cliente;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ClinicRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ClinicaRepository")
  */
 class Clinica
 {
+    const CLASS_NAME = 'clinica';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -23,7 +25,7 @@ class Clinica
 
     /**
      * @ORM\ManyToOne(targetEntity="Cliente", inversedBy="clinica")
-     * @ORM\JoinColumn(name="clinica_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id",nullable=true)
      */
     private $cliente;
 
@@ -44,14 +46,14 @@ class Clinica
         return $this;
     }
 
-    public function getClienteId(): ?int
+    public function getCliente(): ?Cliente
     {
-        return $this->clienteId;
+        return $this->cliente;
     }
 
-    public function setClienteId(int $clienteId): self
+    public function setCliente(Cliente $cliente): self
     {
-        $this->clienteId = $clienteId;
+        $this->cliente = $cliente;
 
         return $this;
     }

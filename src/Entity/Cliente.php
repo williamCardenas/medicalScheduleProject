@@ -31,7 +31,6 @@ class Cliente
 
     /**
      * @ORM\OneToMany(targetEntity="Clinica", mappedBy="cliente", orphanRemoval=true)
-     * @ORM\JoinColumn(nullable=true)
      */
     private $clinica;
 
@@ -83,20 +82,22 @@ class Cliente
         $user->setCategory(null);
     }
 
-    public function getClinica() :Collection
+    /**
+     * @return Collection|Clinica[]
+     */
+    public function getClinica() :ArrayCollection
     {
-        return $this->getClinica;
+        return $this->clinica;
     }
 
-    public function addClinica(Clinica $clinica) :Cliente
+    public function addClinica(Clinica $clinica)
     {
         if (!$this->clinica->contains($clinica)) {
            return $this;
         }
 
-        $this->user[] = $user;
-        $user->setCliente($this);
-        return $this;
+        $this->clinica[] = $clinica;
+        $clinica->setCliente($this);
     }
 
 }
