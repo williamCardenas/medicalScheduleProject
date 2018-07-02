@@ -23,6 +23,7 @@ class ClinicaType extends AbstractType
                         ->orderBy('C.nome', 'ASC');
                 },
                 'choice_label' => 'nome',
+                'placeholder' => 'Selecione',
             ))
         ;
     }

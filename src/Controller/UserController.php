@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/user")
+ * @Route("/admin/usuario")
  */
 class UserController extends Controller
 {
@@ -34,6 +34,8 @@ class UserController extends Controller
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
+        $form->get('isAdmin')->setData(true);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -45,6 +47,7 @@ class UserController extends Controller
         return $this->render('user/new.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
+            'adminArea' => true
         ]);
     }
 

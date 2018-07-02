@@ -22,11 +22,6 @@ class UserType extends AbstractType
             ->add('isActive')
             ->add('isAdmin');
 
-        $builder->add('cliente', EntityType::class, array(
-          'class' => Cliente::class,
-          'choice_label' => 'name',
-          'placeholder' => 'Choose an option',
-        ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
