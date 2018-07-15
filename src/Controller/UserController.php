@@ -5,10 +5,17 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Security\Voter\AdminVoter;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\DBAL\Driver\PDOException;
 
 /**
  * @Route("/admin/usuario")
@@ -28,25 +35,42 @@ class UserController extends Controller
     /**
      * @Route("/new", name="user_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserPasswordEncoderInterface $encode,  SessionInterface $session): Response
     {
+        
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
-        $form->get('isAdmin')->setData(true);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            try{
+                $user->setRoles(array(AdminVoter::ADMIN));
+                $encoded = $encode->encodePassword($user, $user->getPassword());
+                $user->setPassword($encoded);
+                
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+                
+                $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');
+                $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
 
-            return $this->redirectToRoute('user_index');
+                return $this->redirectToRoute('user_index');
+            }catch(UniqueConstraintViolationException $ex){
+                $session->getFlashBag()->add('error', 'mensagem.banco.erro.campoUnico');
+                $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
+            }catch(PDOException $ex){
+                $session->getFlashBag()->add('error', 'mensagem.banco.erro.generico');
+                $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
+            }
+            
+        }else{
+            $form->get('isAdmin')->setData(true);
         }
-
-        return $this->render('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
+            
+            return $this->render('user/new.html.twig', [
+                'user' => $user,
+                'form' => $form->createView(),
             'adminArea' => true
         ]);
     }

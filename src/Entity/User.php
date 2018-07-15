@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, \Serializable
 {
+    const CLASS_NAME = 'Usuario';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -181,7 +182,7 @@ class User implements UserInterface, \Serializable
         return $this->isActive;
     }
 
-    public function setIsActive(boolean $isActive)
+    public function setIsActive(bool $isActive)
     {
         return $this->isActive = $isActive;
     }
