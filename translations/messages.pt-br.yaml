@@ -23,6 +23,9 @@ mensagem:
     novo: _entidade cadastrado(a) com sucesso.
     editado: _entidade alterado com sucesso.
     deletar: _entidade deletado com sucesso.
+  validacao:
+    email:
+      unico: email já esta cadastrado
 
 status:
   sucesso: Sucesso

@@ -1,7 +1,7 @@
 ﻿
 /*=============================================================
     Authour URL: www.designbootstrap.com
-
+    
     http://www.designbootstrap.com/
 
     License: MIT
@@ -11,7 +11,7 @@
     100% Free To use For Personal And Commercial Use.
 
     IN EXCHANGE JUST TELL PEOPLE ABOUT THIS WEBSITE
-
+   
 ========================================================  */
 
 
@@ -41,9 +41,9 @@ body {
 .page-head-line {
     font-weight: 900;
     padding-bottom: 20px;
-    border-bottom: 2px solid #5fd8e4;
+    border-bottom: 2px solid #F0677C;
     text-transform: uppercase;
-    color: #5fd8e4;
+    color: #F0677C;
     font-size: 20px;
     margin-bottom: 40px;
 }
@@ -70,7 +70,7 @@ margin-bottom: 20px;
 color: #fff;
 text-align: center;
 cursor:pointer;
-background-color:#5fd8e4;
+background-color:#F0677C;
 -webkit-border-radius:50%;
     -moz-border-radius:50%;
 }
@@ -78,7 +78,7 @@ background-color:#5fd8e4;
    HEADER SECTION STYLES
  ============================================================ */
 header {
-    background-color: #5fd8e4;
+    background-color: #F0677C;
     color: #fff;
     padding: 10px;
     text-align: right;
@@ -97,7 +97,6 @@ header {
 .navbar-brand {
     width: 250px;
     padding-top: 30px;
-    min-height: 100px;
 }
 
 /* USER SETTINGS DIV */
@@ -110,7 +109,7 @@ header {
     -moz-border-radius: 50%;
     height: 60px;
     width: 60px;
-    background-color: #5fd8e4;
+    background-color: #F0677C;
     color: #fff;
 }
 
@@ -129,7 +128,7 @@ header {
 
     .user-settings-wrapper .nav > li > a:hover,.user-settings-wrapper .nav > li > a:focus {
         text-decoration: none;
-        background-color: #1bc7d8!important;
+        background-color: #C36464!important;
     }
 
     .user-settings-wrapper img {
@@ -169,29 +168,25 @@ header {
     text-transform: uppercase;
 }
 
-#menu-top .dropdown-menu {
-    background-color: #3D3D3D;
-}
-
 .menu-top-active {
-    background-color: #1bc7d8;
+    background-color: #C36464;
 }
 
 .menu-section .nav > li > a:hover,.menu-section .nav > li > a:focus {
-    background-color: #5fd8e4!important;
+    background-color: #F0677C!important;
 }
 
 .menu-section .dropdown-menu > li > a:hover,.menu-section .dropdown-menu > li > a:focus {
-    background-color: #5fd8e4!important;
+    background-color: #F0677C!important;
 }
 
 .navbar-inverse {
-    background-color: #1bc7d8;
+    background-color: #C36464;
     border-color: transparent;
 }
 
 .navbar-toggle {
-    background-color: #5fd8e4;
+    background-color: #F0677C;
     border: 1px solid #fff;
 }
 
@@ -205,7 +200,7 @@ footer {
     padding: 10px;
     color: #fff;
     font-size: 12px;
-    background-color: #1bc7d8;
+    background-color: #C36464;
 }
 
     footer a, footer a:hover {
@@ -214,7 +209,7 @@ footer {
     }
 
 /*==============================================
-    DASHBOARD  STYLES
+    DASHBOARD  STYLES    
  =============================================*/
 
 /* DASHBOARD ICONS */

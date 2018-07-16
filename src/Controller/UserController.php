@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\DBAL\Driver\PDOException;
@@ -35,35 +36,36 @@ class UserController extends Controller
     /**
      * @Route("/new", name="user_new", methods="GET|POST")
      */
-    public function new(Request $request, UserPasswordEncoderInterface $encode,  SessionInterface $session): Response
+    public function new(Request $request, UserPasswordEncoderInterface $encode,  SessionInterface $session, ValidatorInterface $validator): Response
     {
         
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         
-        if ($form->isSubmitted() && $form->isValid()) {
-            try{
-                $user->setRoles(array(AdminVoter::ADMIN));
-                $encoded = $encode->encodePassword($user, $user->getPassword());
-                $user->setPassword($encoded);
-                
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
-                
-                $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');
-                $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
+        if ($form->isSubmitted()){
+            if($form->isValid()) {
+                try{
+                    $user->setRoles(array(AdminVoter::ADMIN));
+                    $encoded = $encode->encodePassword($user, $user->getPassword());
+                    $user->setPassword($encoded);
+                    
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($user);
+                    $em->flush();
+                    
+                    $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');
+                    $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
 
-                return $this->redirectToRoute('user_index');
-            }catch(UniqueConstraintViolationException $ex){
-                $session->getFlashBag()->add('error', 'mensagem.banco.erro.campoUnico');
-                $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
-            }catch(PDOException $ex){
-                $session->getFlashBag()->add('error', 'mensagem.banco.erro.generico');
-                $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
-            }
-            
+                    return $this->redirectToRoute('user_index');
+                }catch(UniqueConstraintViolationException $ex){
+                    $session->getFlashBag()->add('error', 'mensagem.banco.erro.campoUnico');
+                    $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
+                }catch(PDOException $ex){
+                    $session->getFlashBag()->add('error', 'mensagem.banco.erro.generico');
+                    $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
+                }
+            }    
         }else{
             $form->get('isAdmin')->setData(true);
         }

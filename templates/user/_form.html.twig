@@ -1,42 +1,42 @@
 {{ form_start(form) }}
-    <div class="form-group">
-        {{ form_label(form.username) }}
+{% form_theme form 'form/form_error.html.twig' %}
+    <div class="form-group {% if form.username.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.username,null,{'attr':{'class':'control-label'}}) }}
+        {{ form_widget(form.username,{'attr':{'class':'form-control'}}) }}
         {{ form_errors(form.username) }}
-        {{ form_widget(form.username) }}
     </div>
 
-    <div class="form-group">
-        {{ form_label(form.login) }}
+    <div class="form-group {% if form.login.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.login,null,{'attr':{'class':'control-label'}}) }}
+        {{ form_widget(form.login,{'attr':{'class':'form-control'}}) }}
         {{ form_errors(form.login) }}
-        {{ form_widget(form.login) }}
     </div>
 
-    <div class="form-group">
-        {{ form_label(form.password) }}
+    <div class="form-group {% if form.password.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.password,null,{'attr':{'class':'control-label'}}) }}
+        {{ form_widget(form.password,{'attr':{'class':'form-control'}}) }}
         {{ form_errors(form.password) }}
-        {{ form_widget(form.password) }}
     </div>
 
-    <div class="form-group">
-        {{ form_label(form.email) }}
+    <div class="form-group {% if form.email.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.email,null,{'attr':{'class':'control-label'}}) }}
+        {{ form_widget(form.email,{'attr':{'class':'form-control'}}) }}
         {{ form_errors(form.email) }}
-        {{ form_widget(form.email) }}
     </div>
 
+    {% if adminArea is defined %}
     <div class="form-group">
         {{ form_label(form.isAdmin) }}
-        {% if adminArea is defined %}
-            {{ form_errors(form.isAdmin) }}
-        {% else %}
+        {{ form_widget(form.isAdmin) }}
+        {{ form_errors(form.isAdmin) }}
         
-        {% endif %}
-            {{ form_widget(form.isAdmin) }}
     </div>
+    {% endif %}
 
     <div class="form-group">
         {{ form_label(form.isActive) }}
-        {{ form_errors(form.isActive) }}
         {{ form_widget(form.isActive) }}
+        {{ form_errors(form.isActive) }}
     </div>
     <button class="btn">{{ button_label|default('botao.adicionar'|trans) }}</button>
 {{ form_end(form) }}

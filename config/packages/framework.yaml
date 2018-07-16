@@ -3,6 +3,7 @@ framework:
     default_locale: pt
     csrf_protection: true
     http_method_override: true
+    validation: { enabled: true }
 
     translator:
         fallbacks: ['pt-br']

@@ -1,0 +1,9 @@
+App\Entity\User:
+  proprietis:
+    email:
+      - NotBlank: ~
+  constraints:
+    - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+        fields: [email]
+        errorPath: email
+        message: 'mensagem.validacao.email.unico'
