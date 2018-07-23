@@ -43,4 +43,9 @@ titulo:
     index: Lista de clinicas
     novo: Nova CLinica
     show: Detalhes da clinica
+  usuario:
+    editar: Editar usuario
+    index: Lista de usuarios
+    novo: Novo usuario
+    show: Detalhes da usuario
   sistema: Tcc

@@ -312,3 +312,17 @@ footer {
 .btn-google {
     background-color: #c32f10;
 }
+
+/* DROPDOWN MENU */
+.menu-section .dropdown-menu {
+    background-color: #3D3D3D;
+}
+
+.menu-section .dropdown-menu ol{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.menu-section .dropdown-menu ol li:hover{
+    background-color: #F0677C;
+}
