@@ -6,4 +6,8 @@ App\Entity\User:
     - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
         fields: [email]
         errorPath: email
-        message: 'mensagem.validacao.email.unico'
+        message: 'validacao.email.unico'
+    - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+        fields: [login]
+        errorPath: login
+        message: 'validacao.login.unico'

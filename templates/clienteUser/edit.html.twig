@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %} {% block title %}New Cliente{% endblock %} {% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="page-head-line">{{ 'titulo.clienteUser.editar'|trans({'_clienteNome':cliente.nome}) }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{ include( 'clienteUser/_form.html.twig') }} 
+            <a class="btn btn-default" href="{{ path('cliente_user_index',{'clienteId':cliente.id}) }}">
+                {{'botao.voltar'|trans}}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

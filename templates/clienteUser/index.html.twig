@@ -6,14 +6,14 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1 class="page-head-line">{{ 'titulo.cliente.index'|trans }}</h1>
+            <h1 class="page-head-line">{{ 'titulo.clienteUser.index'|trans({'_clienteNome':cliente.nome}) }}</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <a href="{{ path('cliente_new') }}" class="btn btn-primary">{{ 'botao.novo'|trans }}</a>
+                    <a href="{{ path('cliente_user_new',{'clienteId':cliente.id}) }}" class="btn btn-primary">{{ 'botao.novo'|trans }}</a>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -21,24 +21,18 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Nome</th>
+                                    <th>Nome do usuário</th>
                                     <th>actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for cliente in clientes %}
+                                {% for usuario in usuarios %}
                                 <tr>
-                                    <td>{{ cliente.id }}</td>
-                                    <td>{{ cliente.nome }}</td>
+                                    <td>{{ usuario.id }}</td>
+                                    <td>{{ usuario.username }}</td>
                                     <td>
-                                        <a class="btn btn-default" href="{{ path('cliente_show', {'id': cliente.id}) }}">
-                                            {{'botao.exibir'|trans}}
-                                        </a>
-                                        <a class="btn btn-default" href="{{ path('cliente_edit', {'id': cliente.id}) }}">
+                                        <a class="btn btn-default" href="{{ path('cliente_user_edit', {'clienteId': cliente.id,'id':usuario.id}) }}">
                                             {{'botao.editar'|trans}}
-                                        </a>
-                                        <a class="btn btn-default" href="{{ path('cliente_user_index', {'clienteId': cliente.id}) }}">
-                                            {{'botao.usuarios'|trans}}
                                         </a>
                                     </td>
                                 </tr>
@@ -55,6 +49,8 @@
         </div>
     </div>
 
-
+    <a class="btn btn-default" href="{{ path('cliente_index') }}">
+        {{'botao.voltar'|trans}}
+    </a>
 </div>
 {% endblock %}

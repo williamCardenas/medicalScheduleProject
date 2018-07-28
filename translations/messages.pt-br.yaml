@@ -4,6 +4,7 @@ botao:
   exibir: Exibir
   novo: Novo
   voltar: Voltar
+  usuarios: usuários
 
 entidade:
   cliente: cliente
@@ -23,10 +24,7 @@ mensagem:
     novo: _entidade cadastrado(a) com sucesso.
     editado: _entidade alterado com sucesso.
     deletar: _entidade deletado com sucesso.
-  validacao:
-    email:
-      unico: email já esta cadastrado
-
+  
 status:
   sucesso: Sucesso
   erro: Erro
@@ -48,4 +46,15 @@ titulo:
     index: Lista de usuarios
     novo: Novo usuario
     show: Detalhes da usuario
+  clienteUser:
+    editar: Editar usuarios para o cliente _clienteNome
+    index: Lista de usuarios para o cliente _clienteNome
+    novo: Novo usuarios para o cliente _clienteNome
+    show: Detalhes do usuarios para o cliente _clienteNome
   sistema: Tcc
+
+validacao:
+  email:
+    unico: Email informado já esta sendo usado
+  login:
+    unico: Login informado já esta sendo usado

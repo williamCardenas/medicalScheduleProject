@@ -69,7 +69,7 @@ class ClienteController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            $session->getFlashBag()->add('success', 'mensagem.sucesso.editar');
+            $session->getFlashBag()->add('success', 'mensagem.sucesso.editado');
             $session->getFlashBag()->add('_entidade', Cliente::CLASS_NAME );
 
             return $this->redirectToRoute('cliente_edit', ['id' => $cliente->getId()]);

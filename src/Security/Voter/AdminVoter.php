@@ -11,6 +11,7 @@ use App\Entity\User;
 class AdminVoter extends Voter
 {
     const ADMIN = 'ROLE_ADMIN';
+    const CLIENT_USER = 'ROLE_CLIENT';
     private $decisionManager;
 
     public function __construct(AccessDecisionManagerInterface $decisionManager)
