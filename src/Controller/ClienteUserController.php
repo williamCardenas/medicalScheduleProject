@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+use Exception;
 /**
  * @Route("/admin/cliente/{clienteId}/usuario")
  */
@@ -74,27 +75,45 @@ class ClienteUserController extends Controller
     /**
      * @Route("/{id}", name="cliente_user_show", methods="GET")
      */
-    public function show(Cliente $cliente): Response
+    public function show(User $user, Request $request, ClienteRepository $clienteRepository, $clienteId): Response
     {
-        return $this->render('cliente/show.html.twig', ['cliente' => $cliente]);
+        $cliente = $clienteRepository->find($clienteId);
+        
+        return $this->render('clienteUser/show.html.twig', ['cliente' => $cliente, 'user' => $user]);
     }
 
     /**
      * @Route("/{id}/edit", name="cliente_user_edit", methods="GET|POST")
      */
-    public function edit(Request $request, ClienteRepository $clienteRepository, SessionInterface $session, User $user, $clienteId): Response
+    public function edit(Request $request, UserPasswordEncoderInterface $encode, ClienteRepository $clienteRepository, SessionInterface $session, User $user, $clienteId): Response
     {
         $cliente = $clienteRepository->find($clienteId);
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            
+            try{
+                $user = $form->getData();
+                $encoded = $encode->encodePassword($user, $user->getPassword());
+                $user->setPassword($encoded);
+                
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+                
+                $session->getFlashBag()->add('success', 'mensagem.sucesso.editado');
+                $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
 
-            $session->getFlashBag()->add('success', 'mensagem.sucesso.editado');
-            $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
+                return $this->redirectToRoute('cliente_user_edit', ['clienteId' => $cliente->getId(),'id'=>$user->getId()]);
+            }catch(UniqueConstraintViolationException $ex){
+                $session->getFlashBag()->add('error', 'mensagem.banco.erro.campoUnico');
+                $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
+            }catch(PDOException $ex){
+                $session->getFlashBag()->add('error', 'mensagem.banco.erro.generico');
+                $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
+            }
 
-            return $this->redirectToRoute('cliente_user_edit', ['clienteId' => $cliente->getId(),'id'=>$user->getId()]);
         }
 
         return $this->render('clienteUser/edit.html.twig', [
@@ -104,19 +123,26 @@ class ClienteUserController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="cliente_user_delete", methods="DELETE")
+     * @Route("/{id}/delete", name="cliente_user_delete", methods="POST|DELETE")
      */
-    public function delete(Request $request, Cliente $cliente, SessionInterface $session): Response
+    public function delete(Request $request, User $user, SessionInterface $session, $clienteId): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$cliente->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($cliente);
-            $em->flush();
-
-            $session->getFlashBag()->add('success', 'mensagem.sucesso.deletar');
-            $session->getFlashBag()->add('_entidade', Cliente::CLASS_NAME );
+        dump($request);
+        try{
+            if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($user);
+                $em->flush();
+    
+                $session->getFlashBag()->add('success', 'mensagem.sucesso.deletar');
+                $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
+            }
+        }catch(Exception $ex){
+//            $session->getFlashBag()->add('error', 'mensagem.banco.erro.generico');
+            $session->getFlashBag()->add('error', $ex->getMessage());
+            $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
         }
-
-        return $this->redirectToRoute('cliente_index');
+dump('teste');exit();
+        return $this->redirectToRoute('cliente_user_index',['clienteId'=>$clienteId]);
     }
 }

@@ -34,6 +34,10 @@
                                         <a class="btn btn-default" href="{{ path('cliente_user_edit', {'clienteId': cliente.id,'id':usuario.id}) }}">
                                             {{'botao.editar'|trans}}
                                         </a>
+
+                                        <a class="btn btn-default" href="{{ path('cliente_user_show', {'clienteId': cliente.id,'id':usuario.id}) }}">
+                                            {{'botao.exibir'|trans}}
+                                        </a>
                                     </td>
                                 </tr>
                                 {% else %}

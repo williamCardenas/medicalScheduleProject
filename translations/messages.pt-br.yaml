@@ -1,6 +1,7 @@
 botao:
   adicionar: Adicionar
   editar: Editar
+  deletar: Deletar
   exibir: Exibir
   novo: Novo
   voltar: Voltar
