@@ -100,18 +100,11 @@
                         <div class="col-md-12">
                             <div class="navbar-collapse collapse ">
                                 <ul id="menu-top" class="nav navbar-nav navbar-right">
+                                    {% if constant('App\\Security\\Voter\\AdminVoter::CLIENT_USER') in app.user.roles %}
                                     <li>
-                                        <a href="index.html">Dashboard</a>
+                                        <a href="{{ path('medico_index') }}">{{ "menu.medicos"|trans }}</a>
                                     </li>
-                                    <li>
-                                        <a href="ui.html">UI Elements</a>
-                                    </li>
-                                    <li>
-                                        <a href="table.html">Data Tables</a>
-                                    </li>
-                                    <li>
-                                        <a href="forms.html">Forms</a>
-                                    </li>
+                                    {% endif %}
                                     <li>
                                         <a href="login.html">Login Page</a>
                                     </li>

@@ -34,6 +34,11 @@ class Cliente
      */
     private $clinica;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Medico", mappedBy="cliente")
+     */
+    private $medico;
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
@@ -98,6 +103,24 @@ class Cliente
 
         $this->clinica[] = $clinica;
         $clinica->setCliente($this);
+    }
+
+     /**
+     * @return Collection|Medico[]
+     */
+    public function getMedico() :ArrayCollection
+    {
+        return $this->medico;
+    }
+
+    public function addmedico(Medico $medico)
+    {
+        if (!$this->medico->contains($medico)) {
+           return $this;
+        }
+
+        $this->medico[] = $medico;
+        $medico->setCliente($this);
     }
 
 }

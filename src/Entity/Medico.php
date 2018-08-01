@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Medico
 {
+    const CLASS_NAME = 'Medico';
+    
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -30,6 +32,12 @@ class Medico
      * @ORM\OneToMany(targetEntity="Agenda", mappedBy="agenda")
      */
     private $agenda;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Cliente", inversedBy="medico")
+     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
+     */
+    private $cliente;
 
     public function getId()
     {
@@ -56,6 +64,18 @@ class Medico
     public function setNumeroDocumento(string $numeroDocumento): self
     {
         $this->numeroDocumento = $numeroDocumento;
+
+        return $this;
+    }
+
+    public function getCliente(): ?Cliente
+    {
+        return $this->cliente;
+    }
+
+    public function setCliente(Cliente $cliente): self
+    {
+        $this->cliente = $cliente;
 
         return $this;
     }
