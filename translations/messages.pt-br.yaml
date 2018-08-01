@@ -18,7 +18,7 @@ menu:
   administracao: Administração do sistema
   clientes: Clientes
   clinicas: Clinicas
-
+  usuariosAdmin: Usários Adiministrativos
 mensagem:
   deletar: Deseja excluir este _entidade ?
   sucesso: 

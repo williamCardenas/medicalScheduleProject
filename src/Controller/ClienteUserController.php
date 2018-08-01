@@ -41,28 +41,30 @@ class ClienteUserController extends Controller
         $user = new User();
         $user->setCliente($cliente);
         $form = $this->createForm(UserType::class, $user);
+        
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            try{
-                $user->setRoles(array(AdminVoter::CLIENT_USER));
-                $encoded = $encode->encodePassword($user, $user->getPassword());
-                $user->setPassword($encoded);
-                
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
-                
-                $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');
-                $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
-
-                return $this->redirectToRoute('cliente_user_index',['clienteId'=> $cliente->getId()]);
-            }catch(UniqueConstraintViolationException $ex){
-                $session->getFlashBag()->add('error', 'mensagem.banco.erro.campoUnico');
-                $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
-            }catch(PDOException $ex){
-                $session->getFlashBag()->add('error', 'mensagem.banco.erro.generico');
-                $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
+        if ($form->isSubmitted()){
+            if ($form->isValid()) {
+                try{
+                    $user->setRoles(array(AdminVoter::CLIENT_USER));
+                    $encoded = $encode->encodePassword($user, $user->getPassword());
+                    $user->setPassword($encoded);
+                    
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($user);
+                    $em->flush();
+                    
+                    $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');
+                    $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
+    
+                    return $this->redirectToRoute('cliente_user_index',['clienteId'=> $cliente->getId()]);
+                }catch(UniqueConstraintViolationException $ex){
+                    $session->getFlashBag()->add('error', 'mensagem.banco.erro.campoUnico');
+                    $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
+                }catch(PDOException $ex){
+                    $session->getFlashBag()->add('error', 'mensagem.banco.erro.generico');
+                    $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
+                }
             }
         }
 
@@ -123,11 +125,10 @@ class ClienteUserController extends Controller
     }
 
     /**
-     * @Route("/{id}/delete", name="cliente_user_delete", methods="POST|DELETE")
+     * @Route("/{id}/delete", name="cliente_user_delete", methods="DELETE")
      */
     public function delete(Request $request, User $user, SessionInterface $session, $clienteId): Response
     {
-        dump($request);
         try{
             if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
                 $em = $this->getDoctrine()->getManager();
@@ -138,11 +139,10 @@ class ClienteUserController extends Controller
                 $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
             }
         }catch(Exception $ex){
-//            $session->getFlashBag()->add('error', 'mensagem.banco.erro.generico');
-            $session->getFlashBag()->add('error', $ex->getMessage());
+            $session->getFlashBag()->add('error', 'mensagem.banco.erro.generico');
             $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
         }
-dump('teste');exit();
+
         return $this->redirectToRoute('cliente_user_index',['clienteId'=>$clienteId]);
     }
 }
