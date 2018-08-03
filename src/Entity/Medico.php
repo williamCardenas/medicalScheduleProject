@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MedicoRepository")
@@ -38,6 +40,10 @@ class Medico
      * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
      */
     private $cliente;
+
+    public function __construct(){
+        $this->agenda = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -77,6 +83,20 @@ class Medico
     {
         $this->cliente = $cliente;
 
+        return $this;
+    }
+
+    public function getAgenda(): ?Collection
+    {
+        return $this->agenda;
+    }
+
+    public function addAgenda(Agenda $agenda) :self
+    {
+        if(!$this->agenda->contains($agenda)){
+            $this->agenda[] = $agenda;
+            $agenda->setAgenda($this);
+        }
         return $this;
     }
 }

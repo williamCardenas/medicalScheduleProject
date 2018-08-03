@@ -26,6 +26,12 @@ class Agenda
     private $medico;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Clinica", inversedBy="agenda")
+     * @ORM\JoinColumn(name="clinica_id", referencedColumnName="id")
+     */
+    private $clinica;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $horarioInicioAtendimento;
@@ -74,24 +80,24 @@ class Agenda
 
     public function getHorarioInicioAtendimento(): ?\DateTimeInterface
     {
-        return $this->HorarioInicioAtendimento;
+        return $this->horarioInicioAtendimento;
     }
 
-    public function setHorarioInicioAtendimento(?\DateTimeInterface $HorarioInicioAtendimento): self
+    public function setHorarioInicioAtendimento(?\DateTimeInterface $horarioInicioAtendimento): self
     {
-        $this->HorarioInicioAtendimento = $HorarioInicioAtendimento;
+        $this->horarioInicioAtendimento = $horarioInicioAtendimento;
 
         return $this;
     }
 
     public function getHorarioFimAtendimento(): ?\DateTimeInterface
     {
-        return $this->HorarioFimAtendimento;
+        return $this->horarioFimAtendimento;
     }
 
-    public function setHorarioFimAtendimento(?\DateTimeInterface $HorarioFimAtendimento): self
+    public function setHorarioFimAtendimento(?\DateTimeInterface $horarioFimAtendimento): self
     {
-        $this->HorarioFimAtendimento = $HorarioFimAtendimento;
+        $this->horarioFimAtendimento = $horarioFimAtendimento;
 
         return $this;
     }
@@ -131,6 +137,19 @@ class Agenda
             $this->agendaData[] = $agendaData;
             $agendaData->setAgenda($this);
         }
+        return $this;
+    }
+
+
+    public function getClinica(): ?Clinica
+    {
+        return $this->clinica;
+    }
+
+    public function setClinica(Clinica $clinica): self
+    {
+        $this->clinica = $clinica;
+
         return $this;
     }
 }

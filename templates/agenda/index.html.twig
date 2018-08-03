@@ -1,20 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'titulo.medico.index'|trans }}
-{% endblock %}
+{% block title %}{{ 'titulo.agenda.index'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="page-head-line">{{ 'titulo.medico.index'|trans }}</h1>
+                <h1 class="page-head-line">{{ 'titulo.agenda.index'|trans }}</h1>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="{{ path('medico_new') }}" class="btn btn-primary">{{ 'botao.novo'|trans }}</a>
+                        <a href="{{ path('agenda_new',{'medicoId': medicoId}) }}" class="btn btn-primary">{{ 'botao.novo'|trans }}</a>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">
@@ -22,32 +21,31 @@
                                 <thead>
                                     <tr>
                                         <th>Id</th>
-                                        <th>Nome</th>
-                                        <th>NumeroDocumento</th>
+                                        <th>HorarioInicioAtendimento</th>
+                                        <th>HorarioFimAtendimento</th>
+                                        <th>FimDeSemana</th>
                                         <th>actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for medico in medicos %}
+                                    {% for agenda in agendas %}
                                         <tr>
-                                            <td>{{ medico.id }}</td>
-                                            <td>{{ medico.nome }}</td>
-                                            <td>{{ medico.numeroDocumento }}</td>
+                                            <td>{{ agenda.id }}</td>
+                                            <td>{{ agenda.horarioInicioAtendimento ? agenda.horarioInicioAtendimento|date('Y-m-d H:i:s') : '' }}</td>
+                                            <td>{{ agenda.horarioFimAtendimento ? agenda.horarioFimAtendimento|date('Y-m-d H:i:s') : '' }}</td>
+                                            <td>{{ agenda.fimDeSemana ? 'Yes' : 'No' }}</td>
                                             <td>
-                                                <a class="btn btn-default" href="{{ path('medico_show', {'id': medico.id}) }}">
+                                                <a class="btn btn-default" href="{{ path('agenda_show', {'id': agenda.id}) }}">
                                                     {{'botao.exibir'|trans}}
                                                 </a>
-                                                <a class="btn btn-default" href="{{ path('medico_edit', {'id': medico.id}) }}">
+                                                <a class="btn btn-default" href="{{ path('agenda_edit', {'id': agenda.id}) }}">
                                                     {{'botao.editar'|trans}}
-                                                </a>
-                                                <a class="btn btn-default" href="{{ path('agenda_index', {'medicoId': medico.id}) }}">
-                                                    {{'botao.agenda'|trans}}
                                                 </a>
                                             </td>
                                         </tr>
                                     {% else %}
                                         <tr>
-                                            <td colspan="4">no records found</td>
+                                            <td colspan="5">no records found</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -59,4 +57,5 @@
         </div>
 
     </div>
+
 {% endblock %}
