@@ -65,15 +65,21 @@ class MedicoController extends Controller
     /**
      * @Route("/{id}/edit", name="medico_edit", methods="GET|POST")
      */
-    public function edit(Request $request, Medico $medico): Response
+    public function edit(Request $request, Medico $medico, SessionInterface $session): Response
     {
         $form = $this->createForm(MedicoType::class, $medico);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em = $this->getDoctrine()->getManager();
 
-            return $this->redirectToRoute('medico_edit', ['id' => $medico->getId()]);
+            $em->persist($medico);
+            $em->flush();
+
+            $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');
+            $session->getFlashBag()->add('_entidade', Medico::CLASS_NAME );
+
+            return $this->redirectToRoute('medico_index');
         }
 
         return $this->render('medico/edit.html.twig', [
