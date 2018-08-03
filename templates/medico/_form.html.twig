@@ -1,0 +1,15 @@
+{{ form_start(form) }}
+    {% form_theme form 'form/form_error.html.twig' %}
+    <div class="form-group {% if form.nome.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.nome) }}
+        {{ form_widget(form.nome,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.nome) }}
+    </div>
+
+    <div class="form-group {% if form.numeroDocumento.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.numeroDocumento) }}
+        {{ form_widget(form.numeroDocumento,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.numeroDocumento) }}
+    </div>
+    <button class="btn">{{ button_label|default('botao.adicionar'|trans) }}</button>
+{{ form_end(form) }}

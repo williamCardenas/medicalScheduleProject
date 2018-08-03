@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %} 
+
+{% block title %}{{ 'titulo.medico.editar'|trans }}{% endblock %} 
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="page-head-line">{{ 'titulo.medico.editar'|trans }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{ include('medico/_form.html.twig', {'button_label': 'botao.editar'|trans}) }}
+            <a class="btn btn-default" href="{{ path('medico_index') }}">
+                {{'botao.voltar'|trans}}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

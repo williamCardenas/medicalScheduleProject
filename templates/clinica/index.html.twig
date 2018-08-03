@@ -33,8 +33,12 @@
                                         <td>{{ clinica.nome }}</td>
                                         <td>{{ clinica.cliente.nome }}</td>
                                         <td>
-                                            <a href="{{ path('clinica_show', {'id': clinica.id}) }}">show</a>
-                                            <a href="{{ path('clinica_edit', {'id': clinica.id}) }}">edit</a>
+                                            <a class="btn btn-default" href="{{ path('clinica_show', {'id': clinica.id}) }}">
+                                                {{'botao.exibir'|trans}}
+                                            </a>
+                                            <a class="btn btn-default" href="{{ path('clinica_edit', {'id': clinica.id}) }}">
+                                                {{'botao.editar'|trans}}
+                                            </a>
                                         </td>
                                     </tr>
                                 {% else %}

@@ -19,6 +19,8 @@ menu:
   clientes: Clientes
   clinicas: Clinicas
   usuariosAdmin: Usários Adiministrativos
+  medicos: Medicos
+
 mensagem:
   deletar: Deseja excluir este _entidade ?
   sucesso: 
@@ -52,6 +54,11 @@ titulo:
     index: Lista de usuarios para o cliente _clienteNome
     novo: Novo usuarios para o cliente _clienteNome
     show: Detalhes do usuarios para o cliente _clienteNome
+  medico:
+    editar: Editar médico
+    index: Lista de médicos
+    novo: Novo médico
+    show: Detalhes do médico
   sistema: Tcc
 
 validacao:
