@@ -34,8 +34,12 @@
                                             <td>{{ medico.nome }}</td>
                                             <td>{{ medico.numeroDocumento }}</td>
                                             <td>
-                                                <a href="{{ path('medico_show', {'id': medico.id}) }}">show</a>
-                                                <a href="{{ path('medico_edit', {'id': medico.id}) }}">edit</a>
+                                                <a class="btn btn-default" href="{{ path('medico_show', {'id': medico.id}) }}">
+                                                    {{'botao.exibir'|trans}}
+                                                </a>
+                                                <a class="btn btn-default" href="{{ path('medico_edit', {'id': medico.id}) }}">
+                                                    {{'botao.editar'|trans}}
+                                                </a>
                                             </td>
                                         </tr>
                                     {% else %}
