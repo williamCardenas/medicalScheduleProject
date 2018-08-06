@@ -32,14 +32,24 @@ class Agenda
     private $clinica;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="time", nullable=true)
      */
     private $horarioInicioAtendimento;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="time", nullable=true)
      */
     private $horarioFimAtendimento;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $dataInicioAtendimento;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $dataFimAtendimento;
 
     /**
      * @ORM\Column(type="boolean")
@@ -98,6 +108,30 @@ class Agenda
     public function setHorarioFimAtendimento(?\DateTimeInterface $horarioFimAtendimento): self
     {
         $this->horarioFimAtendimento = $horarioFimAtendimento;
+
+        return $this;
+    }
+
+    public function getdataInicioAtendimento(): ?\DateTimeInterface
+    {
+        return $this->dataInicioAtendimento;
+    }
+
+    public function setdataInicioAtendimento(?\DateTimeInterface $dataInicioAtendimento): self
+    {
+        $this->dataInicioAtendimento = $dataInicioAtendimento;
+
+        return $this;
+    }
+
+    public function getdataFimAtendimento(): ?\DateTimeInterface
+    {
+        return $this->dataFimAtendimento;
+    }
+
+    public function setdataFimAtendimento(?\DateTimeInterface $dataFimAtendimento): self
+    {
+        $this->dataFimAtendimento = $dataFimAtendimento;
 
         return $this;
     }

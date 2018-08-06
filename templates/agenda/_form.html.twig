@@ -1,4 +1,45 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {% form_theme form 'form/form_error.html.twig' %}
+    <div class="form-group {% if form.dataInicioAtendimento.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.dataInicioAtendimento) }}
+        {{ form_widget(form.dataInicioAtendimento,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.dataInicioAtendimento) }}
+    </div>
+
+    <div class="form-group {% if form.dataFimAtendimento.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.dataFimAtendimento) }}
+        {{ form_widget(form.dataFimAtendimento,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.dataFimAtendimento) }}
+    </div>
+
+    <div class="form-group {% if form.horarioInicioAtendimento.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.horarioInicioAtendimento) }}
+        {{ form_widget(form.horarioInicioAtendimento,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.horarioInicioAtendimento) }}
+    </div>
+
+    <div class="form-group {% if form.horarioFimAtendimento.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.horarioFimAtendimento) }}
+        {{ form_widget(form.horarioFimAtendimento,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.horarioFimAtendimento) }}
+    </div>
+
+    <div class="form-group {% if form.fimDeSemana.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.fimDeSemana) }}
+        {{ form_widget(form.fimDeSemana) }}
+        {{ form_errors(form.fimDeSemana) }}
+    </div>
+
+    <div class="form-group {% if form.clinica.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.clinica) }}
+        {{ form_widget(form.clinica,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.clinica) }}
+    </div>
+
+    <div class="form-group {% if form.medico.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.medico) }}
+        {{ form_widget(form.medico,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.medico) }}
+    </div>
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

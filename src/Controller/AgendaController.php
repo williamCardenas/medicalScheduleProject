@@ -28,7 +28,7 @@ class AgendaController extends Controller
     /**
      * @Route("/new", name="agenda_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, $medicoId): Response
     {
         $agenda = new Agenda();
         $form = $this->createForm(AgendaType::class, $agenda);
@@ -45,6 +45,7 @@ class AgendaController extends Controller
         return $this->render('agenda/new.html.twig', [
             'agenda' => $agenda,
             'form' => $form->createView(),
+            'medicoId' => $medicoId
         ]);
     }
 
