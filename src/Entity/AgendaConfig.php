@@ -26,6 +26,11 @@ class AgendaConfig
      */
     private $valorConsulta;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $duracaoConsulta;
+
     public function getId()
     {
         return $this->id;
@@ -51,6 +56,18 @@ class AgendaConfig
     public function setValorConsulta(int $valorConsulta): self
     {
         $this->valorConsulta = $valorConsulta;
+
+        return $this;
+    }
+
+    public function getDuracaoConsulta(): ?int
+    {
+        return $this->duracaoConsulta;
+    }
+
+    public function setDuracaoConsulta(int $duracaoConsulta): self
+    {
+        $this->duracaoConsulta = $duracaoConsulta;
 
         return $this;
     }

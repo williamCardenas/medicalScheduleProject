@@ -21,6 +21,8 @@
                                 <thead>
                                     <tr>
                                         <th>Id</th>
+                                        <th>DataInicioAtendimento</th>
+                                        <th>DataFimAtendimento</th>
                                         <th>HorarioInicioAtendimento</th>
                                         <th>HorarioFimAtendimento</th>
                                         <th>FimDeSemana</th>
@@ -31,14 +33,16 @@
                                     {% for agenda in agendas %}
                                         <tr>
                                             <td>{{ agenda.id }}</td>
-                                            <td>{{ agenda.horarioInicioAtendimento ? agenda.horarioInicioAtendimento|date('Y-m-d H:i:s') : '' }}</td>
-                                            <td>{{ agenda.horarioFimAtendimento ? agenda.horarioFimAtendimento|date('Y-m-d H:i:s') : '' }}</td>
-                                            <td>{{ agenda.fimDeSemana ? 'Yes' : 'No' }}</td>
+                                            <td>{{ agenda.dataInicioAtendimento ? agenda.dataInicioAtendimento|date('d/m/Y') : '' }}</td>
+                                            <td>{{ agenda.dataFimAtendimento ? agenda.dataFimAtendimento|date('d/m/Y') : '' }}</td>
+                                            <td>{{ agenda.horarioInicioAtendimento ? agenda.horarioInicioAtendimento|date('H:i:s') : '' }}</td>
+                                            <td>{{ agenda.horarioFimAtendimento ? agenda.horarioFimAtendimento|date('H:i:s') : '' }}</td>
+                                            <td>{{ agenda.fimDeSemana ? 'opcao.sim'|trans : 'opcao.nao'|trans }}</td>
                                             <td>
-                                                <a class="btn btn-default" href="{{ path('agenda_show', {'id': agenda.id}) }}">
+                                                <a class="btn btn-default" href="{{ path('agenda_show', {'id': agenda.id, 'medicoId': medicoId}) }}">
                                                     {{'botao.exibir'|trans}}
                                                 </a>
-                                                <a class="btn btn-default" href="{{ path('agenda_edit', {'id': agenda.id}) }}">
+                                                <a class="btn btn-default" href="{{ path('agenda_edit', {'id': agenda.id, 'medicoId': medicoId}) }}">
                                                     {{'botao.editar'|trans}}
                                                 </a>
                                             </td>

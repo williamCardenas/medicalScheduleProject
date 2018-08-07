@@ -34,6 +34,11 @@ status:
   informacao: Atenção
 
 titulo:
+  agenda:
+    editar: Editar agenda
+    index: Lista de agendas
+    novo: Nova agenda
+    show: Detalhes da agenda
   cliente:
     editar: Editar cliente
     index: Lista de clientes
@@ -60,6 +65,10 @@ titulo:
     novo: Novo médico
     show: Detalhes do médico
   sistema: Tcc
+
+opcao:
+  sim: Sim
+  nao: Não
 
 validacao:
   email:

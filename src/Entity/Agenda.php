@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Collection;
  */
 class Agenda
 {
+    const CLASS_NAME = 'Agenda';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
