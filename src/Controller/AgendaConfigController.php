@@ -13,12 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
- * @Route("/agenda/{agendaId}/medico/{medicoId}config")
+ * @Route("/agenda/{agendaId}/medico/{medicoId}/config")
  */
 class AgendaConfigController extends Controller
 {
     /**
-     * @Route("/edit", name="agenda_config_edit", methods="GET|POST")
+     * @Route("/", name="agenda_config_edit", methods="GET|POST")
      */
     public function edit(Request $request,AgendaConfigRepository $agendaConfigRepository, AgendaRepository $agendaRepository, SessionInterface $session, $agendaId, $medicoId): Response
     {

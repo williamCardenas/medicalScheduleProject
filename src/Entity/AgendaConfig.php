@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class AgendaConfig
 {
     const CLASS_NAME = "Configuração";
-    
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -27,12 +27,12 @@ class AgendaConfig
     /**
      * @ORM\Column(type="float")
      */
-    private $valorConsulta;
+    private $valorConsulta = (float) 100,00;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $duracaoConsulta;
+    private $duracaoConsulta = 30;
 
     public function getId()
     {

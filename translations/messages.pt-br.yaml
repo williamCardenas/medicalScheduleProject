@@ -1,5 +1,6 @@
 botao:
   adicionar: Adicionar
+  opcoes: Configurações
   editar: Editar
   deletar: Deletar
   exibir: Exibir
@@ -39,6 +40,8 @@ titulo:
     index: Lista de agendas
     novo: Nova agenda
     show: Detalhes da agenda
+  agenda_config:
+    editar: Editar Configurações da agenda
   cliente:
     editar: Editar cliente
     index: Lista de clientes
