@@ -13,6 +13,9 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                            <a class="btn btn-default" href="{{ path('medico_index') }}">
+                                {{'botao.voltar'|trans}}
+                            </a>
                         <a href="{{ path('agenda_new',{'medicoId': medicoId}) }}" class="btn btn-primary">{{ 'botao.novo'|trans }}</a>
                     </div>
                     <div class="panel-body">

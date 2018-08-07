@@ -27,7 +27,7 @@ class AgendaConfig
     /**
      * @ORM\Column(type="float")
      */
-    private $valorConsulta = (float) 100,00;
+    private $valorConsulta = 100;
 
     /**
      * @ORM\Column(type="integer")
