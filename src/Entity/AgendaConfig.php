@@ -19,7 +19,7 @@ class AgendaConfig
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Agenda", mappedBy="agendaConfig")
+     * @ORM\OneToOne(targetEntity="Agenda", mappedBy="agendaConfig", cascade={"persist"})
      * @ORM\JoinColumn(name="agenda_id", referencedColumnName="id")
      */
     private $agenda;
@@ -27,7 +27,7 @@ class AgendaConfig
     /**
      * @ORM\Column(type="float")
      */
-    private $valorConsulta = 100;
+    private $valorConsulta = 10000;
 
     /**
      * @ORM\Column(type="integer")

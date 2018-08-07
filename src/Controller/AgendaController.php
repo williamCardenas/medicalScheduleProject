@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Agenda;
+use App\Entity\AgendaConfig;
 use App\Form\AgendaType;
 use App\Repository\AgendaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,7 +22,7 @@ class AgendaController extends Controller
      */
     public function index(AgendaRepository $agendaRepository, SessionInterface $session, $medicoId): Response
     {
-        $agenda = $agendaRepository->findBy(['medico'=>$medicoId]);
+        $agenda = $agendaRepository->findBy(['medico'=>$medicoId],['dataFimAtendimento'=>'DESC']);
 
         return $this->render('agenda/index.html.twig', ['agendas' => $agenda, 'medicoId' => $medicoId]);
     }
@@ -42,7 +43,7 @@ class AgendaController extends Controller
             $agenda->setAgendaConfig($agendaConfig);
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($agenda, $agendaConfig);
+            $em->persist($agendaConfig,$agenda);
             $em->flush();
 
             $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');

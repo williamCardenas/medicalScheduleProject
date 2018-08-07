@@ -58,7 +58,7 @@ class Agenda
     private $fimDeSemana;
 
     /**
-     * @ORM\OneToOne(targetEntity="AgendaConfig", inversedBy="agenda")
+     * @ORM\OneToOne(targetEntity="AgendaConfig", inversedBy="agenda", cascade={"persist"})
      */
     private $agendaConfig;
 
