@@ -1,0 +1,16 @@
+{{ form_start(form) }}
+    {% form_theme form 'form/form_error.html.twig' %}
+    <div class="form-group {% if form.valorConsulta.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.valorConsulta) }}
+        {{ form_widget(form.valorConsulta,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.valorConsulta) }}
+    </div>
+
+    <div class="form-group {% if form.duracaoConsulta.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.duracaoConsulta) }}
+        {{ form_widget(form.duracaoConsulta,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.duracaoConsulta) }}
+    </div>
+
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

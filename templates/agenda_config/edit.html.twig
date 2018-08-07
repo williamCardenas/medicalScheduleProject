@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'titulo.agenda.editar'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-head-line">{{ 'titulo.agenda_config.editar'|trans }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {{ include('agenda_config/_form.html.twig', {'button_label': 'Update'}) }}
+                <a class="btn btn-default" href="{{ path('agenda_index',{'medicoId': medicoId}) }}">
+                    {{'botao.voltar'|trans}}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

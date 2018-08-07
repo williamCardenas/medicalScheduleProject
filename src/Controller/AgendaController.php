@@ -36,8 +36,13 @@ class AgendaController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $agendaConfig = new AgendaConfig();
+            $agendaConfig->setAgenda($agenda);
+            
+            $agenda->setAgendaConfig($agendaConfig);
+
             $em = $this->getDoctrine()->getManager();
-            $em->persist($agenda);
+            $em->persist($agenda, $agendaConfig);
             $em->flush();
 
             $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');

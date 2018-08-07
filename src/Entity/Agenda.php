@@ -59,7 +59,6 @@ class Agenda
 
     /**
      * @ORM\OneToOne(targetEntity="AgendaConfig", inversedBy="agenda")
-     * @ORM\JoinColumn(name="agenda_id", referencedColumnName="id")
      */
     private $agendaConfig;
 

@@ -45,6 +45,10 @@
                                                 <a class="btn btn-default" href="{{ path('agenda_edit', {'id': agenda.id, 'medicoId': medicoId}) }}">
                                                     {{'botao.editar'|trans}}
                                                 </a>
+
+                                                <a class="btn btn-default" href="{{ path('agenda_config_edit', {'agendaId': agenda.id, 'medicoId': medicoId}) }}">
+                                                    {{'botao.opcoes'|trans}}
+                                                </a>
                                             </td>
                                         </tr>
                                     {% else %}

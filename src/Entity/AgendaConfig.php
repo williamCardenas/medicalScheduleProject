@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AgendaConfig
 {
+    const CLASS_NAME = "Configuração";
+    
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -18,11 +20,12 @@ class AgendaConfig
 
     /**
      * @ORM\OneToOne(targetEntity="Agenda", mappedBy="agendaConfig")
+     * @ORM\JoinColumn(name="agenda_id", referencedColumnName="id")
      */
     private $agenda;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $valorConsulta;
 
