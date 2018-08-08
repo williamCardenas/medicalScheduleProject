@@ -97,10 +97,9 @@ class Cliente
 
     public function addClinica(Clinica $clinica)
     {
-        if (!$this->clinica->contains($clinica)) {
+        if ($this->clinica->contains($clinica)) {
            return $this;
         }
-
         $this->clinica[] = $clinica;
         $clinica->setCliente($this);
     }
@@ -115,7 +114,7 @@ class Cliente
 
     public function addmedico(Medico $medico)
     {
-        if (!$this->medico->contains($medico)) {
+        if ($this->medico->contains($medico)) {
            return $this;
         }
 
