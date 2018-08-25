@@ -91,12 +91,15 @@ class MedicoController extends Controller
     /**
      * @Route("/{id}", name="medico_delete", methods="DELETE")
      */
-    public function delete(Request $request, Medico $medico): Response
+    public function delete(Request $request, SessionInterface $session, Medico $medico): Response
     {
         if ($this->isCsrfTokenValid('delete'.$medico->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($medico);
             $em->flush();
+
+            $session->getFlashBag()->add('success', 'mensagem.sucesso.deletar');
+            $session->getFlashBag()->add('_entidade', Medico::CLASS_NAME );
         }
 
         return $this->redirectToRoute('medico_index');
