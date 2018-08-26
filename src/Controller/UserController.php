@@ -108,12 +108,15 @@ class UserController extends Controller
     /**
      * @Route("/{id}", name="user_delete", methods="DELETE")
      */
-    public function delete(Request $request, User $user): Response
+    public function delete(Request $request,  SessionInterface $session, User $user): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
+
+            $session->getFlashBag()->add('success', 'mensagem.sucesso.deletar');
+            $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
         }
 
         return $this->redirectToRoute('user_index');
