@@ -5,26 +5,30 @@ namespace App\Form;
 use App\Entity\Agenda;
 use App\Entity\Clinica;
 use App\Entity\Medico;
+use App\Repository\ClinicaRepository;
+use App\Repository\MedicoRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class AgendaType extends AbstractType
 {
-    private $user;
+    private $entityManager;
 
-    public function __construct(Security $security){
-        $this->user = $security->getUser();
-        // parent::__construct();
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $user = $options['user'];
+
         $builder
             ->add('dataInicioAtendimento', DateType::class , array(
                 'widget' => 'single_text',
@@ -41,24 +45,23 @@ class AgendaType extends AbstractType
             ->add('fimDeSemana')
             ->add('clinica', EntityType::class, array(
                 'class' => Clinica::class,
-                'query_builder' => function (EntityRepository $er) {
+                // 'query_builder' => function (EntityRepository $er) use ($user){
                     
-                    return $er->createQueryBuilder('C')
-                        ->andWhere('C.cliente in(:clienteId)')
-                        ->setParameter('clienteId',$this->user->getCliente())
-                        ->orderBy('C.nome', 'ASC');
+                //     return $er->createQueryBuilder('C')
+                //         ->andWhere('C.cliente in(:clienteId)')
+                //         ->setParameter('clienteId',$user->getCliente())
+                //         ->orderBy('C.nome', 'ASC');
+                // },
+                'query_builder' => function (ClinicaRepository $clinicaRepository) use ($user){
+                    return $clinicaRepository->search(['cliente'=>$user->getCliente()]);
                 },
                 'choice_label' => 'nome',
                 'placeholder' => 'Selecione',
             ))
             ->add('medico', EntityType::class, array(
                 'class' => Medico::class,
-                'query_builder' => function (EntityRepository $er) {
-                    
-                    return $er->createQueryBuilder('M')
-                        ->andWhere('M.cliente in(:clienteId)')
-                        ->setParameter('clienteId',$this->user->getCliente())
-                        ->orderBy('M.nome', 'ASC');
+                'query_builder' => function (MedicoRepository $medicoRepository) use ($user){
+                    return $medicoRepository->search(['cliente'=>$user->getCliente()]);
                 },
                 'choice_label' => 'nome',
                 'placeholder' => 'Selecione',
@@ -70,6 +73,7 @@ class AgendaType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Agenda::class,
+            'user' => null
         ]);
     }
 }

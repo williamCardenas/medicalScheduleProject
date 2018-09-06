@@ -47,4 +47,17 @@ class ClinicaRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function search($params)
+    {
+        $qb = $this->createQueryBuilder('C');
+
+        if(array_key_exists('cliente',$params) and  !empty($params['cliente'])){
+            $qb->andWhere('C.cliente in(:clienteId)')
+            ->setParameter('clienteId',$params['cliente']->getId());
+        }
+        $qb->orderBy('C.nome', 'ASC');
+
+        return $qb;
+    }
 }

@@ -47,4 +47,17 @@ class MedicoRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function search($params)
+    {
+        $qb = $this->createQueryBuilder('M');
+
+        if(array_key_exists('cliente',$params) and  !empty($params['cliente'])){
+            $qb->andWhere('M.cliente in(:clienteId)')
+            ->setParameter('clienteId',$params['cliente']->getId());
+        }
+        $qb->orderBy('M.nome', 'ASC');
+
+        return $qb;
+    }
 }

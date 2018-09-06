@@ -33,7 +33,7 @@ class AgendaController extends Controller
     public function new(Request $request, SessionInterface $session, $medicoId): Response
     {
         $agenda = new Agenda();
-        $form = $this->createForm(AgendaType::class, $agenda);
+        $form = $this->createForm(AgendaType::class, $agenda,array('user' => $this->getUser()));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
