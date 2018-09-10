@@ -19,35 +19,6 @@ class ClinicaRepository extends ServiceEntityRepository
         parent::__construct($registry, Clinica::class);
     }
 
-//    /**
-//     * @return Clinica[] Returns an array of Clinica objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Clinica
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
     public function search($params)
     {
         $qb = $this->createQueryBuilder('C');

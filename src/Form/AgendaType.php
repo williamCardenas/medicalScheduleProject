@@ -45,23 +45,22 @@ class AgendaType extends AbstractType
             ->add('fimDeSemana')
             ->add('clinica', EntityType::class, array(
                 'class' => Clinica::class,
-                // 'query_builder' => function (EntityRepository $er) use ($user){
-                    
-                //     return $er->createQueryBuilder('C')
-                //         ->andWhere('C.cliente in(:clienteId)')
-                //         ->setParameter('clienteId',$user->getCliente())
-                //         ->orderBy('C.nome', 'ASC');
-                // },
-                'query_builder' => function (ClinicaRepository $clinicaRepository) use ($user){
-                    return $clinicaRepository->search(['cliente'=>$user->getCliente()]);
+                'query_builder' => function (EntityRepository $er) use ($user) {
+                    return $er->createQueryBuilder('C')
+                        ->andWhere('C.cliente in(:clienteId)')
+                        ->setParameter('clienteId',$user->getCliente()->getId())
+                        ->orderBy('C.nome', 'ASC');
                 },
                 'choice_label' => 'nome',
                 'placeholder' => 'Selecione',
-            ))
+                ))
             ->add('medico', EntityType::class, array(
                 'class' => Medico::class,
-                'query_builder' => function (MedicoRepository $medicoRepository) use ($user){
-                    return $medicoRepository->search(['cliente'=>$user->getCliente()]);
+                'query_builder' => function (EntityRepository $er) use ($user) {
+                    return $er->createQueryBuilder('C')
+                        ->andWhere('C.cliente in(:clienteId)')
+                        ->setParameter('clienteId',$user->getCliente()->getId())
+                        ->orderBy('C.nome', 'ASC');
                 },
                 'choice_label' => 'nome',
                 'placeholder' => 'Selecione',
