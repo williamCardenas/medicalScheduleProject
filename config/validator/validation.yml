@@ -11,3 +11,18 @@ App\Entity\User:
         fields: [login]
         errorPath: login
         message: 'validacao.login.unico'
+
+App\Entity\Agenda:
+  proprietis:
+    dataInicioAtendimento:
+      - NotBlank: ~
+    dataFimAtendimento:
+      - NotBlank: ~
+    horarioInicioAtendimento:
+      - NotBlank: ~
+    horarioFimAtendimento:
+      - NotBlank: ~
+    clinica:
+      - NotBlank: ~
+    medico:
+      - NotBlank: ~
