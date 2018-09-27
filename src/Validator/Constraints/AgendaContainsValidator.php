@@ -32,6 +32,11 @@ class AgendaContainsValidator extends ConstraintValidator
             ){
                 return false;
             }
+            if($agenda->getDataInicioAtendimento() < $currentAgenda->getDataInicioAtendimento()
+                && $agenda->getDataFimAtendimento() > $currentAgenda->getDataFimAtendimento()
+            ){
+                return false;
+            }
         }
         return true;
     }
