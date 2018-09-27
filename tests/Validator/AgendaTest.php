@@ -257,4 +257,38 @@ class AgendaTest extends TestCase
         return $agendas;
     }
 
+    /**
+     * @depends testInserirAgendaComDataFimMaiorMasDataInicioComConflitoEHorariosValidos
+     */
+    public function testInserirAgendaComDatasSobrepostasEComHorarioInicialIgualAUmhorarioFinalJaCadasrtado(Array $agendas)
+    {
+        $agenda = new Agenda();
+        $agenda->setDataInicioAtendimento(new DateTime('2018-10-10'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-11-15'));
+        $agenda->setHorarioInicioAtendimento(new DateTime('18:00'));
+        $agenda->setHorarioFimAtendimento(new DateTime('20:00'));
+
+        $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
+
+        $this->assertFalse($resultado);
+        return $agendas;
+    }
+
+    /**
+     * @depends testInserirAgendaComDatasSobrepostasEComHorarioInicialIgualAUmhorarioFinalJaCadasrtado
+     */
+    public function testInserirAgendaComDatasSobrepostasEComHorarioFinalIgualAUmhorarioInicialJaCadasrtado(Array $agendas)
+    {
+        $agenda = new Agenda();
+        $agenda->setDataInicioAtendimento(new DateTime('2018-10-10'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-11-15'));
+        $agenda->setHorarioInicioAtendimento(new DateTime('06:00'));
+        $agenda->setHorarioFimAtendimento(new DateTime('09:00'));
+
+        $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
+
+        $this->assertFalse($resultado);
+        return $agendas;
+    }
+
 }
