@@ -22,18 +22,35 @@ class AgendaContainsValidator extends ConstraintValidator
      */
     public function validaDataDisponivel(Agenda $agenda, Array $agendasExistentes){
         foreach( $agendasExistentes as $currentAgenda){
-            if($agenda->getDataInicioAtendimento() >= $currentAgenda->getDataInicioAtendimento()
-                && $agenda->getDataInicioAtendimento() <= $currentAgenda->getDataFimAtendimento()
+
+            if($agenda->getDataInicioAtendimento() > $currentAgenda->getDataInicioAtendimento()
+                && $agenda->getDataInicioAtendimento() < $currentAgenda->getDataFimAtendimento()
+            ){
+                return false;
+            }elseif(!empty($agenda->getHorarioFimAtendimento()) && !empty($currentAgenda->getHorarioInicioAtendimento())
+                && $agenda->getHorarioInicioAtendimento() >= $currentAgenda->getHorarioInicioAtendimento()
+                && $agenda->getHorarioInicioAtendimento() <= $currentAgenda->getHorarioFimAtendimento()
             ){
                 return false;
             }
-            if($agenda->getDataFimAtendimento() >= $currentAgenda->getDataInicioAtendimento()
-                && $agenda->getDataFimAtendimento() <= $currentAgenda->getDataFimAtendimento()
+
+            if($agenda->getDataFimAtendimento() > $currentAgenda->getDataInicioAtendimento()
+                && $agenda->getDataFimAtendimento() < $currentAgenda->getDataFimAtendimento()
+            ){
+                return false;
+            }elseif(!empty($agenda->getHorarioFimAtendimento()) && !empty($currentAgenda->getHorarioInicioAtendimento())
+                && $agenda->getHorarioFimAtendimento() >= $currentAgenda->getHorarioInicioAtendimento()
+                && $agenda->getHorarioFimAtendimento() <= $currentAgenda->getHorarioFimAtendimento()
             ){
                 return false;
             }
+
             if($agenda->getDataInicioAtendimento() < $currentAgenda->getDataInicioAtendimento()
                 && $agenda->getDataFimAtendimento() > $currentAgenda->getDataFimAtendimento()
+            ){
+                return false;
+            }elseif($agenda->getHorarioInicioAtendimento() < $currentAgenda->getHorarioInicioAtendimento()
+                && $agenda->getHorarioFimAtendimento() > $currentAgenda->getHorarioFimAtendimento()
             ){
                 return false;
             }

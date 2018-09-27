@@ -21,11 +21,11 @@ class AgendaTest extends TestCase
         $this->agendaValidator = new AgendaContainsValidator();
     }
 
-    public function testPrimeiraAgenda()
+    public function testPrimeiraAgendaComDatas()
     {
         $agenda = new Agenda();
         $agenda->setDataInicioAtendimento(new DateTime('2018-10-01'));
-        $agenda->setdataFimAtendimento(new DateTime('2018-10-30'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-10-30'));
         
         $resultado = $this->agendaValidator->validaDataDisponivel($agenda,[]);
 
@@ -33,26 +33,15 @@ class AgendaTest extends TestCase
 
         return [$agenda];        
     }
-
-    /**
-     * @depends testPrimeiraAgenda
-     */
-    public function testInserirMesmaAgenda(Array $agendas)
-    {
-        $resultado = $this->agendaValidator->validaDataDisponivel($agendas[0],$agendas);
-
-        $this->assertFalse($resultado);
-        return $agendas;
-    }
     
      /**
-     * @depends testInserirMesmaAgenda
+     * @depends testPrimeiraAgendaComDatas
      */
     public function testNovaAgendaComDataInicialMaiorEDataFinalIgual(Array $agendas)
     {
         $agenda = new Agenda();
         $agenda->setDataInicioAtendimento(new DateTime('2018-10-10'));
-        $agenda->setdataFimAtendimento(new DateTime('2018-10-30'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-10-30'));
 
         $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
 
@@ -98,7 +87,7 @@ class AgendaTest extends TestCase
     {
         $agenda = new Agenda();
         $agenda->setDataInicioAtendimento(new DateTime('2018-09-10'));
-        $agenda->setdataFimAtendimento(new DateTime('2018-10-15'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-10-15'));
 
         $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
 
@@ -114,7 +103,7 @@ class AgendaTest extends TestCase
     {
         $agenda = new Agenda();
         $agenda->setDataInicioAtendimento(new DateTime('2018-09-01'));
-        $agenda->setdataFimAtendimento(new DateTime('2018-12-15'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-12-15'));
 
         $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
 
@@ -130,7 +119,7 @@ class AgendaTest extends TestCase
     {
         $agenda = new Agenda();
         $agenda->setDataInicioAtendimento(new DateTime('2018-10-05'));
-        $agenda->setdataFimAtendimento(new DateTime('2018-10-10'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-10-10'));
 
         $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
 
@@ -138,4 +127,134 @@ class AgendaTest extends TestCase
         array_push($agendas,$agenda);
         return $agendas;
     }
+
+    public function testPrimeiraAgendaComHorario()
+    {
+        $agenda = new Agenda();
+        $agenda->setDataInicioAtendimento(new DateTime('2018-10-01'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-10-30'));
+        $agenda->setHorarioInicioAtendimento(new DateTime('09:00'));
+        $agenda->setHorarioFimAtendimento(new DateTime('12:00'));
+        
+        $resultado = $this->agendaValidator->validaDataDisponivel($agenda,[]);
+
+        $this->assertTrue($resultado);
+
+        return [$agenda];        
+    }
+
+    /**
+     * @depends testPrimeiraAgendaComHorario
+     */
+    public function testInserirAgendaComAsMesmasDatasEHoras(Array $agendas)
+    {
+        $resultado = $this->agendaValidator->validaDataDisponivel($agendas[0],$agendas);
+
+        $this->assertFalse($resultado);
+        return $agendas;
+    }
+
+    /**
+     * @depends testInserirAgendaComAsMesmasDatasEHoras
+     */
+    public function testInserirAgendaComAsMesmasDatasMasHorasDiferentes(Array $agendas)
+    {
+        $agenda = new Agenda();
+        $agenda->setDataInicioAtendimento(new DateTime('2018-10-01'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-10-30'));
+        $agenda->setHorarioInicioAtendimento(new DateTime('14:00'));
+        $agenda->setHorarioFimAtendimento(new DateTime('18:00'));
+        
+        $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
+
+        $this->assertTrue($resultado);
+        array_push($agendas,$agenda);
+        return $agendas;
+    }
+
+    /**
+     * @depends testInserirAgendaComAsMesmasDatasMasHorasDiferentes
+     */
+    public function testInserirAgendaComAsMesmasDatasEHoraInicialComConflito(Array $agendas)
+    {
+        $agenda = new Agenda();
+        $agenda->setDataInicioAtendimento(new DateTime('2018-10-01'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-10-30'));
+        $agenda->setHorarioInicioAtendimento(new DateTime('17:00'));
+        $agenda->setHorarioFimAtendimento(new DateTime('22:00'));
+        
+        $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
+
+        $this->assertFalse($resultado);
+        return $agendas;
+    }
+
+    /**
+     * @depends testInserirAgendaComAsMesmasDatasEHoraInicialComConflito
+     */
+    public function testInserirAgendaComAsMesmasDatasEHoraFinalComConflito(Array $agendas)
+    {
+        $agenda = new Agenda();
+        $agenda->setDataInicioAtendimento(new DateTime('2018-10-01'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-10-30'));
+        $agenda->setHorarioInicioAtendimento(new DateTime('08:00'));
+        $agenda->setHorarioFimAtendimento(new DateTime('11:00'));
+        
+        $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
+
+        $this->assertFalse($resultado);
+        return $agendas;
+    }
+
+    /**
+     * @depends testInserirAgendaComAsMesmasDatasEHoraInicialComConflito
+     */
+    public function testInserirAgendaComAsMesmasDatasEHoraInicialMenorEHoraFinalMaior(Array $agendas)
+    {
+        $agenda = new Agenda();
+        $agenda->setDataInicioAtendimento(new DateTime('2018-10-01'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-10-30'));
+        $agenda->setHorarioInicioAtendimento(new DateTime('08:00'));
+        $agenda->setHorarioFimAtendimento(new DateTime('23:00'));
+
+        $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
+
+        $this->assertFalse($resultado);
+        return $agendas;
+    }
+
+    /**
+     * @depends testInserirAgendaComAsMesmasDatasEHoraInicialMenorEHoraFinalMaior
+     */
+    public function testInserirAgendaComDataInicioMenorMasDataFimComConflitoEHorariosValidos(Array $agendas)
+    {
+        $agenda = new Agenda();
+        $agenda->setDataInicioAtendimento(new DateTime('2018-09-01'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-10-15'));
+        $agenda->setHorarioInicioAtendimento(new DateTime('06:00'));
+        $agenda->setHorarioFimAtendimento(new DateTime('08:00'));
+
+        $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
+
+        $this->assertFalse($resultado);
+        return $agendas;
+    }
+
+    /**
+     * @depends testInserirAgendaComAsMesmasDatasEHoraInicialMenorEHoraFinalMaior
+     */
+    public function testInserirAgendaComDataFimMaiorMasDataInicioComConflitoEHorariosValidos(Array $agendas)
+    {
+        $agenda = new Agenda();
+        $agenda->setDataInicioAtendimento(new DateTime('2018-10-10'));
+        $agenda->setDataFimAtendimento(new DateTime('2018-11-15'));
+        $agenda->setHorarioInicioAtendimento(new DateTime('06:00'));
+        $agenda->setHorarioFimAtendimento(new DateTime('08:00'));
+
+        $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
+
+        $this->assertFalse($resultado);
+        return $agendas;
+    }
+
 }
