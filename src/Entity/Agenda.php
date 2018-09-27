@@ -129,7 +129,7 @@ class Agenda
         return $this->dataFimAtendimento;
     }
 
-    public function setdataFimAtendimento(?\DateTimeInterface $dataFimAtendimento): self
+    public function setDataFimAtendimento(?\DateTimeInterface $dataFimAtendimento): self
     {
         $this->dataFimAtendimento = $dataFimAtendimento;
 
