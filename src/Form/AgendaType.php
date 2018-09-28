@@ -7,7 +7,6 @@ use App\Entity\Clinica;
 use App\Entity\Medico;
 use App\Repository\ClinicaRepository;
 use App\Repository\MedicoRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -18,13 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class AgendaType extends AbstractType
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $user = $options['user'];

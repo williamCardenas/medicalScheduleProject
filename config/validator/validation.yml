@@ -26,3 +26,5 @@ App\Entity\Agenda:
       - NotBlank: ~
     medico:
       - NotBlank: ~
+  constraints:
+    - App\Validator\Constraints\AgendaConstraints: ~

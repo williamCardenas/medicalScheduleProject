@@ -1,5 +1,12 @@
 {{ form_start(form) }}
     {% form_theme form 'form/form_error.html.twig' %}
+
+    {% if form.vars.errors|length  %}
+        <div class="alert alert-danger" role="alert">
+        {{ form_errors(form) }}
+        </div>
+    {% endif %}
+    
     <div class="form-group {% if form.dataInicioAtendimento.vars.errors|length  %}has-error{% endif %}">
         {{ form_label(form.dataInicioAtendimento) }}
         {{ form_widget(form.dataInicioAtendimento,{'attr':{'class':'form-control'}}) }}

@@ -26,6 +26,6 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    App\Form\AgendaType:
+    App\Validator\Constraints\AgendaContainsValidator:
         arguments: ['@doctrine.orm.entity_manager']
-        tags: [form.type]
+        tags: [validator.constraints]

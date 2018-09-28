@@ -29,6 +29,10 @@ mensagem:
     novo: _entidade cadastrado(a) com sucesso.
     editado: _entidade alterado com sucesso.
     deletar: _entidade deletado com sucesso.
+  erro:
+    validacao:
+      agenda:
+        jaExiste: Já existe uma agenda cadastrada para a data e o horario informado
   
 status:
   sucesso: Sucesso
