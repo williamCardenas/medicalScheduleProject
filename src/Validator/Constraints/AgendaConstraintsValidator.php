@@ -66,7 +66,14 @@ class AgendaConstraintsValidator extends ConstraintValidator
             && $agenda->getHorarioFimAtendimento() <= $currentAgenda->getHorarioFimAtendimento()
             ){
                 return false;
+            }elseif(!empty($agenda->getHorarioFimAtendimento()) && !empty($currentAgenda->getHorarioInicioAtendimento())
+            && $agenda->getHorarioFimAtendimento() >= $currentAgenda->getHorarioInicioAtendimento()
+            && $agenda->getHorarioFimAtendimento() <= $currentAgenda->getHorarioFimAtendimento()
+            ){
+                return false;
             }
+
+
             if($agenda->getDataInicioAtendimento() < $currentAgenda->getDataInicioAtendimento()
             && $agenda->getDataFimAtendimento() > $currentAgenda->getDataFimAtendimento()
             ){
