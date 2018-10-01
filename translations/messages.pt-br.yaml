@@ -12,6 +12,7 @@ botao:
 entidade:
   cliente: cliente
   clinica: clinica
+  agenda: agenda
 
 info:
   email: Email
@@ -24,7 +25,7 @@ menu:
   medicos: Medicos
 
 mensagem:
-  deletar: Deseja excluir este _entidade ?
+  deletar: Deseja excluir este _entidade?
   sucesso: 
     novo: _entidade cadastrado(a) com sucesso.
     editado: _entidade alterado com sucesso.

@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Agenda;
+use App\Entity\Medico;
 use App\Entity\AgendaConfig;
 use App\Form\AgendaType;
 use App\Repository\AgendaRepository;
+use App\Repository\MedicoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +32,7 @@ class AgendaController extends Controller
     /**
      * @Route("/new", name="agenda_new", methods="GET|POST")
      */
-    public function new(Request $request, SessionInterface $session, $medicoId): Response
+    public function new(Request $request, SessionInterface $session, $medicoId, MedicoRepository $medicoRepository): Response
     {
         $agenda = new Agenda();
         $form = $this->createForm(AgendaType::class, $agenda,array('user' => $this->getUser()));
@@ -52,6 +54,10 @@ class AgendaController extends Controller
             return $this->redirectToRoute('agenda_index', ['medicoId' => $medicoId]);
         }
 
+        $medico = $medicoRepository->find($medicoId);
+        $form->get('medico')->setData($medico);
+
+
         return $this->render('agenda/new.html.twig', [
             'agenda' => $agenda,
             'form' => $form->createView(),
@@ -72,7 +78,7 @@ class AgendaController extends Controller
      */
     public function edit(Request $request, Agenda $agenda, SessionInterface $session, $medicoId): Response
     {
-        $form = $this->createForm(AgendaType::class, $agenda);
+        $form = $this->createForm(AgendaType::class, $agenda, array('user' => $this->getUser()));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -83,6 +89,8 @@ class AgendaController extends Controller
 
             return $this->redirectToRoute('agenda_index', ['medicoId' => $medicoId]);
         }
+
+        $form->get('medico')->setData($medicoId);
 
         return $this->render('agenda/edit.html.twig', [
             'agenda' => $agenda,

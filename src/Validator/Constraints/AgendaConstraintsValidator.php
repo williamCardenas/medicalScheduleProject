@@ -21,10 +21,10 @@ class AgendaConstraintsValidator extends ConstraintValidator
     public function validate($agenda, Constraint $constraint)
     {
         $agendaRepository = $this->entityManager->getRepository(Agenda::class);
-
         $agendas = $agendaRepository->findByParams([
-            'medico' => $agenda->getMedico()->getId(),
-            'clinica' => $agenda->getClinica()->getId()
+            'medico' => ['value' => $agenda->getMedico()->getId(), 'operator' => '='],
+            'clinica' => ['value' => $agenda->getClinica()->getId(), 'operator' => '='],
+            'id' => ['value' => $agenda->getId(), 'operator' => '!=']
         ]);
         $retornoValidacao = $this->validaDataDisponivel($agenda,$agendas);
 
