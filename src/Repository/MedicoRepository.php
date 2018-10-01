@@ -19,32 +19,16 @@ class MedicoRepository extends ServiceEntityRepository
         parent::__construct($registry, Medico::class);
     }
 
-//    /**
-//     * @return Medico[] Returns an array of Medico objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function search($params)
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('M');
 
-    /*
-    public function findOneBySomeField($value): ?Medico
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if(array_key_exists('cliente',$params) and  !empty($params['cliente'])){
+            $qb->andWhere('M.cliente in(:clienteId)')
+            ->setParameter('clienteId',$params['cliente']->getId());
+        }
+        $qb->orderBy('M.nome', 'ASC');
+
+        return $qb;
     }
-    */
 }

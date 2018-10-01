@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Collection;
  */
 class Agenda
 {
+    const CLASS_NAME = 'Agenda';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -26,14 +27,30 @@ class Agenda
     private $medico;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Clinica", inversedBy="agenda")
+     * @ORM\JoinColumn(name="clinica_id", referencedColumnName="id")
+     */
+    private $clinica;
+
+    /**
+     * @ORM\Column(type="time", nullable=true)
      */
     private $horarioInicioAtendimento;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="time", nullable=true)
      */
     private $horarioFimAtendimento;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $dataInicioAtendimento;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $dataFimAtendimento;
 
     /**
      * @ORM\Column(type="boolean")
@@ -41,8 +58,7 @@ class Agenda
     private $fimDeSemana;
 
     /**
-     * @ORM\OneToOne(targetEntity="AgendaConfig", inversedBy="agenda")
-     * @ORM\JoinColumn(name="agenda_id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="AgendaConfig", inversedBy="agenda", cascade={"persist"})
      */
     private $agendaConfig;
 
@@ -74,24 +90,48 @@ class Agenda
 
     public function getHorarioInicioAtendimento(): ?\DateTimeInterface
     {
-        return $this->HorarioInicioAtendimento;
+        return $this->horarioInicioAtendimento;
     }
 
-    public function setHorarioInicioAtendimento(?\DateTimeInterface $HorarioInicioAtendimento): self
+    public function setHorarioInicioAtendimento(?\DateTimeInterface $horarioInicioAtendimento): self
     {
-        $this->HorarioInicioAtendimento = $HorarioInicioAtendimento;
+        $this->horarioInicioAtendimento = $horarioInicioAtendimento;
 
         return $this;
     }
 
     public function getHorarioFimAtendimento(): ?\DateTimeInterface
     {
-        return $this->HorarioFimAtendimento;
+        return $this->horarioFimAtendimento;
     }
 
-    public function setHorarioFimAtendimento(?\DateTimeInterface $HorarioFimAtendimento): self
+    public function setHorarioFimAtendimento(?\DateTimeInterface $horarioFimAtendimento): self
     {
-        $this->HorarioFimAtendimento = $HorarioFimAtendimento;
+        $this->horarioFimAtendimento = $horarioFimAtendimento;
+
+        return $this;
+    }
+
+    public function getdataInicioAtendimento(): ?\DateTimeInterface
+    {
+        return $this->dataInicioAtendimento;
+    }
+
+    public function setdataInicioAtendimento(?\DateTimeInterface $dataInicioAtendimento): self
+    {
+        $this->dataInicioAtendimento = $dataInicioAtendimento;
+
+        return $this;
+    }
+
+    public function getdataFimAtendimento(): ?\DateTimeInterface
+    {
+        return $this->dataFimAtendimento;
+    }
+
+    public function setDataFimAtendimento(?\DateTimeInterface $dataFimAtendimento): self
+    {
+        $this->dataFimAtendimento = $dataFimAtendimento;
 
         return $this;
     }
@@ -131,6 +171,19 @@ class Agenda
             $this->agendaData[] = $agendaData;
             $agendaData->setAgenda($this);
         }
+        return $this;
+    }
+
+
+    public function getClinica(): ?Clinica
+    {
+        return $this->clinica;
+    }
+
+    public function setClinica(Clinica $clinica): self
+    {
+        $this->clinica = $clinica;
+
         return $this;
     }
 }
