@@ -74,6 +74,7 @@ class AgendaTest extends TestCase
         $agenda = new Agenda();
         $agenda->setDataInicioAtendimento(new \DateTime('2018-11-01'));
         $agenda->setDataFimAtendimento(new \DateTime('2018-11-05'));
+        $agenda->setId(1);
 
         $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
 
@@ -94,7 +95,6 @@ class AgendaTest extends TestCase
         $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
 
         $this->assertFalse($resultado);
-        array_push($agendas,$agenda);
         return $agendas;
     }
 
@@ -110,7 +110,6 @@ class AgendaTest extends TestCase
         $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
 
         $this->assertFalse($resultado);
-        array_push($agendas,$agenda);
         return $agendas;
     }
 
@@ -126,7 +125,6 @@ class AgendaTest extends TestCase
         $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
 
         $this->assertFalse($resultado);
-        array_push($agendas,$agenda);
         return $agendas;
     }
 
@@ -166,6 +164,7 @@ class AgendaTest extends TestCase
         $agenda->setDataFimAtendimento(new \DateTime('2018-10-30'));
         $agenda->setHorarioInicioAtendimento(new \DateTime('14:00'));
         $agenda->setHorarioFimAtendimento(new \DateTime('15:00'));
+        $agenda->setId(1);
         
         $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
 
@@ -184,6 +183,7 @@ class AgendaTest extends TestCase
         $agenda->setDataFimAtendimento(new \DateTime('2018-10-20'));
         $agenda->setHorarioInicioAtendimento(new \DateTime('15:01'));
         $agenda->setHorarioFimAtendimento(new \DateTime('18:00'));
+        $agenda->setId(2);
         
         $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
         
@@ -253,6 +253,7 @@ class AgendaTest extends TestCase
         $agenda->setDataFimAtendimento(new \DateTime('2018-10-15'));
         $agenda->setHorarioInicioAtendimento(new \DateTime('06:00'));
         $agenda->setHorarioFimAtendimento(new \DateTime('07:00'));
+        $agenda->setId(3);
 
         $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
 
@@ -271,6 +272,7 @@ class AgendaTest extends TestCase
         $agenda->setDataFimAtendimento(new \DateTime('2018-11-15'));
         $agenda->setHorarioInicioAtendimento(new \DateTime('07:01'));
         $agenda->setHorarioFimAtendimento(new \DateTime('08:00'));
+        $agenda->setId(4);
 
         $resultado = $this->agendaValidator->validaDataDisponivel($agenda,$agendas);
 

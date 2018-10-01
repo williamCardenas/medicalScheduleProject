@@ -71,6 +71,12 @@ class Agenda
         $this->agendaData = new ArrayCollection();
     }
 
+    public function setId(Int $id){
+        $this->id = $id;
+        
+        return $this;
+    }
+
     public function getId()
     {
         return $this->id;
