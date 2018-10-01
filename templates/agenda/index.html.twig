@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'titulo.agenda.index'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-head-line">{{ 'titulo.agenda.index'|trans }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                            <a class="btn btn-default" href="{{ path('medico_index') }}">
+                                {{'botao.voltar'|trans}}
+                            </a>
+                        <a href="{{ path('agenda_new',{'medicoId': medicoId}) }}" class="btn btn-primary">{{ 'botao.novo'|trans }}</a>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>DataInicioAtendimento</th>
+                                        <th>DataFimAtendimento</th>
+                                        <th>HorarioInicioAtendimento</th>
+                                        <th>HorarioFimAtendimento</th>
+                                        <th>FimDeSemana</th>
+                                        <th>actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for agenda in agendas %}
+                                        <tr>
+                                            <td>{{ agenda.id }}</td>
+                                            <td>{{ agenda.dataInicioAtendimento ? agenda.dataInicioAtendimento|date('d/m/Y') : '' }}</td>
+                                            <td>{{ agenda.dataFimAtendimento ? agenda.dataFimAtendimento|date('d/m/Y') : '' }}</td>
+                                            <td>{{ agenda.horarioInicioAtendimento ? agenda.horarioInicioAtendimento|date('H:i:s') : '' }}</td>
+                                            <td>{{ agenda.horarioFimAtendimento ? agenda.horarioFimAtendimento|date('H:i:s') : '' }}</td>
+                                            <td>{{ agenda.fimDeSemana ? 'opcao.sim'|trans : 'opcao.nao'|trans }}</td>
+                                            <td>
+                                                <a class="btn btn-default" href="{{ path('agenda_show', {'id': agenda.id, 'medicoId': medicoId}) }}">
+                                                    {{'botao.exibir'|trans}}
+                                                </a>
+                                                <a class="btn btn-default" href="{{ path('agenda_edit', {'id': agenda.id, 'medicoId': medicoId}) }}">
+                                                    {{'botao.editar'|trans}}
+                                                </a>
+
+                                                <a class="btn btn-default" href="{{ path('agenda_config_edit', {'agendaId': agenda.id, 'medicoId': medicoId}) }}">
+                                                    {{'botao.opcoes'|trans}}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="5">no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

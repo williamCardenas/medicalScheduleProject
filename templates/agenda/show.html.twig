@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'titulo.agenda.show'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-head-line">{{ 'titulo.agenda.show'|trans }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>Id</th>
+                                        <td>{{ agenda.id }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>DataInicioAtendimento</th>
+                                        <td>{{ agenda.dataInicioAtendimento ? agenda.dataInicioAtendimento|date('d/m/Y') : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>DataFimAtendimento</th>
+                                        <td>{{ agenda.dataFimAtendimento ? agenda.horarioFimAtendimento|date('d/m/Y') : '' }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>HorarioInicioAtendimento</th>
+                                        <td>{{ agenda.horarioInicioAtendimento ? agenda.horarioInicioAtendimento|date('H:i:s') : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>HorarioFimAtendimento</th>
+                                        <td>{{ agenda.horarioFimAtendimento ? agenda.horarioFimAtendimento|date('H:i:s') : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>FimDeSemana</th>
+                                        <td>{{ agenda.fimDeSemana ? 'opcao.sim'|trans : 'opcao.nao'|trans }}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a class="btn btn-default" href="{{ path('agenda_index', {'medicoId': medicoId}) }}">
+            {{'botao.voltar'|trans}}
+        </a>
+
+        <a class="btn btn-default" href="{{ path('agenda_edit', {'id': agenda.id, 'medicoId': medicoId}) }}">
+            {{'botao.editar'|trans}}
+        </a>
+
+        {{ include('agenda/_delete_form.html.twig') }}
+    {% endblock %}

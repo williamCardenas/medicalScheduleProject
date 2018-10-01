@@ -19,52 +19,38 @@ class ClienteTest extends TestCase
    {
    }
 
-   public function testNovoClientee() :Cliente
+   public function testNovoCliente() :Cliente
    {
-       $clientee = new Cliente();
-       $this->assertInstanceOf("App\Entity\Cliente",$clientee);
-       return $clientee;
+       $cliente = new Cliente();
+       $this->assertInstanceOf("App\Entity\Cliente",$cliente);
+       return $cliente;
    }
 
    /**
-    * @depends testNovoClientee
+    * @depends testNovoCliente
     */
-   public function testAddClinica($clientee) :Cliente 
+   public function testAddClinica($cliente) :Cliente 
    {
-       $this->assertInstanceOf("Doctrine\Common\Collections\Collection",$clientee->getClinic());
-       $this->assertCount(0,$clientee->getClinic());
+       $this->assertInstanceOf("Doctrine\Common\Collections\Collection",$cliente->getClinica());
+       $this->assertCount(0,$cliente->getClinica());
 
         $clinica = new Clinica();
-        $cliente->addClinic($clinica);
-        $this->assertcount(1,$clientee->getClinic());
-        return $clientee;
+        $cliente->addClinica($clinica);
+        $this->assertcount(1,$cliente->getClinica());
+        return $cliente;
    }
-/*
-    public function testUnicName(): void
+
+   /**
+    * @depends testAddClinica
+    */
+    public function testAddDuasClinicas($cliente) :Cliente 
     {
-        $pearson = \Faker\Factory::create();
-
-        $cliente = new Cliente();
-        $cliente->setName($pearson->name);
-
-        $employeeRepository = $this->createMock(ObjectRepository::class);
-
-        $employeeRepository->expects($this->any())
-            ->method('find')
-            ->willReturn($cliente);
-
-        $objectManager = $this->createMock(ObjectManager::class);
-
-        $objectManager->expects($this->any())
-            ->method('getRepository')
-            ->willReturn($employeeRepository);
-
-        $objectManager->persist($cliente);
-        $objectManager->flush();
-
-        $objectManager->persist($cliente);
-        $objectManager->flush();
-
+        $this->assertInstanceOf("Doctrine\Common\Collections\Collection",$cliente->getClinica());
+        $this->assertCount(1,$cliente->getClinica());
+ 
+         $clinica = new Clinica();
+         $cliente->addClinica($clinica);
+         $this->assertcount(2,$cliente->getClinica());
+         return $cliente;
     }
-*/
 }

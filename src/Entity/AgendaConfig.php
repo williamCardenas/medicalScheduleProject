@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AgendaConfig
 {
+    const CLASS_NAME = "Configuração";
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -17,14 +19,20 @@ class AgendaConfig
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Agenda", mappedBy="agendaConfig")
+     * @ORM\OneToOne(targetEntity="Agenda", mappedBy="agendaConfig", cascade={"persist"})
+     * @ORM\JoinColumn(name="agenda_id", referencedColumnName="id")
      */
     private $agenda;
 
     /**
+     * @ORM\Column(type="float")
+     */
+    private $valorConsulta = 10000;
+
+    /**
      * @ORM\Column(type="integer")
      */
-    private $valorConsulta;
+    private $duracaoConsulta = 30;
 
     public function getId()
     {
@@ -51,6 +59,18 @@ class AgendaConfig
     public function setValorConsulta(int $valorConsulta): self
     {
         $this->valorConsulta = $valorConsulta;
+
+        return $this;
+    }
+
+    public function getDuracaoConsulta(): ?int
+    {
+        return $this->duracaoConsulta;
+    }
+
+    public function setDuracaoConsulta(int $duracaoConsulta): self
+    {
+        $this->duracaoConsulta = $duracaoConsulta;
 
         return $this;
     }

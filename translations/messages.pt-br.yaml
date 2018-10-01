@@ -1,5 +1,7 @@
 botao:
+  agenda: Agendas
   adicionar: Adicionar
+  opcoes: Configurações
   editar: Editar
   deletar: Deletar
   exibir: Exibir
@@ -27,6 +29,10 @@ mensagem:
     novo: _entidade cadastrado(a) com sucesso.
     editado: _entidade alterado com sucesso.
     deletar: _entidade deletado com sucesso.
+  erro:
+    validacao:
+      agenda:
+        jaExiste: Já existe uma agenda cadastrada para a data e o horario informado
   
 status:
   sucesso: Sucesso
@@ -34,6 +40,13 @@ status:
   informacao: Atenção
 
 titulo:
+  agenda:
+    editar: Editar agenda
+    index: Lista de agendas
+    novo: Nova agenda
+    show: Detalhes da agenda
+  agenda_config:
+    editar: Editar Configurações da agenda
   cliente:
     editar: Editar cliente
     index: Lista de clientes
@@ -60,6 +73,10 @@ titulo:
     novo: Novo médico
     show: Detalhes do médico
   sistema: Tcc
+
+opcao:
+  sim: Sim
+  nao: Não
 
 validacao:
   email:

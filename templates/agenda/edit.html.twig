@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'titulo.clinica.editar'|trans }}{% endblock %}
+{% block title %}{{ 'titulo.agenda.editar'|trans }}{% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="page-head-line">{{ 'titulo.clinica.editar'|trans }}</h1>
+                <h1 class="page-head-line">{{ 'titulo.agenda.editar'|trans }}</h1>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                {{ include( 'clinica/_form.html.twig') }}
-                <a class="btn btn-default" href="{{ path('clinica_index') }}">
+                {{ include('agenda/_form.html.twig', {'button_label': 'Update'}) }}
+                <a class="btn btn-default" href="{{ path('agenda_index',{'medicoId': medicoId}) }}">
                     {{'botao.voltar'|trans}}
                 </a>
             </div>

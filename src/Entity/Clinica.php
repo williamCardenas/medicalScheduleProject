@@ -29,6 +29,11 @@ class Clinica
      */
     private $cliente;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Agenda", mappedBy="agenda")
+     */
+    private $agenda;
+
     public function getId()
     {
         return $this->id;

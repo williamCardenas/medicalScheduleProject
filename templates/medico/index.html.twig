@@ -40,6 +40,9 @@
                                                 <a class="btn btn-default" href="{{ path('medico_edit', {'id': medico.id}) }}">
                                                     {{'botao.editar'|trans}}
                                                 </a>
+                                                <a class="btn btn-default" href="{{ path('agenda_index', {'medicoId': medico.id}) }}">
+                                                    {{'botao.agenda'|trans}}
+                                                </a>
                                             </td>
                                         </tr>
                                     {% else %}

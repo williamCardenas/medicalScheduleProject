@@ -19,22 +19,31 @@ class AgendaRepository extends ServiceEntityRepository
         parent::__construct($registry, Agenda::class);
     }
 
-//    /**
-//     * @return Agenda[] Returns an array of Agenda objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Agenda[] Returns an array of Agenda objects
+     */
+    public function findByParams(Array $params)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
+        $qb = $this->createQueryBuilder('a');
+        
+        if(array_key_exists('medico',$params) && !empty($params['medico'])){
+            $qb->andWhere('a.medico = :medico')
+            ->setParameter('medico', $params['medico']);
+        }
+
+        if(array_key_exists('clinica',$params) && !empty($params['clinica'])){
+            $qb->andWhere('a.clinica = :clinica')
+            ->setParameter('clinica', $params['clinica']);
+        }
+
+        $qb->orderBy('a.id', 'ASC')
+            ->setMaxResults(50)
             ->getQuery()
             ->getResult()
         ;
+        
+        return $qb->getQuery()->getResult();
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Agenda
@@ -47,4 +56,5 @@ class AgendaRepository extends ServiceEntityRepository
         ;
     }
     */
+
 }
