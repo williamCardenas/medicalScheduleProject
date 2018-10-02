@@ -26,14 +26,19 @@ class AgendaRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('a');
         
+        if(array_key_exists('id',$params) && !empty($params['id'])){
+            $qb->andWhere('a.id '.$params['id']['operator'].' :id')
+            ->setParameter('id', $params['id']['value']);
+        }
+
         if(array_key_exists('medico',$params) && !empty($params['medico'])){
-            $qb->andWhere('a.medico = :medico')
-            ->setParameter('medico', $params['medico']);
+            $qb->andWhere('a.medico '.$params['medico']['operator'].' :medico')
+            ->setParameter('medico', $params['medico']['value']);
         }
 
         if(array_key_exists('clinica',$params) && !empty($params['clinica'])){
-            $qb->andWhere('a.clinica = :clinica')
-            ->setParameter('clinica', $params['clinica']);
+            $qb->andWhere('a.clinica '.$params['clinica']['operator'].' :clinica')
+            ->setParameter('clinica', $params['clinica']['value']);
         }
 
         $qb->orderBy('a.id', 'ASC')
