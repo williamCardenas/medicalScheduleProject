@@ -1,0 +1,21 @@
+{{ form_start(form) }}
+    {% form_theme form 'form/form_error.html.twig' %}
+    <div class="form-group {% if form.nome.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.nome) }}
+        {{ form_widget(form.nome,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.nome) }}
+    </div>
+
+    <div class="form-group {% if form.apelido.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.apelido) }}
+        {{ form_widget(form.apelido,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.apelido) }}
+    </div>
+
+    <div class="form-group {% if form.idade.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.idade) }}
+        {{ form_widget(form.idade,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.idade) }}
+    </div>
+    <button class="btn">{{ button_label|default('botao.adicionar'|trans) }}</button>
+{{ form_end(form) }}

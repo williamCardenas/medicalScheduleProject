@@ -104,13 +104,15 @@
                                     <li>
                                         <a href="{{ path('medico_index') }}">{{ "menu.medicos"|trans }}</a>
                                     </li>
-                                    {% endif %}
                                     <li>
-                                        <a href="login.html">Login Page</a>
+                                        <a href="{{ path('paciente_index') }}">{{ "menu.pacientes"|trans }}</a>
                                     </li>
+                                    {% endif %}
+                                    <!--
                                     <li>
                                         <a class="menu-top-active" href="blank.html">Blank Page</a>
                                     </li>
+                                    -->
                                     {% if constant('App\\Security\\Voter\\AdminVoter::ADMIN') in app.user.roles %}
                                         <li class="dropdown show">
                                             <a href="#" class="dropdown-toggle" id="adm-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -151,7 +153,7 @@
                             <div class="col-md-12">
                                 <div class="alert alert-success">
                                     <strong>{{ 'status.sucesso'|trans }}</strong>
-                                    {% set _entidade = ("entidade."~app.session.getFlashBag.get('_entidade')[indexMessages])|trans %}
+                                    {% set _entidade = (app.session.getFlashBag.get('_entidade')[indexMessages])|trans %}
                                     {{ message|trans({'_entidade': _entidade}) }}
                                 </div>
                             </div>

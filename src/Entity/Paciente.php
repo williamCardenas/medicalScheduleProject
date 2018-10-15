@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Paciente
 {
+    const CLASS_NAME = 'Paciente';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
