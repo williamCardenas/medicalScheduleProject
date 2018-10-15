@@ -19,6 +19,7 @@ info:
 
 menu:
   administracao: Administração do sistema
+  agendamento: Agendamento
   clientes: Clientes
   clinicas: Clinicas
   medicos: Medicos
@@ -49,6 +50,8 @@ titulo:
     show: Detalhes da agenda
   agenda_config:
     editar: Editar Configurações da agenda
+  agendamento:
+    index: Agenda
   cliente:
     editar: Editar cliente
     index: Lista de clientes

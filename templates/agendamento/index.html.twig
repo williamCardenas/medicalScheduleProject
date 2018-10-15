@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'titulo.agenda.index'|trans }}{% endblock %}
+
+
+{% block stylesheet %}
+    <link href="{{ asset('js/fullcalendar-3.9.0/fullcalendar.min.css' )}}" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-head-line">{{ 'titulo.agendamento.index'|trans }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                            <a class="btn btn-default" href="{{ path('default') }}">
+                                {{'botao.voltar'|trans}}
+                            </a>
+                    </div>
+                    <div class="panel-body">
+                        <div id="agendamento"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+    <script src="{{ asset('js/fullcalendar-3.9.0/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('js/custom/agendamento.js') }}"></script>
+{% endblock %}
