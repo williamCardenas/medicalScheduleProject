@@ -39,10 +39,16 @@ class Cliente
      */
     private $medico;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Paciente", mappedBy="cliente")
+     */
+    private $paciente;
+
     public function __construct()
     {
         $this->user = new ArrayCollection();
         $this->clinica = new ArrayCollection();
+        $this->paciente = new ArrayCollection();
     }
 
     public function getId()
@@ -104,7 +110,7 @@ class Cliente
         $clinica->setCliente($this);
     }
 
-     /**
+    /**
      * @return Collection|Medico[]
      */
     public function getMedico() :ArrayCollection
@@ -112,14 +118,39 @@ class Cliente
         return $this->medico;
     }
 
-    public function addmedico(Medico $medico)
+    /**
+     * @param $medico
+     * @return Void
+     */
+    public function addmedico(Medico $medico) :void
     {
-        if ($this->medico->contains($medico)) {
-           return $this;
+        if (!$this->medico->contains($medico)) {
+            $this->medico[] = $medico;
+            $medico->setCliente($this);
         }
 
-        $this->medico[] = $medico;
-        $medico->setCliente($this);
     }
+
+    /**
+     * @return Collection|Paciente[]
+     */
+    public function getPacientes() :ArrayCollection
+    {
+        return $this->paciente;
+    }
+
+    /**
+     * @param $paciente
+     * @return Void
+     */
+    public function addPaciente(Paciente $paciente) :void
+    {
+        if (!$this->paciente->contains($paciente)) {
+            $this->paciente[] = $paciente;
+            $paciente->setCliente($this);
+           
+        }
+    }
+
 
 }

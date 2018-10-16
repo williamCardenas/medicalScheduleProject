@@ -37,6 +37,13 @@ class Paciente
      */
     private $agendaData;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Cliente", inversedBy="paciente")
+     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
+     */
+    private $cliente;
+
+
     public function getId()
     {
         return $this->id;
@@ -74,6 +81,18 @@ class Paciente
     public function setIdade(int $idade): self
     {
         $this->idade = $idade;
+
+        return $this;
+    }
+
+    public function getCliente(): Cliente
+    {
+        return $this->cliente;
+    }
+
+    public function setCliente(Cliente $cliente): self
+    {
+        $this->cliente = $cliente;
 
         return $this;
     }

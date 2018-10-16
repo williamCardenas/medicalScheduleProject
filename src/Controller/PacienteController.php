@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/paciente")
@@ -19,21 +20,23 @@ class PacienteController extends AbstractController
     /**
      * @Route("/", name="paciente_index", methods="GET")
      */
-    public function index(PacienteRepository $pacienteRepository): Response
+    public function index(PacienteRepository $pacienteRepository, UserInterface $user): Response
     {
-        return $this->render('paciente/index.html.twig', ['pacientes' => $pacienteRepository->findAll()]);
+        $pacientes = $pacienteRepository->searchResult(['cliente'=>$user->getCliente()]);
+        return $this->render('paciente/index.html.twig', ['pacientes' => $pacientes]);
     }
 
     /**
      * @Route("/new", name="paciente_new", methods="GET|POST")
      */
-    public function new(Request $request, SessionInterface $session): Response
+    public function new(Request $request, SessionInterface $session, UserInterface $user): Response
     {
         $paciente = new Paciente();
         $form = $this->createForm(PacienteType::class, $paciente);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $paciente->setCliente($user->getCliente());
             $em = $this->getDoctrine()->getManager();
             $em->persist($paciente);
             $em->flush();

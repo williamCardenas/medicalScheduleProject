@@ -31,4 +31,10 @@ class MedicoRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    public function searchResult($params)
+    {
+        $qb = $this->search($params);
+        return $qb->getQuery()->getResult();
+    }
 }

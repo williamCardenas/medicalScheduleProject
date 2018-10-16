@@ -18,33 +18,22 @@ class PacienteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Paciente::class);
     }
-
-//    /**
-//     * @return Paciente[] Returns an array of Paciente objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function search($params)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('P');
 
-    /*
-    public function findOneBySomeField($value): ?Paciente
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if(array_key_exists('cliente',$params) and  !empty($params['cliente'])){
+            $qb->andWhere('P.cliente in(:clienteId)')
+            ->setParameter('clienteId',$params['cliente']->getId());
+        }
+        $qb->orderBy('P.nome', 'ASC');
+
+        return $qb;
     }
-    */
+
+    public function searchResult($params)
+    {
+        $qb = $this->search($params);
+        return $qb->getQuery()->getResult();
+    }
 }

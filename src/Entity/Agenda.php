@@ -67,6 +67,7 @@ class Agenda
      */
     private $agendaData;
 
+
     public function __construct(){
         $this->agendaData = new ArrayCollection();
     }
@@ -192,4 +193,5 @@ class Agenda
 
         return $this;
     }
+
 }

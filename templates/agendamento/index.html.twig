@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'titulo.agenda.index'|trans }}{% endblock %}
-
+{% block title %}{{ 'titulo.agenda.index'|trans }}
+{% endblock %}
 
 {% block stylesheet %}
     <link href="{{ asset('js/fullcalendar-3.9.0/fullcalendar.min.css' )}}" rel="stylesheet"/>
@@ -18,23 +18,48 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                            <a class="btn btn-default" href="{{ path('default') }}">
-                                {{'botao.voltar'|trans}}
-                            </a>
+                        <a class="btn btn-default" href="{{ path('default') }}">
+                            {{'botao.voltar'|trans}}
+                        </a>
                     </div>
                     <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div id="legenda">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Legendas
+                                        </div>
+                                        <div class="panel-body">
+                                            <ul class="list-group">
+                                                {% for medico in medicos %}
+                                                <li class="list-group-item">
+                                                    <span class="label" style="background-color: {{medico.cor|default('#5cb85c')}}">
+                                                        {{ medico.nome }}
+                                                    </span>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
                         <div id="agendamento"></div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
+</div>
+
+</div>
 
 {% endblock %}
 
 {% block javascript %}
-    <script src="{{ asset('js/moment.min.js') }}"></script>
-    <script src="{{ asset('js/fullcalendar-3.9.0/fullcalendar.min.js') }}"></script>
-    <script src="{{ asset('js/custom/agendamento.js') }}"></script>
+<script src="{{ asset('js/moment.min.js') }}"></script>
+<script src="{{ asset('js/fullcalendar-3.9.0/fullcalendar.min.js') }}"></script>
+<script src="{{ asset('js/custom/agendamento.js') }}"></script>
 {% endblock %}

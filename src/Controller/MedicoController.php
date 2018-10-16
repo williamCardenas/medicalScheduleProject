@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/medico")
@@ -19,9 +20,10 @@ class MedicoController extends Controller
     /**
      * @Route("/", name="medico_index", methods="GET")
      */
-    public function index(MedicoRepository $medicoRepository): Response
+    public function index(MedicoRepository $medicoRepository, UserInterface $user): Response
     {
-        return $this->render('medico/index.html.twig', ['medicos' => $medicoRepository->findAll()]);
+        $medicos = $medicoRepository->searchResult(['cliente' => $user->getCliente()]);
+        return $this->render('medico/index.html.twig', ['medicos' => $medicos]);
     }
 
     /**

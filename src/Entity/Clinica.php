@@ -30,7 +30,7 @@ class Clinica
     private $cliente;
 
     /**
-     * @ORM\OneToMany(targetEntity="Agenda", mappedBy="agenda")
+     * @ORM\OneToMany(targetEntity="Agenda", mappedBy="clinica")
      */
     private $agenda;
 
