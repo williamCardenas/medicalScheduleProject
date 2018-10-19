@@ -1,5 +1,15 @@
-function Evento(medico, cor){
+function MostraOcultaEventoNoCalendario(elemento){
+    var medicoId = $(elemento).attr('aria-label');
+    if($(elemento).is(':checked')){
+        $('#agendamento .medico-'+medicoId).css('visibility', 'visible')
+    }else{
+        $('#agendamento .medico-'+medicoId).css('visibility', 'hidden')
+    }
+}
+
+function Evento(id, medico, cor){
     this.title = medico,
+    this.id = id,
     this.backgroundColor = cor,
     this.allDay = true,
     this.start = false,
@@ -14,7 +24,9 @@ function Evento(medico, cor){
             if(diaInicial.format('ddd') != 'Sat' && diaInicial.format('ddd') != 'Sun'){
                 var evento = {
                     title: this.title,
+                    className: 'medico-'+this.id,
                     backgroundColor: this.backgroundColor,
+                    borderColor: this.backgroundColor,
                     allDay: true,
                     start: diaInicial.format('YYYY-MM-DD'),
                 }
@@ -39,7 +51,9 @@ function Evento(medico, cor){
             if(diaInicial.format('ddd') == 'Sat' || diaInicial.format('ddd') == 'Sun'){
                 var evento = {
                     title: this.title,
+                    className: 'medico-'+this.id,
                     backgroundColor: this.backgroundColor,
+                    borderColor: this.backgroundColor,
                     allDay: true,
                     start: diaInicial.format('YYYY-MM-DD'),
                 }
@@ -54,6 +68,11 @@ function Evento(medico, cor){
 };
 
 $('#agendamento').fullCalendar({
+    eventAfterAllRender: function(){
+        $('.statusMedico').each(function(index, value){
+            MostraOcultaEventoNoCalendario($(value))
+        })
+    },
     events: function (start, end, timezone, callback) {
         $.ajax({
             url: '/agendamento/agendas-medicas',
@@ -66,7 +85,7 @@ $('#agendamento').fullCalendar({
             success: function (doc) {
                 var events = [];
                 doc.forEach(function (medico) {
-                    var event = new Evento(medico.nome, medico.corAgenda);
+                    var event = new Evento(medico.id, medico.nome, medico.corAgenda);
 
                     medico.agenda.forEach(function(agenda){
                         var arrayData = [
@@ -84,9 +103,9 @@ $('#agendamento').fullCalendar({
                             0,0,0
                         ];
                         var dataFimAtendimento = moment(arrayData);
-                        
+
                         if(agenda.fimDeSemana){
-                            var eventWeekend = new Evento(medico.nome, medico.corAgenda);
+                            var eventWeekend = new Evento(medico.id, medico.nome, medico.corAgenda);
                             eventWeekend.start = dataInicioAtendimento;
                             eventWeekend.end = dataFimAtendimento;
                             eventWeekend.generateWeekendEvents(function(){
@@ -121,4 +140,8 @@ $('#agendamento').fullCalendar({
             }
         });
     }
+});
+
+$('.statusMedico').change(function(){
+    MostraOcultaEventoNoCalendario($(this))
 })

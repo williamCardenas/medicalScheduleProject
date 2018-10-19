@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block stylesheet %}
+    <link href="{{ asset('css/page/agendamento.css' )}}" rel="stylesheet"/>
     <link href="{{ asset('js/fullcalendar-3.9.0/fullcalendar.min.css' )}}" rel="stylesheet"/>
 {% endblock %}
 
@@ -22,7 +23,7 @@
                             {{'botao.voltar'|trans}}
                         </a>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body agendamento-body">
                         <div class="row">
                             <div class="col-md-3">
                                 <div id="legenda">
@@ -31,12 +32,17 @@
                                             Legendas
                                         </div>
                                         <div class="panel-body">
-                                            <ul class="list-group">
+                                            <ul class="list-group legendas" >
                                                 {% for medico in medicos %}
                                                 <li class="list-group-item">
-                                                    <span class="label" style="background-color: {{medico.corAgenda|default('#5cb85c')}}">
-                                                        {{ medico.nome }}
-                                                    </span>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <input type="checkbox" class="statusMedico" checked aria-label="{{ medico.id }}">
+                                                        </span>
+                                                        <span class="form-control" aria-label="{{ medico.id }}" style="background-color: {{medico.corAgenda|default('#5cb85c')}}">
+                                                            {{ medico.nome }}
+                                                        </span>
+                                                    </div>
                                                 </li>
                                                 {% endfor %}
                                             </ul>
