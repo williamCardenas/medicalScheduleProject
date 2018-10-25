@@ -8,6 +8,7 @@ use App\Entity\AgendaConfig;
 use App\Entity\Cliente;
 use App\Form\AgendaType;
 use App\Repository\AgendaRepository;
+use App\Repository\AgendaDataRepository;
 use App\Repository\MedicoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +44,28 @@ class AgendamentoController extends Controller
                 'dataFim'       => $request->get('end')
             ]);
             return new JsonResponse($medicos);
+        }catch(\Exception $e){
+            return new JsonResponse($e->getMessage(),500);
+        }
+    }
+
+    /**
+     * @Route("/horarios-agenda-medico", name="horarios_agenda_medico", methods="POST")
+     */
+    public function horarioDisponivelAgenda(Request $request, AgendaRepository $agendaRepository, AgendaDataRepository $agendaDataRepository, UserInterface  $user): JsonResponse
+    {
+        try{
+            $params = [
+                'cliente'   => $user->getCliente(),
+                'data'      => $request->get('data') ,
+                'medico'    => $request->get('medico')
+            ];
+
+            $horariosMarcados = $agendaDataRepository->findByParams($params)
+
+            $horarios = $agendaRepository->horariosDisponiveisArray($params);
+
+            return new JsonResponse($horarios);
         }catch(\Exception $e){
             return new JsonResponse($e->getMessage(),500);
         }

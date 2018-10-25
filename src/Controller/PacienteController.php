@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/paciente")
@@ -99,5 +100,19 @@ class PacienteController extends AbstractController
         }
 
         return $this->redirectToRoute('paciente_index');
+    }
+
+    /**
+     * @Route("/buscar", name="paciente_busca", methods="POST")
+     */
+    public function busca(Request $request, PacienteRepository $pacienteRepository, SessionInterface $session, UserInterface $user): Response
+    {
+        
+            $paciente = $pacienteRepository->searchArrayResult([
+                'cliente'       => $user->getCliente(),
+                'pesquisa'       => $request->get('q')
+            ]);
+            return new JsonResponse($paciente);
+        
     }
 }

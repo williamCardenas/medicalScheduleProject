@@ -52,6 +52,7 @@ titulo:
     editar: Editar Configurações da agenda
   agendamento:
     index: Agenda
+    modal: Novo agendamento
   cliente:
     editar: Editar cliente
     index: Lista de clientes

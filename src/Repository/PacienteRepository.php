@@ -26,6 +26,15 @@ class PacienteRepository extends ServiceEntityRepository
             $qb->andWhere('P.cliente in(:clienteId)')
             ->setParameter('clienteId',$params['cliente']->getId());
         }
+
+        if(array_key_exists('pesquisa',$params) and  !empty($params['pesquisa'])){
+            $orModule = $qb->expr()->like('P.nome',':pesquisa');
+        
+            $qb->setParameter('pesquisa','%'.$params['pesquisa'].'%');
+            
+            $qb->andWhere( $orModule);
+        }
+
         $qb->orderBy('P.nome', 'ASC');
 
         return $qb;
@@ -35,5 +44,12 @@ class PacienteRepository extends ServiceEntityRepository
     {
         $qb = $this->search($params);
         return $qb->getQuery()->getResult();
+    }
+
+    public function searchArrayResult($params = Array())
+    {
+        $qb = $this->search($params);
+        $qb->select('P','P.id','P.nome as text');
+        return $qb->getQuery()->getArrayResult();
     }
 }
