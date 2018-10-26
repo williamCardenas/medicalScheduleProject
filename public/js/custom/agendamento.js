@@ -94,9 +94,9 @@ var Evento = function (id, medico, cor) {
 
 var Agendamento = function () {
     this.medico;
-    this.paciente,
-        this.horariosdisponiveis;
-    this.horario;
+    this.paciente;
+    this.horariosdisponiveis;
+    this.data;
 
     this.montaSelectMedico = function () {
         var selectMedico = $('#modalAgendamento #medico');
@@ -114,11 +114,17 @@ var Agendamento = function () {
             dataType: 'json',
             method: 'POST',
             data: {
-                medicoId: medico,
-                data: data
+                medicoId: this.medico,
+                data: this.data
             }
         }).done(function (doc) {
-
+            $('#modalAgendamento select#horario').html('');
+            var option = new Option();
+            $('#modalAgendamento select#horario').append(option);
+            doc.forEach(function (horario) {
+                option = new Option(horario,horario);
+                $('#modalAgendamento select#horario').append(option);
+            });
         });
     };
 
@@ -134,6 +140,7 @@ var Agendamento = function () {
         }
     }
 }
+var agendamento = new Agendamento();
 
 $(document).ready(function () {
 
@@ -211,22 +218,26 @@ $(document).ready(function () {
             });
         }, //end events
         dayClick: function (date, jsEvent, view) {
-            var agendamento = new Agendamento();
+            agendamento.data = date.format('YYYY-MM-DD');
             agendamento.montaSelectMedico();
             agendamento.pacienteSelecionado();
             $('#modalAgendamento').modal('show');
         },
         eventClick: function (calEvent, jsEvent, view) {
-            var agendamento = new Agendamento();
+            agendamento.data = calEvent.start.format('YYYY-MM-DD');
             agendamento.montaSelectMedico();
             agendamento.pacienteSelecionado();
-
             $('#modalAgendamento').modal('show');
         }
     });
 
-    $('.statusMedico').change(function () {
+    $('#legenda .statusMedico').change(function () {
         MostraOcultaEventoNoCalendario($(this))
+    });
+
+    $('body').on('change','#modalAgendamento select#medico',function () {
+        agendamento.medico = $(this).val();
+        agendamento.buscaHorariosMedicoSelecionado();
     });
 
     inicializaBusca('#paciente .busca');

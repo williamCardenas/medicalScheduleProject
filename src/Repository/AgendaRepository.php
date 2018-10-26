@@ -27,20 +27,20 @@ class AgendaRepository extends ServiceEntityRepository
      */
     public function findByParams(Array $params)
     {
-        $qb = $this->createQueryBuilder('a');
+        $qb = $this->createQueryBuilder('A');
         
         if(array_key_exists('id',$params) && !empty($params['id'])){
-            $qb->andWhere('a.id '.$params['id']['operator'].' :id')
+            $qb->andWhere('A.id '.$params['id']['operator'].' :id')
             ->setParameter('id', $params['id']['value']);
         }
 
         if(array_key_exists('medico',$params) && !empty($params['medico'])){
-            $qb->andWhere('a.medico '.$params['medico']['operator'].' :medico')
+            $qb->andWhere('A.medico '.$params['medico']['operator'].' :medico')
             ->setParameter('medico', $params['medico']['value']);
         }
 
         if(array_key_exists('clinica',$params) && !empty($params['clinica'])){
-            $qb->andWhere('a.clinica '.$params['clinica']['operator'].' :clinica')
+            $qb->andWhere('A.clinica '.$params['clinica']['operator'].' :clinica')
             ->setParameter('clinica', $params['clinica']['value']);
         }
 
@@ -53,10 +53,8 @@ class AgendaRepository extends ServiceEntityRepository
             $qb->andWhere( $orModule);
         }
 
-        $qb->orderBy('a.id', 'ASC')
+        $qb->orderBy('A.id', 'ASC')
             ->setMaxResults(50)
-            ->getQuery()
-            ->getResult()
         ;
         
         return $qb->getQuery()->getResult();
@@ -68,7 +66,7 @@ class AgendaRepository extends ServiceEntityRepository
      * 
      * @return Array[] Returns an array with hours
      */
-    public function horariosDisponiveisArray($param,$horariosMarcados = array()){
+    public function horariosDisponiveisArray($params,$horariosMarcados = array()){
         if(!array_key_exists('data',$params) && !empty($params['data'])){
             throw new \Exception('paramter data not found');
         }
@@ -76,30 +74,36 @@ class AgendaRepository extends ServiceEntityRepository
         if(!array_key_exists('medico',$params) && !empty($params['medico'])){
             throw new \Exception('paramter medico not found');
         }
-]
-        $agendas = $this->findByParams($param);
+
+        $agendas = $this->findByParams($params);
         $horarios = [];
 
         foreach($agendas as $agenda){
             $config = $agenda->getAgendaConfig();
 
             $horario = $agenda->getHorarioInicioAtendimento();
-            $intervalo = new DateInterval('PT'.$config->getDuracaoConsulta().'M')
+            $intervalo = new DateInterval('PT'.$config->getDuracaoConsulta().'M');
 
             for($horario; $horario <= $agenda->getHorarioFimAtendimento(); $horario->add($intervalo)){
-                foreach($horariosMarcados as $horarioMarcado){
-                    $horarioConsulta = $horarioMarcado->getHorarioConsulta();
-                    if($horarioConsulta->format('H:i:s') != $horario->format('H:i:s') && !array_search($horario->format('H:i:s'))){
-                        array_push($horarios,$horario->format('H:i:s'))
+                if(count($horariosMarcados)>0){
+                    foreach($horariosMarcados as $horarioMarcado){
+                        $horarioConsulta = $horarioMarcado->getHorarioConsulta();
+                        if($horarioConsulta->format('H:i:s') != $horario->format('H:i:s') && !array_search($horario->format('H:i:s'), $horarios)){
+                            array_push($horarios,$horario->format('H:i:s'));
+                        }
+                        if($horarioConsulta > $horario){
+                            break;
+                        }
                     }
-                    if($horarioConsulta > $horario){
-                        break;
+                }else{
+                    if(array_search($horario->format('H:i:s'), $horarios) === false){
+                        array_push($horarios,$horario->format('H:i:s'));
                     }
                 }
             }
         }
-
-        return $horario;
+        sort($horarios);
+        return $horarios;
 
     }
 

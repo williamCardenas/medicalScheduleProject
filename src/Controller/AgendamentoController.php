@@ -56,14 +56,15 @@ class AgendamentoController extends Controller
     {
         try{
             $params = [
-                'cliente'   => $user->getCliente(),
-                'data'      => $request->get('data') ,
-                'medico'    => $request->get('medico')
+                'cliente'       => $user->getCliente(),
+                'data'          => $request->get('data') ,
+                'dataConsulta'  => $request->get('data') ,
+                'medico'        => $request->get('medico')
             ];
 
-            $horariosMarcados = $agendaDataRepository->findByParams($params)
+            $horariosMarcados = $agendaDataRepository->findByParams($params);
 
-            $horarios = $agendaRepository->horariosDisponiveisArray($params);
+            $horarios = $agendaRepository->horariosDisponiveisArray($params, $horariosMarcados);
 
             return new JsonResponse($horarios);
         }catch(\Exception $e){

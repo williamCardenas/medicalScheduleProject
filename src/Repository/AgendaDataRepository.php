@@ -19,32 +19,34 @@ class AgendaDataRepository extends ServiceEntityRepository
         parent::__construct($registry, AgendaData::class);
     }
 
-//    /**
-//     * @return AgendaData[] Returns an array of AgendaData objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Agenda[] Returns an array of Agenda objects
+     */
+    public function findByParams(Array $params)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('AD');
+        
+        if(array_key_exists('id',$params) && !empty($params['id'])){
+            $qb->andWhere('AD.id '.$params['id']['operator'].' :id')
+            ->setParameter('id', $params['id']['value']);
+        }
 
-    /*
-    public function findOneBySomeField($value): ?AgendaData
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if(array_key_exists('medico',$params) && !empty($params['medico'])){
+            $qb->andWhere('AD.medico '.$params['medico']['operator'].' :medico')
+            ->setParameter('medico', $params['medico']['value']);
+        }
+
+        if(array_key_exists('dataConsulta',$params) and  !empty($params['dataConsulta'])){
+            $orModule = $qb->expr()->orx();
+
+            $orModule->add('AD.dataConsulta = :dataConsulta');
+            $qb->setParameter('dataConsulta',$params['dataConsulta']);
+
+            $qb->andWhere( $orModule);
+        }
+
+        $qb->orderBy('AD.dataConsulta, AD.id', 'ASC');
+        
+        return $qb->getQuery()->getResult();
     }
-    */
 }
