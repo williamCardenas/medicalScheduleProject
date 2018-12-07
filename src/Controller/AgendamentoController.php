@@ -10,6 +10,7 @@ use App\Form\AgendaType;
 use App\Repository\AgendaRepository;
 use App\Repository\AgendaDataRepository;
 use App\Repository\MedicoRepository;
+use App\Service\AgendaService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,8 +64,10 @@ class AgendamentoController extends Controller
             ];
 
             $horariosMarcados = $agendaDataRepository->findByParams($params);
+            $agendas = $agendaRepository->findByParams($params);
 
-            $horarios = $agendaRepository->horariosDisponiveisArray($params, $horariosMarcados);
+            $agendaService = new AgendaService();
+            $horarios = $agendaService->horariosDisponiveisArray($agendas, $horariosMarcados);
 
             return new JsonResponse($horarios);
         }catch(\Exception $e){
