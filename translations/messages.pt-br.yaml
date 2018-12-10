@@ -1,13 +1,15 @@
 botao:
   agenda: Agendas
+  agendar: Agendar
   adicionar: Adicionar
-  opcoes: Configurações
-  editar: Editar
+  cancelar: Cancelar
   deletar: Deletar
+  editar: Editar
   exibir: Exibir
   novo: Novo
-  voltar: Voltar
+  opcoes: Configurações
   usuarios: usuários
+  voltar: Voltar
 
 entidade:
   agenda: agenda
@@ -53,6 +55,7 @@ titulo:
   agendamento:
     index: Agenda
     modal: Novo agendamento
+
   cliente:
     editar: Editar cliente
     index: Lista de clientes
