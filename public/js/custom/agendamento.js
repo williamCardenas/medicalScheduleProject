@@ -32,6 +32,37 @@ function inicializaBusca(className) {
     });
 }
 
+function salvarAgendamento(){
+    $('#realForm [name="agendamento[paciente]"]').val(agendamento.paciente);
+    $('#realForm [name="agendamento[medico]"]').val(agendamento.medico);
+
+    var dataArray = agendamento.data.split('-');
+    $('#realForm [name="agendamento[dataConsulta][date][year]"]').val(parseInt(dataArray[0]));
+    $('#realForm [name="agendamento[dataConsulta][date][month]"]').val(parseInt(dataArray[1]));
+    $('#realForm [name="agendamento[dataConsulta][date][day]"]').val(parseInt(dataArray[2]));
+    
+    var horaArray = agendamento.horario.split(':');
+    $('#realForm [name="agendamento[dataConsulta][time][hour]"]').val(parseInt(horaArray[0]));
+    $('#realForm [name="agendamento[dataConsulta][time][minute]"]').val(parseInt(horaArray[1]));
+    
+    $.ajax({
+        url: '/agendamento/new',
+        dataType: 'json',
+        method: 'POST',
+        data: $("#realForm form").serialize()
+    }).done(function (doc) {
+        console.log(doc);
+        
+        // $('#modalAgendamento select#horario').html('');
+        // var option = new Option();
+        // $('#modalAgendamento select#horario').append(option);
+        // doc.forEach(function (horario) {
+        //     option = new Option(horario,horario);
+        //     $('#modalAgendamento select#horario').append(option);
+        // });
+    });
+}
+
 var Evento = function (id, medico, cor) {
     this.title = medico,
         this.id = id,
@@ -97,7 +128,7 @@ var Evento = function (id, medico, cor) {
 var Agendamento = function () {
     this.medico;
     this.paciente;
-    this.horariosdisponiveis;
+    this.horario;
     this.data;
 
     this.montaSelectMedico = function (medicoSelecionado = null) {
@@ -263,8 +294,12 @@ $(document).ready(function () {
         agendamento.buscaHorariosMedicoSelecionado();
     });
 
+    $('body').on('change','#modalAgendamento select#horario',function () {
+        agendamento.horario = $(this).val();
+    });
+
     $('body').on('click','[action="agendar"]',function(){
-        
+        salvarAgendamento();
     });
 
     inicializaBusca('#paciente .busca');

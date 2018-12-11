@@ -31,11 +31,6 @@ class AgendaDataRepository extends ServiceEntityRepository
             ->setParameter('id', $params['id']['value']);
         }
 
-        if(array_key_exists('medico',$params) && !empty($params['medico'])){
-            $qb->andWhere('AD.medico '.$params['medico']['operator'].' :medico')
-            ->setParameter('medico', $params['medico']['value']);
-        }
-
         if(array_key_exists('dataConsulta',$params) and  !empty($params['dataConsulta'])){
             $orModule = $qb->expr()->orx();
 

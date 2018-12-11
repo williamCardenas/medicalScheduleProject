@@ -2,15 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Agenda;
-use App\Entity\Medico;
-use App\Entity\AgendaConfig;
-use App\Entity\Cliente;
-use App\Form\AgendaType;
+use App\Entity\AgendaData;
 use App\Repository\AgendaRepository;
 use App\Repository\AgendaDataRepository;
 use App\Repository\MedicoRepository;
 use App\Service\AgendaService;
+use App\Form\AgendamentoType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+
+use DateTime;
 
 /**
  * @Route("/agendamento")
@@ -29,8 +28,14 @@ class AgendamentoController extends Controller
      */
     public function index(MedicoRepository $medicoRepository, UserInterface  $user): Response
     {
+        $agendaData = new AgendaData();
+        $form = $this->createForm(AgendamentoType::class, $agendaData,['user'=>$user]);
+
         $medicos = $medicoRepository->searchResult(['cliente' => $user->getCliente()]);
-        return $this->render('agendamento/index.html.twig', ['medicos' => $medicos]);
+        return $this->render('agendamento/index.html.twig', [
+            'medicos' => $medicos, 
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -60,7 +65,7 @@ class AgendamentoController extends Controller
                 'cliente'       => $user->getCliente(),
                 'data'          => $request->get('data') ,
                 'dataConsulta'  => $request->get('data') ,
-                'medico'        => $request->get('medico')
+                'medico' => ['operator'=>'=', 'value'=> $request->get('medico')],
             ];
 
             $horariosMarcados = $agendaDataRepository->findByParams($params);
@@ -75,4 +80,44 @@ class AgendamentoController extends Controller
         }
     }
 
+    /**
+     * @Route("/new", name="agendamento_new", methods="POST")
+     */
+    public function new(Request $request, AgendaRepository $agendaRepository, UserInterface  $user): JsonResponse
+    {
+        try{
+            
+            $agendaData = new AgendaData();
+            $form = $this->createForm(AgendamentoType::class, $agendaData, ['user'=>$user]);
+            $form->handleRequest($request);
+            
+            $params = [
+                'data' => $agendaData->getDataConsulta()->format('Y-m-d'),
+                'hora' => $agendaData->getDataConsulta()->format('H:i:s'),
+                'medico' => ['operator'=>'=', 'value'=> $form->get('medico')->getData()],
+            ];
+            $agendas = $agendaRepository->findByParams($params);
+
+            if(count($agendas) > 1){
+                throw new \Exception('horario para mais de uma agenda');
+            }
+
+            $agendaData->setAgenda($agendas[0]);
+            $agendaData->setDataAtualizacao(new DateTime());
+            $agendaData->setUsuarioAtualizacaoId($user);
+
+            if ($form->isValid()) {
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($agendaData);
+                $em->flush();
+
+                return new JsonResponse(array('message' => 'Success'), 200);
+            }else {
+                return new JsonResponse(array('message' => 'Invalid'), 200);
+            }
+        }catch(\Exception $e){
+            return new JsonResponse($e->getMessage(),500);
+        }
+    }
 }

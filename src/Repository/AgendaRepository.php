@@ -50,9 +50,16 @@ class AgendaRepository extends ServiceEntityRepository
             $orModule->add(':data >= A.dataInicioAtendimento AND :data <= A.dataFimAtendimento ');
             $qb->setParameter('data',$params['data']);
 
+            if(array_key_exists('hora',$params) and  !empty($params['hora'])){
+                $orModule->add(':hora >= A.horarioInicioAtendimento AND :hora <= A.horarioFimAtendimento ');
+                $qb->setParameter('hora',$params['hora']);
+            }
+    
+
             $qb->andWhere( $orModule);
         }
 
+       
         $qb->orderBy('A.id', 'ASC')
             ->setMaxResults(50)
         ;
