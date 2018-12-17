@@ -65,12 +65,12 @@ class AgendamentoController extends Controller
                 'cliente'       => $user->getCliente(),
                 'data'          => $request->get('data') ,
                 'dataConsulta'  => $request->get('data') ,
-                'medico' => ['operator'=>'=', 'value'=> $request->get('medico')],
+                'medico' => ['operator'=>'=', 'value'=> $request->get('medicoId')],
             ];
 
             $horariosMarcados = $agendaDataRepository->findByParams($params);
             $agendas = $agendaRepository->findByParams($params);
-
+            
             $agendaService = new AgendaService();
             $horarios = $agendaService->horariosDisponiveisArray($agendas, $horariosMarcados);
 

@@ -45,7 +45,7 @@ class AgendaRepository extends ServiceEntityRepository
         }
 
         if(array_key_exists('data',$params) and  !empty($params['data'])){
-            $orModule = $qb->expr()->orx();
+            $orModule = $qb->expr()->andX();
 
             $orModule->add(':data >= A.dataInicioAtendimento AND :data <= A.dataFimAtendimento ');
             $qb->setParameter('data',$params['data']);

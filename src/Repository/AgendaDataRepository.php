@@ -32,12 +32,10 @@ class AgendaDataRepository extends ServiceEntityRepository
         }
 
         if(array_key_exists('dataConsulta',$params) and  !empty($params['dataConsulta'])){
-            $orModule = $qb->expr()->orx();
-
-            $orModule->add('AD.dataConsulta = :dataConsulta');
-            $qb->setParameter('dataConsulta',$params['dataConsulta']);
-
-            $qb->andWhere( $orModule);
+            $dataQuery = $qb->expr()->gte('AD.dataConsulta', "'{$params['dataConsulta']} 00:00:00'");
+            $qb->andWhere($dataQuery);
+            $dataQuery = $qb->expr()->lte('AD.dataConsulta', "'{$params['dataConsulta']} 23:59:59'");
+            $qb->andWhere($dataQuery);
         }
 
         $qb->orderBy('AD.dataConsulta, AD.id', 'ASC');
