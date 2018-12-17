@@ -35,6 +35,7 @@ mensagem:
     editado: _entidade alterado com sucesso.
     deletar: _entidade deletado com sucesso.
   erro:
+    padrao: "algo deu errado e não foi possível completar a ação por favor tente mais tarde"
     validacao:
       agenda:
         jaExiste: Já existe uma agenda cadastrada para a data e o horario informado

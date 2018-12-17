@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Translation\TranslatorInterface;
 
 use DateTime;
 
@@ -83,7 +84,7 @@ class AgendamentoController extends Controller
     /**
      * @Route("/new", name="agendamento_new", methods="POST")
      */
-    public function new(Request $request, AgendaRepository $agendaRepository, UserInterface  $user): JsonResponse
+    public function new(Request $request, AgendaRepository $agendaRepository, UserInterface  $user, TranslatorInterface $translator): JsonResponse
     {
         try{
             
@@ -112,12 +113,24 @@ class AgendamentoController extends Controller
                 $em->persist($agendaData);
                 $em->flush();
 
-                return new JsonResponse(array('message' => 'Success'), 200);
+                $mensagem = $translator->trans('mensagem.sucesso.novo');
+                $mensagem = str_replace('_entidade','Agendamento',$mensagem);
+                return new JsonResponse(
+                    array(
+                        'status'=>true,
+                        'type'=>'success',
+                        'message' => $mensagem 
+                        )
+                    , 200);
             }else {
-                return new JsonResponse(array('message' => 'Invalid'), 200);
+                $mensagem = $translator->trans('mensagem.erro.padrao');
+                
+                return new JsonResponse(array('status'=>false,'type'=>'danger','message' => $mensagem), 200);
             }
         }catch(\Exception $e){
-            return new JsonResponse($e->getMessage(),500);
+            $mensagem = $translator->trans('mensagem.erro.padrao');
+                
+            return new JsonResponse(array('message' => $mensagem), 500);
         }
     }
 }

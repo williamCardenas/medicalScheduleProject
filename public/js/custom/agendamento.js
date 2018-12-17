@@ -32,6 +32,18 @@ function inicializaBusca(className) {
     });
 }
 
+function limparFormularioAgendamento(){
+    var option = $('<option>').text('')
+
+    var selectHorario = $('#modalAgendamento select#horario').html('');
+    option.clone().appendTo(selectHorario);
+    
+    var selectMedico = $('#modalAgendamento select#medico').val('');
+    option.clone().appendTo(selectMedico);
+
+    $('#modalAgendamento .buscaPaciente').html('').val('');
+}
+
 function salvarAgendamento(){
     $('#realForm [name="agendamento[paciente]"]').val(agendamento.paciente);
     $('#realForm [name="agendamento[medico]"]').val(agendamento.medico);
@@ -46,21 +58,37 @@ function salvarAgendamento(){
     $('#realForm [name="agendamento[dataConsulta][time][minute]"]').val(parseInt(horaArray[1]));
     
     $.ajax({
-        url: '/agendamento/new',
-        dataType: 'json',
-        method: 'POST',
-        data: $("#realForm form").serialize()
-    }).done(function (doc) {
-        console.log(doc);
+       url: '/agendamento/new',
+       dataType: 'json',
+       method: 'POST',
+       data: $("#realForm form").serialize()
+    }).done(function (res) {
+        if(res.status){
+            $('[role="mensagem-pagina"]').addClass('alert-'+res.type).html(res.message).removeClass('hidden');
+            $('html, body').animate({ scrollTop:  $('[role="mensagem-pagina"]').offset().top }, 'slow');
+            $('#modalAgendamento').modal('toggle');
+            limparFormularioAgendamento()
+        }else{
+            $('[role="mensagem-modal"]').addClass('alert-'+res.type).html(res.message).removeClass('hidden');
+        }
         
-        // $('#modalAgendamento select#horario').html('');
-        // var option = new Option();
-        // $('#modalAgendamento select#horario').append(option);
-        // doc.forEach(function (horario) {
-        //     option = new Option(horario,horario);
-        //     $('#modalAgendamento select#horario').append(option);
-        // });
+    }).fail(function (res) {
+        $('[role="mensagem-modal"]').addClass('alert-danger').html(res).removeClass('hidden');
     });
+            
+}
+
+function ocultarAlertas(role){
+    if(role != undefined && role != ''){
+        $('[role="mensagem-'+role+'"]').addClass('hidden');
+    }else{
+        $('[role].alert').addClass('hidden');
+    }
+    $('[role].alert')
+        .removeClass('alert-success')
+        .removeClass('alert-info')
+        .removeClass('alert-warning')
+        .removeClass('alert-danger');
 }
 
 var Evento = function (id, medico, cor) {
@@ -299,7 +327,17 @@ $(document).ready(function () {
     });
 
     $('body').on('click','[action="agendar"]',function(){
+        ocultarAlertas();
         salvarAgendamento();
+    });
+
+    $('body').on('click','[data-dismiss="modal"]',function(){
+        ocultarAlertas();
+        limparFormularioAgendamento();
+    });
+
+    $('body').on('click',function(){
+        ocultarAlertas();
     });
 
     inicializaBusca('#paciente .busca');
