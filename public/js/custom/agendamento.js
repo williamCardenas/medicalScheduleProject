@@ -174,6 +174,7 @@ var Agendamento = function () {
         var selectMedico = $('#modalAgendamento #medico');
         selectMedico.html('');
         var option = $('<option>');
+        this.medico = false;
         option.text('').clone().appendTo(selectMedico);
         for (index = 0; index < medicos.length; index++) {
             if(medicos[index].id == medicoSelecionado){
@@ -188,7 +189,9 @@ var Agendamento = function () {
     };
 
     this.buscaHorariosMedicoSelecionado = function () {
-        if(this.medico != undefined && this.paciente != undefined){
+        this.horario = '';
+        if($('.loader').is(':hidden') && this.medico != undefined && this.medico){
+            $('.loader').removeClass('hidden');
             $.ajax({
                 url: '/agendamento/horarios-agenda-medico',
                 dataType: 'json',
@@ -207,8 +210,13 @@ var Agendamento = function () {
                     option = new Option(horario,horario);
                     $('#modalAgendamento select#horario').append(option);
                 });
+                $('.loader').addClass('hidden');
+            })
+            .fail(function(){
+                $('.loader').addClass('hidden');
             });
         }
+    
     };
 
     this.pacienteSelecionado = function () {
@@ -235,6 +243,7 @@ $(document).ready(function () {
             })
         },
         events: function (start, end, timezone, callback) {
+            $('.loader').removeClass('hidden');
             $.ajax({
                 url: '/agendamento/agendas-medicas',
                 dataType: 'json',
@@ -298,7 +307,11 @@ $(document).ready(function () {
                         event = '';
                     });
                 });
+                $('.loader').addClass('hidden');
                 callback(events);
+            })
+            .fail(function(){
+                $('.loader').addClass('hidden');
             });
         }, //end events
         dayClick: function (date, jsEvent, view) {
