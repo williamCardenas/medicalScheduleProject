@@ -45,6 +45,12 @@ function limparFormularioAgendamento(){
 }
 
 function salvarAgendamento(){
+    if(agendamento.paciente == '' || agendamento.medico == '' || agendamento.data == '' || agendamento.horario == ''){
+        $('[role="mensagem-modal"]').addClass('alert-danger').html("por favor, preencha o formulário").removeClass('hidden');
+        $('.loader').addClass('hidden');
+        return false;
+    }
+
     $('#realForm [name="agendamento[paciente]"]').val(agendamento.paciente);
     $('#realForm [name="agendamento[medico]"]').val(agendamento.medico);
 
@@ -64,16 +70,21 @@ function salvarAgendamento(){
        data: $("#realForm form").serialize()
     }).done(function (res) {
         if(res.status){
-            $('[role="mensagem-pagina"]').addClass('alert-'+res.type).html(res.message).removeClass('hidden');
+            $('[role="mensagem-pagina"]').addClass('alert-'+res.type).html(res.message).removeClass('hidden').fadeOut(5000,function(){
+                $(this).addClass('hidden');
+                $(this).removeClass('alert-'+res.type);
+                $(this).css('display','block');
+            });
             $('html, body').animate({ scrollTop:  $('[role="mensagem-pagina"]').offset().top }, 'slow');
             $('#modalAgendamento').modal('toggle');
             limparFormularioAgendamento()
         }else{
             $('[role="mensagem-modal"]').addClass('alert-'+res.type).html(res.message).removeClass('hidden');
         }
-        
+        $('.loader').addClass('hidden');
     }).fail(function (res) {
         $('[role="mensagem-modal"]').addClass('alert-danger').html(res).removeClass('hidden');
+        $('.loader').addClass('hidden');
     });
             
 }
@@ -182,11 +193,13 @@ var Agendamento = function () {
                 url: '/agendamento/horarios-agenda-medico',
                 dataType: 'json',
                 method: 'POST',
+                global: false,
                 data: {
                     medicoId: this.medico,
                     data: this.data
                 }
-            }).done(function (doc) {
+            })
+            .done(function (doc) {
                 $('#modalAgendamento select#horario').html('');
                 var option = new Option();
                 $('#modalAgendamento select#horario').append(option);
@@ -289,18 +302,22 @@ $(document).ready(function () {
             });
         }, //end events
         dayClick: function (date, jsEvent, view) {
-            agendamento.data = date.format('YYYY-MM-DD');
-            agendamento.montaSelectMedico();
-            agendamento.pacienteSelecionado();
-            agendamento.buscaHorariosMedicoSelecionado();
-            $('#modalAgendamento').modal('show');
+            if($('.loader').is(":hidden")){
+                agendamento.data = date.format('YYYY-MM-DD');
+                agendamento.montaSelectMedico();
+                agendamento.pacienteSelecionado();
+                agendamento.buscaHorariosMedicoSelecionado();
+                $('#modalAgendamento').modal('show');
+            }
         },
         eventClick: function (calEvent, jsEvent, view) {
-            agendamento.data = calEvent.start.format('YYYY-MM-DD');
-            agendamento.montaSelectMedico(calEvent.id);
-            agendamento.pacienteSelecionado();
-            agendamento.buscaHorariosMedicoSelecionado();
-            $('#modalAgendamento').modal('show');
+            if($('.loader').is(":hidden")){
+                agendamento.data = calEvent.start.format('YYYY-MM-DD');
+                agendamento.montaSelectMedico(calEvent.id);
+                agendamento.pacienteSelecionado();
+                agendamento.buscaHorariosMedicoSelecionado();
+                $('#modalAgendamento').modal('show');
+            }
         }
     });
 
@@ -334,10 +351,6 @@ $(document).ready(function () {
     $('body').on('click','[data-dismiss="modal"]',function(){
         ocultarAlertas();
         limparFormularioAgendamento();
-    });
-
-    $('body').on('click',function(){
-        ocultarAlertas();
     });
 
     inicializaBusca('#paciente .busca');
