@@ -45,11 +45,11 @@ function limparFormularioAgendamento(){
 }
 
 function salvarAgendamento(){
-    if(agendamento.paciente == '' || agendamento.medico == '' || agendamento.data == '' || agendamento.horario == ''){
-        $('[role="mensagem-modal"]').addClass('alert-danger').html("por favor, preencha o formulário").removeClass('hidden');
-        $('.loader').addClass('hidden');
-        return false;
-    }
+    // if(agendamento.paciente == '' || agendamento.medico == '' || agendamento.data == '' || agendamento.horario == ''){
+    //     $('[role="mensagem-modal"]').addClass('alert-danger').html("por favor, preencha o formulário").removeClass('hidden');
+    //     $('.loader').addClass('hidden');
+    //     return false;
+    // }
 
     $('#realForm [name="agendamento[paciente]"]').val(agendamento.paciente);
     $('#realForm [name="agendamento[medico]"]').val(agendamento.medico);
@@ -79,7 +79,24 @@ function salvarAgendamento(){
             $('#modalAgendamento').modal('toggle');
             limparFormularioAgendamento()
         }else{
-            $('[role="mensagem-modal"]').addClass('alert-'+res.type).html(res.message).removeClass('hidden');
+            if(typeof res.message == 'string'){
+                $('[role="mensagem-modal"]').addClass('alert-'+res.type).html(res.message).removeClass('hidden');
+            }
+            if(typeof res == 'object'){
+                var errors = res.message;
+                var keys = Object.keys(errors);
+                var errorMessage = $('<p>').addClass('help-block');
+                $('.help-block').remove();
+                $('.has-error').removeClass('has-error');
+                for(key in keys){
+                    var errorInput = $('#modalAgendamento [name="'+keys[key]+'"]');
+                    if(errorInput.length > 0){
+                        errorInput.parent().addClass('has-error')
+                        errorMessage.clone().text(errors[keys[key]]).appendTo(errorInput.parent());
+                        console.log('#modalAgendamento [name="'+keys[key]+'"]',errorInput.parent());
+                    }
+                }
+            }
         }
         $('.loader').addClass('hidden');
     }).fail(function (res) {

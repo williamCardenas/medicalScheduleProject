@@ -1,5 +1,5 @@
 App\Entity\User:
-  proprietis:
+  properties:
     email:
       - NotBlank: ~
   constraints:
@@ -13,7 +13,7 @@ App\Entity\User:
         message: 'validacao.login.unico'
 
 App\Entity\Agenda:
-  proprietis:
+  properties:
     dataInicioAtendimento:
       - NotBlank: ~
     dataFimAtendimento:
@@ -28,3 +28,11 @@ App\Entity\Agenda:
       - NotBlank: ~
   constraints:
     - App\Validator\Constraints\AgendaConstraints: ~
+
+App\Entity\AgendaData:
+  properties:
+    paciente:
+      - NotBlank: {message: 'validacao.notBlank'}
+    dataConsulta:
+      - NotBlank: {message: 'validacao.notBlank'}
+      - DateTime: {message: 'validacao.dateTime'}

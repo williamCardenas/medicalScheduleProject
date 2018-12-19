@@ -98,3 +98,5 @@ validacao:
     unico: Email informado já esta sendo usado
   login:
     unico: Login informado já esta sendo usado
+  notBlank: Este campo não pode estar em branco
+  dateTime: Data ou hora invalido ou não informado

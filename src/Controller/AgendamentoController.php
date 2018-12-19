@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 use DateTime;
 
@@ -84,7 +85,7 @@ class AgendamentoController extends Controller
     /**
      * @Route("/new", name="agendamento_new", methods="POST")
      */
-    public function new(Request $request, AgendaRepository $agendaRepository, UserInterface  $user, TranslatorInterface $translator): JsonResponse
+    public function new(Request $request, AgendaRepository $agendaRepository, UserInterface  $user, TranslatorInterface $translator, ValidatorInterface $validation): JsonResponse
     {
         try{
             
@@ -92,23 +93,22 @@ class AgendamentoController extends Controller
             $form = $this->createForm(AgendamentoType::class, $agendaData, ['user'=>$user]);
             $form->handleRequest($request);
             
-            $params = [
-                'data' => $agendaData->getDataConsulta()->format('Y-m-d'),
-                'hora' => $agendaData->getDataConsulta()->format('H:i:s'),
-                'medico' => ['operator'=>'=', 'value'=> $form->get('medico')->getData()],
-            ];
-            $agendas = $agendaRepository->findByParams($params);
-
-            if(count($agendas) > 1){
-                throw new \Exception('horario para mais de uma agenda');
-            }
-
-            $agendaData->setAgenda($agendas[0]);
-            $agendaData->setDataAtualizacao(new DateTime());
-            $agendaData->setUsuarioAtualizacaoId($user);
-
             if ($form->isValid()) {
+                $params = [
+                    'data' => $agendaData->getDataConsulta()->format('Y-m-d'),
+                    'hora' => $agendaData->getDataConsulta()->format('H:i:s'),
+                    'medico' => ['operator'=>'=', 'value'=> $form->get('medico')->getData()],
+                ];
+                $agendas = $agendaRepository->findByParams($params);
 
+                if(count($agendas) > 1){
+                    throw new \Exception('horario para mais de uma agenda');
+                }
+
+                $agendaData->setAgenda($agendas[0]);
+                $agendaData->setDataAtualizacao(new DateTime());
+                $agendaData->setUsuarioAtualizacaoId($user);
+            
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($agendaData);
                 $em->flush();
@@ -123,9 +123,14 @@ class AgendamentoController extends Controller
                         )
                     , 200);
             }else {
-                $mensagem = $translator->trans('mensagem.erro.padrao');
+                $errors = $validation->validate($agendaData);
+                $errorsList = array();
+
+                foreach ($errors as $error) {
+                    $errorsList[$error->getPropertyPath()] =  $translator->trans($error->getMessage());
+                }
                 
-                return new JsonResponse(array('status'=>false,'type'=>'danger','message' => $mensagem), 200);
+                return new JsonResponse(array('status'=>false,'type'=>'danger','message' => $errorsList), 200);
             }
         }catch(\Exception $e){
             $mensagem = $translator->trans('mensagem.erro.padrao');
