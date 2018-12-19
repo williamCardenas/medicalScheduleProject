@@ -93,7 +93,6 @@ function salvarAgendamento(){
                     if(errorInput.length > 0){
                         errorInput.parent().addClass('has-error')
                         errorMessage.clone().text(errors[keys[key]]).appendTo(errorInput.parent());
-                        console.log('#modalAgendamento [name="'+keys[key]+'"]',errorInput.parent());
                     }
                 }
             }
