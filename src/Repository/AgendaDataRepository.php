@@ -38,6 +38,11 @@ class AgendaDataRepository extends ServiceEntityRepository
             $qb->andWhere($dataQuery);
         }
 
+        if(array_key_exists('dataHoraConsulta',$params) and  !empty($params['dataHoraConsulta'])){
+            $qb->andWhere('AD.dataConsulta '.$params['dataHoraConsulta']['operator'].' :dataHoraConsulta')
+            ->setParameter('dataHoraConsulta', $params['dataHoraConsulta']['value']);
+        }
+
         $qb->orderBy('AD.dataConsulta, AD.id', 'ASC');
         
         return $qb->getQuery()->getResult();

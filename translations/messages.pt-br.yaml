@@ -39,6 +39,8 @@ mensagem:
     validacao:
       agenda:
         jaExiste: Já existe uma agenda cadastrada para a data e o horario informado
+      agendaData:
+        jaExiste: Já existe um agendamento data e o horario informado
   
 status:
   sucesso: Sucesso

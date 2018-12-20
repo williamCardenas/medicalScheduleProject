@@ -36,3 +36,4 @@ App\Entity\AgendaData:
     dataConsulta:
       - NotBlank: {message: 'validacao.notBlank'}
       - DateTime: {message: 'validacao.dateTime'}
+      - App\Validator\Constraints\AgendaDataNotExist: ~

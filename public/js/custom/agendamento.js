@@ -33,6 +33,9 @@ function inicializaBusca(className) {
 }
 
 function limparFormularioAgendamento(){
+    $('.help-block').remove();
+    $('.has-error').removeClass('has-error');
+    
     var option = $('<option>').text('')
 
     var selectHorario = $('#modalAgendamento select#horario').html('');
@@ -45,11 +48,11 @@ function limparFormularioAgendamento(){
 }
 
 function salvarAgendamento(){
-    // if(agendamento.paciente == '' || agendamento.medico == '' || agendamento.data == '' || agendamento.horario == ''){
-    //     $('[role="mensagem-modal"]').addClass('alert-danger').html("por favor, preencha o formulário").removeClass('hidden');
-    //     $('.loader').addClass('hidden');
-    //     return false;
-    // }
+    if(agendamento.paciente == '' || agendamento.medico == '' || agendamento.data == '' || agendamento.horario == ''){
+        $('[role="mensagem-modal"]').addClass('alert-danger').html("por favor, preencha o formulário").removeClass('hidden');
+        $('.loader').addClass('hidden');
+        return false;
+    }
 
     $('#realForm [name="agendamento[paciente]"]').val(agendamento.paciente);
     $('#realForm [name="agendamento[medico]"]').val(agendamento.medico);
@@ -332,6 +335,7 @@ $(document).ready(function () {
         }, //end events
         dayClick: function (date, jsEvent, view) {
             if($('.loader').is(":hidden")){
+                limparFormularioAgendamento()
                 agendamento.data = date.format('YYYY-MM-DD');
                 agendamento.montaSelectMedico();
                 agendamento.pacienteSelecionado();
@@ -341,6 +345,7 @@ $(document).ready(function () {
         },
         eventClick: function (calEvent, jsEvent, view) {
             if($('.loader').is(":hidden")){
+                limparFormularioAgendamento()
                 agendamento.data = calEvent.start.format('YYYY-MM-DD');
                 agendamento.montaSelectMedico(calEvent.id);
                 agendamento.pacienteSelecionado();
