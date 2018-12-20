@@ -104,13 +104,18 @@
                                     <li>
                                         <a href="{{ path('medico_index') }}">{{ "menu.medicos"|trans }}</a>
                                     </li>
-                                    {% endif %}
                                     <li>
-                                        <a href="login.html">Login Page</a>
+                                        <a href="{{ path('paciente_index') }}">{{ "menu.pacientes"|trans }}</a>
                                     </li>
+                                    <li>
+                                        <a href="{{ path('agendamento_index') }}">{{ "menu.agendamento"|trans }}</a>
+                                    </li>
+                                    {% endif %}
+                                    <!--
                                     <li>
                                         <a class="menu-top-active" href="blank.html">Blank Page</a>
                                     </li>
+                                    -->
                                     {% if constant('App\\Security\\Voter\\AdminVoter::ADMIN') in app.user.roles %}
                                         <li class="dropdown show">
                                             <a href="#" class="dropdown-toggle" id="adm-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -151,7 +156,7 @@
                             <div class="col-md-12">
                                 <div class="alert alert-success">
                                     <strong>{{ 'status.sucesso'|trans }}</strong>
-                                    {% set _entidade = ("entidade."~app.session.getFlashBag.get('_entidade')[indexMessages])|trans %}
+                                    {% set _entidade = (app.session.getFlashBag.get('_entidade')[indexMessages])|trans %}
                                     {{ message|trans({'_entidade': _entidade}) }}
                                 </div>
                             </div>
@@ -192,6 +197,10 @@
             <div class="content-wrapper"></div>
         {% endblock %}
 
+        <div class="loader hidden" >
+            <div class="loader-spiner"></div>
+        </div>
+
         <footer>
             <div class="container">
                 <div class="row">
@@ -208,5 +217,9 @@
         <script src="{{ asset('js/jquery-1.11.1.js') }}"></script>
         <!-- BOOTSTRAP SCRIPTS -->
         <script src="{{ asset('js/bootstrap.js') }}"></script>
+
+        {% block javascript %}
+        {% endblock %}
+
     </body>
 </html>

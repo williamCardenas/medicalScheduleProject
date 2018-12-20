@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Paciente
 {
+    const CLASS_NAME = 'Paciente';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -35,6 +36,13 @@ class Paciente
      * @ORM\OneToMany(targetEntity="AgendaData", mappedBy="paciente")
      */
     private $agendaData;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Cliente", inversedBy="paciente")
+     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
+     */
+    private $cliente;
+
 
     public function getId()
     {
@@ -73,6 +81,18 @@ class Paciente
     public function setIdade(int $idade): self
     {
         $this->idade = $idade;
+
+        return $this;
+    }
+
+    public function getCliente(): Cliente
+    {
+        return $this->cliente;
+    }
+
+    public function setCliente(Cliente $cliente): self
+    {
+        $this->cliente = $cliente;
 
         return $this;
     }

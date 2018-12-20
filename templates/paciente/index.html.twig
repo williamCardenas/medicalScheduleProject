@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'titulo.paciente.index'|trans }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-head-line">{{ 'titulo.paciente.index'|trans }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="{{ path('paciente_new') }}" class="btn btn-primary">{{ 'botao.novo'|trans }}</a>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Nome</th>
+                                        <th>Apelido</th>
+                                        <th>Idade</th>
+                                        <th>actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for paciente in pacientes %}
+                                        <tr>
+                                            <td>{{ paciente.id }}</td>
+                                            <td>{{ paciente.nome }}</td>
+                                            <td>{{ paciente.apelido }}</td>
+                                            <td>{{ paciente.idade }}</td>
+                                            <td>
+                                                <a class="btn btn-default" href="{{ path('paciente_show', {'id': paciente.id}) }}">
+                                                    {{'botao.exibir'|trans}}
+                                                </a>
+                                                <a class="btn btn-default" href="{{ path('paciente_edit', {'id': paciente.id}) }}">
+                                                    {{'botao.editar'|trans}}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="5">no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

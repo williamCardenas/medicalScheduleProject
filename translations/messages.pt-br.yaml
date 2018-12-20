@@ -1,28 +1,32 @@
 botao:
   agenda: Agendas
+  agendar: Agendar
   adicionar: Adicionar
-  opcoes: Configurações
-  editar: Editar
+  cancelar: Cancelar
   deletar: Deletar
+  editar: Editar
   exibir: Exibir
   novo: Novo
-  voltar: Voltar
+  opcoes: Configurações
   usuarios: usuários
+  voltar: Voltar
 
 entidade:
+  agenda: agenda
   cliente: cliente
   clinica: clinica
-  agenda: agenda
-
+  paciente: paciente
 info:
   email: Email
 
 menu:
   administracao: Administração do sistema
+  agendamento: Agendamento
   clientes: Clientes
   clinicas: Clinicas
-  usuariosAdmin: Usários Adiministrativos
   medicos: Medicos
+  pacientes: Pacientes
+  usuariosAdmin: Usários Adiministrativos
 
 mensagem:
   deletar: Deseja excluir este _entidade?
@@ -31,9 +35,12 @@ mensagem:
     editado: _entidade alterado com sucesso.
     deletar: _entidade deletado com sucesso.
   erro:
+    padrao: "algo deu errado e não foi possível completar a ação por favor tente mais tarde"
     validacao:
       agenda:
         jaExiste: Já existe uma agenda cadastrada para a data e o horario informado
+      agendaData:
+        jaExiste: Já existe um agendamento data e o horario informado
   
 status:
   sucesso: Sucesso
@@ -48,32 +55,41 @@ titulo:
     show: Detalhes da agenda
   agenda_config:
     editar: Editar Configurações da agenda
+  agendamento:
+    index: Agenda
+    modal: Novo agendamento
+
   cliente:
     editar: Editar cliente
     index: Lista de clientes
     novo: Novo cliente
     show: Detalhes do cliente
-  clinica:
-    editar: Editar clinica
-    index: Lista de clinicas
-    novo: Nova CLinica
-    show: Detalhes da clinica
-  usuario:
-    editar: Editar usuario
-    index: Lista de usuarios
-    novo: Novo usuario
-    show: Detalhes da usuario
   clienteUser:
     editar: Editar usuarios para o cliente _clienteNome
     index: Lista de usuarios para o cliente _clienteNome
     novo: Novo usuarios para o cliente _clienteNome
     show: Detalhes do usuarios para o cliente _clienteNome
+  clinica:
+    editar: Editar clinica
+    index: Lista de clinicas
+    novo: Nova CLinica
+    show: Detalhes da clinica
   medico:
     editar: Editar médico
     index: Lista de médicos
     novo: Novo médico
     show: Detalhes do médico
+  paciente:
+    editar: Editar paciente
+    index: Lista de pacientes
+    novo: Novo paciente
+    show: Detalhes do paciente
   sistema: Tcc
+  usuario:
+    editar: Editar usuario
+    index: Lista de usuarios
+    novo: Novo usuario
+    show: Detalhes da usuario
 
 opcao:
   sim: Sim
@@ -84,3 +100,5 @@ validacao:
     unico: Email informado já esta sendo usado
   login:
     unico: Login informado já esta sendo usado
+  notBlank: Este campo não pode estar em branco
+  dateTime: Data ou hora invalido ou não informado

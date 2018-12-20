@@ -31,7 +31,7 @@ class Medico
     private $numeroDocumento;
 
     /**
-     * @ORM\OneToMany(targetEntity="Agenda", mappedBy="agenda")
+     * @ORM\OneToMany(targetEntity="Agenda", mappedBy="medico")
      */
     private $agenda;
 
@@ -40,6 +40,11 @@ class Medico
      * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
      */
     private $cliente;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $corAgenda;
 
     public function __construct(){
         $this->agenda = new ArrayCollection();
@@ -97,6 +102,18 @@ class Medico
             $this->agenda[] = $agenda;
             $agenda->setAgenda($this);
         }
+        return $this;
+    }
+
+    public function getCorAgenda(): ?String
+    {
+        return $this->corAgenda;
+    }
+
+    public function setCorAgenda(String $corAgenda): self
+    {
+        $this->corAgenda = $corAgenda;
+
         return $this;
     }
 }

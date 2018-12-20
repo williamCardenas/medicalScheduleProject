@@ -34,22 +34,22 @@ class AgendaData
     private $dataConsulta;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $dataConfirmacao;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $confirmacaoPeloPaciente;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true ,options={"usigned":true, "default":false})
      */
     private $confirmacao;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true ,options={"usigned":true, "default":false})
      */
     private $pagamentoEfetuado;
 
@@ -165,12 +165,12 @@ class AgendaData
         return $this;
     }
 
-    public function getUsuarioAtualizacaoId(): ?int
+    public function getUsuarioAtualizacaoId(): ?User
     {
         return $this->usuarioAtualizacaoId;
     }
 
-    public function setUsuarioAtualizacaoId(int $usuarioAtualizacaoId): self
+    public function setUsuarioAtualizacaoId(User $usuarioAtualizacaoId): self
     {
         $this->usuarioAtualizacaoId = $usuarioAtualizacaoId;
 

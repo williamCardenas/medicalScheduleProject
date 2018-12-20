@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use App\Entity\Cliente;
 use App\Entity\Clinica;
+use App\Entity\Paciente;
 use App\Entity\User;
 
 class ClienteTest extends TestCase
@@ -52,5 +53,19 @@ class ClienteTest extends TestCase
          $cliente->addClinica($clinica);
          $this->assertcount(2,$cliente->getClinica());
          return $cliente;
+    }
+
+    /**
+    * @depends testNovoCliente
+    */
+    public function testAddPaciente($cliente) :Cliente 
+    {
+        $this->assertInstanceOf("Doctrine\Common\Collections\Collection",$cliente->getPacientes());
+        $this->assertCount(0,$cliente->getPacientes());
+ 
+        $paciente = new Paciente();
+        $cliente->addPaciente($paciente);
+        $this->assertcount(1,$cliente->getPacientes());
+        return $cliente;
     }
 }
