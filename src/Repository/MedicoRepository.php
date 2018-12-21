@@ -74,7 +74,7 @@ class MedicoRepository extends ServiceEntityRepository
     public function medicosComAgendasArrayResult($params = Array())
     {
         $qb = $this->medicosComAgendas($params);
-        $qb->select('M, A');
+        $qb->select("M, A");
         return $qb->getQuery()->getArrayResult();
     }
 }

@@ -1,5 +1,6 @@
 var lastResultPaciente;
-var medicos;
+var medicos = [];
+var datasComAgendamento;
 
 function MostraOcultaEventoNoCalendario(elemento) {
     var medicoId = $(elemento).attr('aria-label');
@@ -41,10 +42,26 @@ function limparFormularioAgendamento(){
     var selectHorario = $('#modalAgendamento select#horario').html('');
     option.clone().appendTo(selectHorario);
     
-    var selectMedico = $('#modalAgendamento select#medico').val('');
+    var selectMedico = $('#modalAgendamento select#medico').html('');
     option.clone().appendTo(selectMedico);
 
     $('#modalAgendamento .buscaPaciente').html('').val('');
+}
+
+function checkDayWithHourAvaliable(diaInicial, horariosCriados){
+    var dataTemAgendamento = false;
+    for(var i = 0; i < datasComAgendamento.length; i++){
+        if(datasComAgendamento[i].data == diaInicial){
+            if(datasComAgendamento[i].count < horariosCriados){
+                return true
+            }
+            dataTemAgendamento = true;
+        }
+    }
+    if(!dataTemAgendamento){
+        return true
+    }
+    return false;
 }
 
 function salvarAgendamento(){
@@ -121,6 +138,16 @@ function ocultarAlertas(role){
         .removeClass('alert-danger');
 }
 
+function dateHasEvent(date) {
+    var allEvents = [];
+    allEvents = $('#agendamento').fullCalendar('clientEvents');
+    var event = $.grep(allEvents, function (v) {
+        return v.start.format("YYYY-MM-DD") === date;
+    });
+    return event.length > 0;
+}
+
+
 var Evento = function (id, medico, cor) {
     this.title = medico,
         this.id = id,
@@ -129,6 +156,7 @@ var Evento = function (id, medico, cor) {
         this.start = false,
         this.end = false,
         this.eventsDay = [],
+        this.horariosCriados;
 
         this.generateEvents = function (callback) {
             this.eventsDay = [];
@@ -144,9 +172,13 @@ var Evento = function (id, medico, cor) {
                         borderColor: this.backgroundColor,
                         allDay: true,
                         start: diaInicial.format('YYYY-MM-DD'),
+                        hoursAvaliable: this.horariosCriados,
                     }
 
-                    this.eventsDay.push(evento);
+                    if(checkDayWithHourAvaliable(diaInicial.format('YYYY-MM-DD'), this.horariosCriados)){
+                        this.eventsDay.push(evento);
+                    }
+
                 }
             }
 
@@ -172,8 +204,11 @@ var Evento = function (id, medico, cor) {
                     borderColor: this.backgroundColor,
                     allDay: true,
                     start: diaInicial.format('YYYY-MM-DD'),
+                    hoursAvaliable: this.horariosCriados,
                 }
-                this.eventsDay.push(evento);
+                if(checkDayWithHourAvaliable(diaInicial.format('YYYY-MM-DD'), this.horariosCriados)){
+                    this.eventsDay.push(evento);
+                }
             }
         }
 
@@ -181,6 +216,7 @@ var Evento = function (id, medico, cor) {
             callback();
         }
     }
+
 };
 
 var Agendamento = function () {
@@ -195,16 +231,20 @@ var Agendamento = function () {
         var option = $('<option>');
         this.medico = false;
         option.text('').clone().appendTo(selectMedico);
-        for (index = 0; index < medicos.length; index++) {
-            if(medicos[index].id == medicoSelecionado){
-                this.medico = medicoSelecionado;
-                option.attr('selected',true);
-            }else{
-                option.attr('selected',false);
+        
+        if(dateHasEvent(this.data)){
+            for (index = 0; index < medicos.length; index++) {
+                if(medicos[index].id == medicoSelecionado){
+                    this.medico = medicoSelecionado;
+                    option.attr('selected',true);
+                }else{
+                    option.attr('selected',false);
+                }
+                option.val(medicos[index].id).text(medicos[index].nome);
+                option.appendTo(selectMedico);
             }
-            option.val(medicos[index].id).text(medicos[index].nome);
-            option.clone().appendTo(selectMedico);
         }
+    
     };
 
     this.buscaHorariosMedicoSelecionado = function () {
@@ -272,10 +312,12 @@ $(document).ready(function () {
                     end: end.format('YYYY-MM-DD')
                 }
             }).done(function (doc) {
-                medicos = doc;
+                datasComAgendamento = doc.horariosAgendados;
+                    
                 var events = [];
-                doc.forEach(function (medico) {
+                doc.medico.forEach(function (medico) {
                     var event = new Evento(medico.id, medico.nome, medico.corAgenda);
+                    medicos.push(medico);
 
                     medico.agenda.forEach(function (agenda) {
                         var arrayData = [
@@ -298,12 +340,13 @@ $(document).ready(function () {
                             var eventWeekend = new Evento(medico.id, medico.nome, medico.corAgenda);
                             eventWeekend.start = dataInicioAtendimento;
                             eventWeekend.end = dataFimAtendimento;
+                            eventWeekend.horariosCriados = agenda.horariosCriados
                             eventWeekend.generateWeekendEvents(function () {
                                 events = events.concat(eventWeekend.eventsDay);
                                 eventWeekend = null;
                             });
                         }
-
+                        event.horariosCriados = agenda.horariosCriados
                         if (event.start === false) {
                             event.start = dataInicioAtendimento;
                         }

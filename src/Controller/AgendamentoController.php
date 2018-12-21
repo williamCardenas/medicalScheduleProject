@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\AgendaData;
+use App\Entity\Agenda;
 use App\Repository\AgendaRepository;
 use App\Repository\AgendaDataRepository;
 use App\Repository\MedicoRepository;
@@ -43,18 +44,43 @@ class AgendamentoController extends Controller
     /**
      * @Route("/agendas-medicas", name="agendamento_agendas", methods="POST")
      */
-    public function agendaMedica(Request $request, MedicoRepository $medicoRepository, AgendaRepository $agendaRepository, UserInterface  $user): JsonResponse
+    public function agendaMedica(Request $request, MedicoRepository $medicoRepository, AgendaDataRepository $agendaDataRepository, UserInterface  $user): JsonResponse
     {
-        try{
-            $medicos = $medicoRepository->medicosComAgendasArrayResult([
+        // try{
+            $qb = $medicoRepository->medicosComAgendas([
                 'cliente'       => $user->getCliente(),
                 'dataInicio'    => $request->get('start') ,
                 'dataFim'       => $request->get('end')
             ]);
-            return new JsonResponse($medicos);
-        }catch(\Exception $e){
-            return new JsonResponse($e->getMessage(),500);
-        }
+
+            $qb->select("M, A");
+            $medicos = $qb->getQuery()->getResult();
+
+            $resultMedicos = [];
+            foreach($medicos as $medico){
+                $medicoArr['id'] = $medico->getId();
+                $medicoArr['corAgenda'] = $medico->getCorAgenda();
+                $medicoArr['nome'] = $medico->getNome();
+                $coutAgenda = 0;
+                foreach($medico->getAgenda() as $agenda){
+                    $medicoArr['agenda'][$coutAgenda]['id'] = $agenda->getId();
+                    $medicoArr['agenda'][$coutAgenda]['dataInicioAtendimento'] = $agenda->getDataInicioAtendimento();
+                    $medicoArr['agenda'][$coutAgenda]['dataFimAtendimento'] = $agenda->getDataFimAtendimento();
+                    $medicoArr['agenda'][$coutAgenda]['fimDeSemana'] = $agenda->getFimDeSemana();
+                    $medicoArr['agenda'][$coutAgenda]['horarioInicioAtendimento'] = $agenda->getHorarioInicioAtendimento();
+                    $medicoArr['agenda'][$coutAgenda]['horarioFimAtendimento'] = $agenda->gethorarioFimAtendimento();
+                    $medicoArr['agenda'][$coutAgenda]['horariosCriados'] = $agenda->getTortalHorariosCriados();
+                    $coutAgenda++;
+                }
+                array_push($resultMedicos, $medicoArr);
+            }
+
+           
+            $horarios = $agendaDataRepository->getAgendamentoCountByDate($request->get('start'), $request->get('end'));
+            return new JsonResponse(['medico'=>$resultMedicos,'horariosAgendados'=>$horarios]);
+        // }catch(\Exception $e){
+        //     return new JsonResponse($e->getMessage(),500);
+        // }
     }
 
     /**

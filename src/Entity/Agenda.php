@@ -194,4 +194,14 @@ class Agenda
         return $this;
     }
 
+    public function getTortalHorariosCriados(){
+        $horaInicio = $this->getHorarioInicioAtendimento();
+        $horafim = $this->getHorarioFimAtendimento();
+        
+        $diferenca = $horaInicio->diff($horafim);
+        $diferencaMinutos =(int) ($diferenca->d * 24 * 60) + ($diferenca->h * 60) + ($diferenca->i);
+
+        return ($diferencaMinutos / $this->getAgendaConfig()->getDuracaoConsulta());
+    }
+
 }

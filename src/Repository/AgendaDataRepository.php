@@ -47,4 +47,19 @@ class AgendaDataRepository extends ServiceEntityRepository
         
         return $qb->getQuery()->getResult();
     }
+
+    public function getAgendamentoCountByDate($dataInicio,$dataFim){
+        $qb = $this->createQueryBuilder('AD');
+
+        $qb->select(['SUBSTRING(AD.dataConsulta,1,10) as data, count(AD.dataConsulta) as count']);
+        
+        $dataQuery = $qb->expr()->gte('AD.dataConsulta', "'{$dataInicio} 00:00:00'");
+        $qb->andWhere($dataQuery);
+        $dataQuery = $qb->expr()->lte('AD.dataConsulta', "'{$dataFim} 23:59:59'");
+        $qb->andWhere($dataQuery);
+    
+        $qb->groupBy('data');
+
+        return $qb->getQuery()->getResult();
+    }
 }
