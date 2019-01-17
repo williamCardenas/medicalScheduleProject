@@ -18,5 +18,8 @@ pipelines:
           - vendor/bin/phpunit
     - step:
         name: deploy
+        deployment: test   # set to test, staging or production
         script:
           - git push $vpsLink HEAD
+          
+          
