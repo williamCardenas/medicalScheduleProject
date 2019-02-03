@@ -11,5 +11,12 @@
         {{ form_widget(form.numeroDocumento,{'attr':{'class':'form-control'}}) }}
         {{ form_errors(form.numeroDocumento) }}
     </div>
+
+    <div class="form-group {% if form.corAgenda.vars.errors|length  %}has-error{% endif %}">
+        {{ form_label(form.corAgenda) }}
+        {{ form_widget(form.corAgenda,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.corAgenda) }}
+    </div>
+    
     <button class="btn">{{ button_label|default('botao.adicionar'|trans) }}</button>
 {{ form_end(form) }}

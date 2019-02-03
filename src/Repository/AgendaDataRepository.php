@@ -19,32 +19,47 @@ class AgendaDataRepository extends ServiceEntityRepository
         parent::__construct($registry, AgendaData::class);
     }
 
-//    /**
-//     * @return AgendaData[] Returns an array of AgendaData objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Agenda[] Returns an array of Agenda objects
+     */
+    public function findByParams(Array $params)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('AD');
+        
+        if(array_key_exists('id',$params) && !empty($params['id'])){
+            $qb->andWhere('AD.id '.$params['id']['operator'].' :id')
+            ->setParameter('id', $params['id']['value']);
+        }
 
-    /*
-    public function findOneBySomeField($value): ?AgendaData
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if(array_key_exists('dataConsulta',$params) and  !empty($params['dataConsulta'])){
+            $dataQuery = $qb->expr()->gte('AD.dataConsulta', "'{$params['dataConsulta']} 00:00:00'");
+            $qb->andWhere($dataQuery);
+            $dataQuery = $qb->expr()->lte('AD.dataConsulta', "'{$params['dataConsulta']} 23:59:59'");
+            $qb->andWhere($dataQuery);
+        }
+
+        if(array_key_exists('dataHoraConsulta',$params) and  !empty($params['dataHoraConsulta'])){
+            $qb->andWhere('AD.dataConsulta '.$params['dataHoraConsulta']['operator'].' :dataHoraConsulta')
+            ->setParameter('dataHoraConsulta', $params['dataHoraConsulta']['value']);
+        }
+
+        $qb->orderBy('AD.dataConsulta, AD.id', 'ASC');
+        
+        return $qb->getQuery()->getResult();
     }
-    */
+
+    public function getAgendamentoCountByDate($dataInicio,$dataFim){
+        $qb = $this->createQueryBuilder('AD');
+
+        $qb->select(['SUBSTRING(AD.dataConsulta,1,10) as data, count(AD.dataConsulta) as count']);
+        
+        $dataQuery = $qb->expr()->gte('AD.dataConsulta', "'{$dataInicio} 00:00:00'");
+        $qb->andWhere($dataQuery);
+        $dataQuery = $qb->expr()->lte('AD.dataConsulta', "'{$dataFim} 23:59:59'");
+        $qb->andWhere($dataQuery);
+    
+        $qb->groupBy('data');
+
+        return $qb->getQuery()->getResult();
+    }
 }

@@ -1,4 +1,7 @@
 {
+    "beberlei/doctrineextensions": {
+        "version": "v1.1.5"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -376,9 +379,6 @@
             "version": "4.0",
             "ref": "cda8b550123383d25827705d05a42acf6819fe4e"
         }
-    },
-    "symfony/security": {
-        "version": "v4.0.6"
     },
     "symfony/security-bundle": {
         "version": "3.3",

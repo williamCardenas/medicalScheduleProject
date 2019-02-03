@@ -6,6 +6,9 @@ use App\Entity\Agenda;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
+use DateTime;
+use DateInterval;
+
 /**
  * @method Agenda|null find($id, $lockMode = null, $lockVersion = null)
  * @method Agenda|null findOneBy(array $criteria, array $orderBy = null)
@@ -24,42 +27,44 @@ class AgendaRepository extends ServiceEntityRepository
      */
     public function findByParams(Array $params)
     {
-        $qb = $this->createQueryBuilder('a');
+        $qb = $this->createQueryBuilder('A');
         
         if(array_key_exists('id',$params) && !empty($params['id'])){
-            $qb->andWhere('a.id '.$params['id']['operator'].' :id')
+            $qb->andWhere('A.id '.$params['id']['operator'].' :id')
             ->setParameter('id', $params['id']['value']);
         }
 
         if(array_key_exists('medico',$params) && !empty($params['medico'])){
-            $qb->andWhere('a.medico '.$params['medico']['operator'].' :medico')
+            $qb->andWhere('A.medico '.$params['medico']['operator'].' :medico')
             ->setParameter('medico', $params['medico']['value']);
         }
 
         if(array_key_exists('clinica',$params) && !empty($params['clinica'])){
-            $qb->andWhere('a.clinica '.$params['clinica']['operator'].' :clinica')
+            $qb->andWhere('A.clinica '.$params['clinica']['operator'].' :clinica')
             ->setParameter('clinica', $params['clinica']['value']);
         }
 
-        $qb->orderBy('a.id', 'ASC')
+        if(array_key_exists('data',$params) and  !empty($params['data'])){
+            $orModule = $qb->expr()->andX();
+
+            $orModule->add(':data >= A.dataInicioAtendimento AND :data <= A.dataFimAtendimento ');
+            $qb->setParameter('data',$params['data']);
+
+            if(array_key_exists('hora',$params) and  !empty($params['hora'])){
+                $orModule->add(':hora >= A.horarioInicioAtendimento AND :hora <= A.horarioFimAtendimento ');
+                $qb->setParameter('hora',$params['hora']);
+            }
+    
+
+            $qb->andWhere( $orModule);
+        }
+
+       
+        $qb->orderBy('A.id', 'ASC')
             ->setMaxResults(50)
-            ->getQuery()
-            ->getResult()
         ;
         
         return $qb->getQuery()->getResult();
     }
-
-    /*
-    public function findOneBySomeField($value): ?Agenda
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 
 }

@@ -2111,4 +2111,22 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     })
   })
 
+
+  // Fix Loader
+  // ==========
+  $('body').on('click', function (event) {
+    var attr = $(this).attr('href');
+    if ($('.loader').is(":visible") && (typeof attr !== typeof undefined && attr !== false) ) {
+      event.preventDefault();
+    }
+  });
+
+  $('body').on('click','[href], .btn' ,function () {
+    var attr = $(this).attr('no-load');
+
+    if (!$('.loader').is(":visible") && (typeof attr !== typeof undefined && attr === "false")) {
+      $('.loader').removeClass('hidden');
+    }
+  });
+
 }(jQuery);
