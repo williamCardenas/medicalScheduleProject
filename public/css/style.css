@@ -308,11 +308,11 @@
      opacity: 0.8;
  }
  
-     .btn-social:hover {
-         color: white;
-         opacity: 1;
-         text-decoration: none;
-     }
+ .btn-social:hover {
+     color: white;
+     opacity: 1;
+     text-decoration: none;
+ }
  
  .btn-facebook {
      background-color: #3b5998;

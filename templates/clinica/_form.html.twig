@@ -10,5 +10,9 @@
             {{ form_errors(form.cliente) }}
             {{ form_widget(form.cliente) }}
         </div>
-    <button class="btn">{{ button_label|default('botao.adicionar'|trans) }}</button>
+    
+    <a class="btn btn-default btn-float-left" href="{{ path('clinica_index') }}">
+        {{'botao.voltar'|trans}}
+    </a>
+    <button class="btn btn-success btn-float-left">{{ button_label|default('botao.adicionar'|trans) }}</button>
 {{ form_end(form) }}
