@@ -18,5 +18,9 @@
         {{ form_errors(form.corAgenda) }}
     </div>
     
-    <button class="btn">{{ button_label|default('botao.adicionar'|trans) }}</button>
+    <a class="btn btn-default btn-float-left" href="{{ path('medico_index') }}">
+        {{'botao.voltar'|trans}}
+    </a>
+
+    <button class="btn btn-success btn-float-left">{{ button_label|default('botao.adicionar'|trans) }}</button>
 {{ form_end(form) }}

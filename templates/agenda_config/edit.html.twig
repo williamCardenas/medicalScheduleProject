@@ -11,10 +11,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                {{ include('agenda_config/_form.html.twig', {'button_label': 'Update'}) }}
-                <a class="btn btn-default" href="{{ path('agenda_index',{'medicoId': medicoId}) }}">
-                    {{'botao.voltar'|trans}}
-                </a>
+                {{ include('agenda_config/_form.html.twig', {'button_label': 'botao.salvar'|trans}) }}
             </div>
         </div>
     </div>
