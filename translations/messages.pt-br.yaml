@@ -18,6 +18,7 @@ entidade:
   paciente: paciente
 info:
   email: Email
+  sem-informacao: Não foi encontrado nenhum valor
 
 menu:
   administracao: Administração do sistema

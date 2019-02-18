@@ -32,14 +32,19 @@
         </div>
     </div>
 
-    <a class="btn btn-default" href="{{ path('cliente_index') }}">
-        {{'botao.voltar'|trans}}
-    </a>
+    <div class="row">
+        <div class="col-xs-4 btn-float-left">
+            <a class="btn btn-default btn-float-left" href="{{ path('cliente_index') }}">
+                {{'botao.voltar'|trans}}
+            </a>
+        
+            <a class="btn btn-default btn-float-left" href="{{ path('cliente_edit', {'id': cliente.id}) }}">
+                {{'botao.editar'|trans}}
+            </a>
+        
+            {{ include('cliente/_delete_form.html.twig') }}
+            </div>
+        </div>
 
-    <a class="btn btn-default" href="{{ path('cliente_edit', {'id': cliente.id}) }}">
-        {{'botao.editar'|trans}}
-    </a>
-
-    {{ include('cliente/_delete_form.html.twig') }}
-</div>
+    </div>
 {% endblock %}
