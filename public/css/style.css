@@ -168,6 +168,10 @@
      padding: 10px 10px 10px 10px;
      text-transform: uppercase;
  }
+
+ #menu-top a.dropdown-item {
+     color: #3D3D3D;
+ }
  
  .menu-top-active {
      background-color: #1bc7d8;
@@ -194,6 +198,13 @@
  .navbar {
      margin-bottom: 0px;
  }
+
+ #menu-top .dropdown ol {
+    list-style: none;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
  /* =============================================================
     FOOTER SECTION STYLES
   ============================================================ */
