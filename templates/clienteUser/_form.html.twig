@@ -39,5 +39,11 @@
         {{ form_widget(form.isActive) }}
         {{ form_errors(form.isActive) }}
     </div>
-    <button class="btn">{{ button_label|default('botao.adicionar'|trans) }}</button>
+
+    <div>
+    <a class="btn btn-default btn-float-left" href="{{ path('cliente_user_index',{'clienteId':cliente.id}) }}">
+            {{'botao.voltar'|trans}}
+        </a>
+    <button class="btn btn-success btn-float-left">{{ button_label|default('botao.adicionar'|trans) }}</button>
+    </div>
 {{ form_end(form) }}
