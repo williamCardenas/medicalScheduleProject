@@ -42,11 +42,26 @@ class AgendamentoController extends Controller
     }
 
     /**
+     * @Route("/agenda", name="agendamento_agenda", methods="GET")
+     */
+    public function agenda(MedicoRepository $medicoRepository, UserInterface  $user): Response
+    {
+        $agendaData = new AgendaData();
+        $form = $this->createForm(AgendamentoType::class, $agendaData,['user'=>$user]);
+
+        $medicos = $medicoRepository->searchResult(['cliente' => $user->getCliente()]);
+        return $this->render('agendamento/agenda.html.twig', [
+            'medicos' => $medicos, 
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/agendas-medicas", name="agendamento_agendas", methods="POST")
      */
     public function agendaMedica(Request $request, MedicoRepository $medicoRepository, AgendaDataRepository $agendaDataRepository, UserInterface  $user): JsonResponse
     {
-        // try{
+        try{
             $qb = $medicoRepository->medicosComAgendas([
                 'cliente'       => $user->getCliente(),
                 'dataInicio'    => $request->get('start') ,
@@ -78,9 +93,9 @@ class AgendamentoController extends Controller
            
             $horarios = $agendaDataRepository->getAgendamentoCountByDate($request->get('start'), $request->get('end'));
             return new JsonResponse(['medico'=>$resultMedicos,'horariosAgendados'=>$horarios]);
-        // }catch(\Exception $e){
-        //     return new JsonResponse($e->getMessage(),500);
-        // }
+        }catch(\Exception $e){
+            return new JsonResponse($e->getMessage(),500);
+        }
     }
 
     /**
@@ -163,5 +178,25 @@ class AgendamentoController extends Controller
                 
             return new JsonResponse(array('message' => $mensagem), 500);
         }
+    }
+
+    /**
+     * @Route("/agendamentos-marcados", name="agendamento_marcados", methods="POST")
+     */
+    public function agendamentosMarcados(Request $request, TranslatorInterface $translator, AgendaDataRepository $agendaDataRepository, UserInterface  $user): JsonResponse
+    {
+        //try{
+            $params = [
+                'cliente' => $user->getCliente(),
+            ];
+
+            $horariosMarcados = $agendaDataRepository->getAgendamentoByDate($request->get('start'),$request->get('end'),$params);
+            
+            return new JsonResponse($horariosMarcados);
+        /*}catch(\Exception $e){
+            $mensagem = $translator->trans('mensagem.erro.padrao');
+                
+            return new JsonResponse(array('message' => $mensagem), 500);
+        }*/
     }
 }

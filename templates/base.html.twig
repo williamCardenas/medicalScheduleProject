@@ -100,8 +100,21 @@
                                     <li>
                                         <a href="{{ path('paciente_index') }}">{{ "menu.pacientes"|trans }}</a>
                                     </li>
-                                    <li>
-                                        <a href="{{ path('agendamento_index') }}">{{ "menu.agendamento"|trans }}</a>
+                                    <li class="dropdown show">
+                                        <a href="#" class="dropdown-toggle" id="agendamento-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            {{'menu.agendamento.menu-nome'|trans}}
+                                        </a>
+                                        <div class="dropdown-menu dropdown-settings" aria-labelledby="agendamento-menu">
+                                            <ol>
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ path('agendamento_agenda') }}">{{ "menu.agendamento.agenda"|trans }}</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ path('agendamento_index') }}">{{ "menu.agendamento.index"|trans }}</a>
+                                                </li>
+                                            </ol>
+                                        </div>
+
                                     </li>
                                     {% endif %}
                                     <!--

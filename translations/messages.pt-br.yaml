@@ -23,7 +23,10 @@ info:
 
 menu:
   administracao: Administração do sistema
-  agendamento: Agendamento
+  agendamento: 
+    menu-nome: Agendamentos
+    index: Marcados
+    agenda: Agenda
   clientes: Clientes
   clinicas: Clinicas
   medicos: Medicos
@@ -58,8 +61,11 @@ titulo:
   agenda_config:
     editar: Editar Configurações da agenda
   agendamento:
-    index: Agenda
-    modal: Novo agendamento
+    agenda: 
+      titulo: Agenda
+      modal: Novo agendamento
+    index:
+      titulo: Agendamentos Marcados
 
   cliente:
     editar: Editar cliente

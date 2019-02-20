@@ -1,24 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'titulo.agenda.index'|trans }}
+{% block title %}{{ 'titulo.agendamento.agenda.titulo'|trans }}
 {% endblock %}
 
 {% block stylesheet %}
     <link href="{{ asset('css/page/agendamento.css' )}}" rel="stylesheet"/>
     <link href="{{ asset('js/fullcalendar-3.9.0/fullcalendar.min.css' )}}" rel="stylesheet"/>
+    <link href="{{ asset('js/select2/dist/css/select2.min.css') }}" rel="stylesheet"/>
 {% endblock %}
 
 {% block body %}
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="page-head-line">{{ 'titulo.agendamento.index.titulo'|trans }}</h1>
+                <h1 class="page-head-line">{{ 'titulo.agendamento.agenda.titulo'|trans }}</h1>
             </div>
         </div>
         
         <div class="alert hidden" role="mensagem-pagina"></div>
         
-         <div class="row">
+        <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -65,7 +66,7 @@
                                 </div>
                             </div>
                             <div class="col-md-9">
-                                <div id="agendamentos-marcados"></div>
+                                <div id="agendamento"></div>
                             </div>
                         </div>
                     </div>
@@ -73,8 +74,47 @@
             </div>
         </div>
     </div>
-{% endblock %}
 
+    <!-- modais -->
+    <div class="modal fade" id="modalAgendamento" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h5 class="modal-title" id="exampleModalLabel">{{ 'titulo.agendamento.agenda.modal'|trans }}</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="alert hidden" role="mensagem-modal">res.message</div>
+                    <form>
+                        <div class="form-group paciente">
+                            <label for="paciente" class="col-form-label">Paciente:</label>
+                            <select class="busca buscaPaciente form-control" data-url="{{ url('paciente_busca') }}" id="paciente" name="paciente"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="medico" class="col-form-label">Médico:</label>
+                            <select class="form-control" id="medico" name="medico"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="horario" class="col-form-label">Horario:</label>
+                            <select class="form-control" id="horario" name="dataConsulta"></select>
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" no-load="true">{{ 'botao.cancelar'|trans }}</button>
+                    <button type="button" class="btn btn-primary" action="agendar" no-load="false">{{ 'botao.agendar'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="realForm" class="hidden">
+        {{ form_start(form) }}
+        {{ form_end(form) }}
+    </div>
+    <!-- end modais -->
+
+{% endblock %}
 
 {% block javascript %}
     <script src="{{ asset('js/moment.min.js') }}"></script>
@@ -85,5 +125,5 @@
     <script src="{{ asset('js/select2/dist/js/select2.min.js') }}"></script>
     <script src="{{ asset('js/select2/dist/js/i18n/pt-BR.js') }}"></script>
 
-    <script src="{{ asset('js/custom/agendamentos-marcados.js') }}"></script>
+    <script src="{{ asset('js/custom/agendamento.js') }}"></script>
 {% endblock %}
