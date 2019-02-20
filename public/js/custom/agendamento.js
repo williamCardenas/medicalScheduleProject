@@ -14,6 +14,7 @@ function MostraOcultaEventoNoCalendario(elemento) {
 function inicializaBusca(className) {
     $(className).select2({
         minimumInputLength: 3,
+        language: "pt-BR",
         ajax: {
             url: function () {
                 if ($(this).attr('data-url') != undefined) {
