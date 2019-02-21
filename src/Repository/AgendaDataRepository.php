@@ -62,6 +62,7 @@ class AgendaDataRepository extends ServiceEntityRepository
 
     private function getQueryByDate($dataInicio,$dataFim){
         $qb = $this->createQueryBuilder('AD');
+        $qb->join('AD.paciente','P');
         $qb->join('AD.agenda','A');
         $qb->join('A.clinica','C');
         $qb->join('A.medico','M');
@@ -69,7 +70,7 @@ class AgendaDataRepository extends ServiceEntityRepository
         
         $dataQuery = $qb->expr()->gte('AD.dataConsulta', "'{$dataInicio} 00:00:00'");
         $qb->andWhere($dataQuery);
-        $dataQuery = $qb->expr()->lte('AD.dataConsulta', "'{$dataFim} 23:59:59'");
+        $dataQuery = $qb->expr()->lte('AD.dataConsulta', "'{$dataFim} 00:00:00'");
         $qb->andWhere($dataQuery);
     
         return $qb;
@@ -79,10 +80,12 @@ class AgendaDataRepository extends ServiceEntityRepository
         $qb = $this->getQueryByDate($dataInicio,$dataFim);
         $qb->select([
             'AD as agendaData',
-            'M.nome as MedicoNome', 
-            'M.id as MedicoId', 
+            'M.nome as medicoNome', 
+            'M.id as medicoId', 
             'M.corAgenda as corAgenda',
-            'AG.duracaoConsulta as duracaoConsulta'
+            'AG.duracaoConsulta as duracaoConsulta',
+            'P.nome as pacienteNome',
+            'P.id as pacienteId'
             ]);
 
         if(array_key_exists('clinica',$params) && !empty($params['clinica'])){

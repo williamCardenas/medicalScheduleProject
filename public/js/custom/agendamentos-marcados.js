@@ -240,15 +240,18 @@ $(document).ready(function () {
             }).done(function (doc) {
                 var events = [];
                 doc.forEach(function (agendaData) {
-                    data =  moment(agendaData.agendaData.dataConsulta);
+                    dataStr = String(agendaData.agendaData.dataConsulta.date);
+                    var data =  moment(dataStr.substr(0,19), "YYYY-MM-DD HH:mm:ss");
                     var evento = {
                         id: agendaData.agendaData.id,
-                        title: agendaData.MedicoNome + ' - ' + agendaData.agendaData.id,
-                        className: 'medico-' + agendaData.MedicoId,
+                        pacienteId: agendaData.agendaData.pacienteId,
+                        title: '['+ agendaData.medicoNome + '] ' + agendaData.pacienteNome,
+                        className: 'medico-' + agendaData.medicoId,
                         backgroundColor: agendaData.corAgenda,
                         borderColor: agendaData.corAgenda,
                         allDay: false,
-                        start: data.format('YYYY-MM-DD'),
+                        start: data.format('YYYY-MM-DD HH:mm'),
+                        end: data.clone().add(agendaData.duracaoConsulta, 'm').format('YYYY-MM-DD HH:mm')
                     }
                     events.push(evento);
                 });
