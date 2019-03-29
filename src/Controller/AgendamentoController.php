@@ -199,4 +199,27 @@ class AgendamentoController extends Controller
             return new JsonResponse(array('message' => $mensagem), 500);
         }*/
     }
+
+    /**
+     * @Route("/buscaDetalhes", name="agendamento_busca_detalhes", methods="POST")
+     */
+    public function buscaDetalhes(Request $request, AgendaDataRepository $agendaDataRepository, UserInterface  $user): JsonResponse
+    {
+        try{
+            $params = [
+                'cliente'   => $user->getCliente(),
+                'id'        => [
+                    'operator'  => '=',
+                    'value'     => $request->get('id') ,
+                ],
+                'result-format' => 'array'
+            ];
+
+            $horarioDetalhe = $agendaDataRepository->findByParams($params);
+            
+            return new JsonResponse($horarioDetalhe[0]);
+        }catch(\Exception $e){
+            return new JsonResponse($e->getMessage(),500);
+        }
+    }
 }

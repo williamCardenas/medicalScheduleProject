@@ -34,22 +34,6 @@ function inicializaBusca(className) {
     });
 }
 
-function checkDayWithHourAvaliable(diaInicial, horariosCriados){
-    var dataTemAgendamento = false;
-    for(var i = 0; i < datasComAgendamento.length; i++){
-        if(datasComAgendamento[i].data == diaInicial){
-            if(datasComAgendamento[i].count < horariosCriados){
-                return true
-            }
-            dataTemAgendamento = true;
-        }
-    }
-    if(!dataTemAgendamento){
-        return true
-    }
-    return false;
-}
-
 function dateHasEvent(date) {
     var allEvents = [];
     allEvents = $('#agendamentos-marcados').fullCalendar('clientEvents');
@@ -61,43 +45,39 @@ function dateHasEvent(date) {
 
 
 var Evento = function (id, medico, cor) {
-    this.title = medico,
-        this.id = id,
-        this.backgroundColor = cor,
-        this.allDay = true,
-        this.start = false,
-        this.end = false,
-        this.eventsDay = [],
-        this.horariosCriados;
+    this.title = medico;
+    this.id = id;
+    this.backgroundColor = cor;
+    this.allDay = true;
+    this.start = false;
+    this.end = false;
+    this.eventsDay = [];
+    this.horariosCriados;
 
-        this.generateEvents = function (callback) {
-            this.eventsDay = [];
-            var diaInicial = this.start.clone();
+    this.generateEvents = function (callback) {
+        this.eventsDay = [];
+        var diaInicial = this.start.clone();
 
-            for (diaInicial; diaInicial.diff(this.end, "days") <= 0; diaInicial.add(1, 'day')) {
-                if (diaInicial.format('ddd') != 'Sat' && diaInicial.format('ddd') != 'Sun') {
-                    var evento = {
-                        id: this.id,
-                        title: this.title,
-                        className: 'medico-' + this.id,
-                        backgroundColor: this.backgroundColor,
-                        borderColor: this.backgroundColor,
-                        allDay: true,
-                        start: diaInicial.format('YYYY-MM-DD'),
-                        hoursAvaliable: this.horariosCriados,
-                    }
-
-                    if(checkDayWithHourAvaliable(diaInicial.format('YYYY-MM-DD'), this.horariosCriados)){
-                        this.eventsDay.push(evento);
-                    }
-
+        for (diaInicial; diaInicial.diff(this.end, "days") <= 0; diaInicial.add(1, 'day')) {
+            if (diaInicial.format('ddd') != 'Sat' && diaInicial.format('ddd') != 'Sun') {
+                var evento = {
+                    id: this.id,
+                    title: this.title,
+                    className: 'medico-' + this.id,
+                    backgroundColor: this.backgroundColor,
+                    borderColor: this.backgroundColor,
+                    allDay: true,
+                    start: diaInicial.format('YYYY-MM-DD'),
+                    hoursAvaliable: this.horariosCriados,
                 }
-            }
-
-            if (typeof (callback) != undefined) {
-                callback();
+                this.eventsDay.push(evento);
             }
         }
+
+        if (typeof (callback) != undefined) {
+            callback();
+        }
+    }
 
     this.generateWeekendEvents = function (callback) {
         this.eventsDay = [];
@@ -118,9 +98,7 @@ var Evento = function (id, medico, cor) {
                     start: diaInicial.format('YYYY-MM-DD'),
                     hoursAvaliable: this.horariosCriados,
                 }
-                if(checkDayWithHourAvaliable(diaInicial.format('YYYY-MM-DD'), this.horariosCriados)){
-                    this.eventsDay.push(evento);
-                }
+                this.eventsDay.push(evento);
             }
         }
 
@@ -137,57 +115,28 @@ var Agendamento = function () {
     this.horario;
     this.data;
 
-    this.montaSelectMedico = function (medicoSelecionado = null) {
-        var selectMedico = $('#modalAgendamento #medico');
-        selectMedico.html('');
-        var option = $('<option>');
-        this.medico = false;
-        option.text('').clone().appendTo(selectMedico);
-        
-        if(dateHasEvent(this.data)){
-            for (index = 0; index < medicos.length; index++) {
-                if(medicos[index].id == medicoSelecionado){
-                    this.medico = medicoSelecionado;
-                    option.attr('selected',true);
-                }else{
-                    option.attr('selected',false);
-                }
-                option.val(medicos[index].id).text(medicos[index].nome);
-                option.appendTo(selectMedico);
-            }
-        }
-    
-    };
-
-    this.buscaHorariosMedicoSelecionado = function () {
+    this.buscaDetalhes = function (id) {
         this.horario = '';
-        if($('.loader').is(':hidden') && this.medico != undefined && this.medico){
+        if ($('.loader').is(':hidden')) {
             $('.loader').removeClass('hidden');
             $.ajax({
-                url: '/agendamento/horarios-agenda-medico',
+                url: '/agendamento/buscaDetalhes',
                 dataType: 'json',
                 method: 'POST',
                 global: false,
                 data: {
-                    medicoId: this.medico,
-                    data: this.data
+                    id: id
                 }
             })
-            .done(function (doc) {
-                $('#modalAgendamento select#horario').html('');
-                var option = new Option();
-                $('#modalAgendamento select#horario').append(option);
-                doc.forEach(function (horario) {
-                    option = new Option(horario,horario);
-                    $('#modalAgendamento select#horario').append(option);
+                .done(function (doc) {
+                    console.log(doc);
+                    $('.loader').addClass('hidden');
+                })
+                .fail(function () {
+                    $('.loader').addClass('hidden');
                 });
-                $('.loader').addClass('hidden');
-            })
-            .fail(function(){
-                $('.loader').addClass('hidden');
-            });
         }
-    
+
     };
 
     this.pacienteSelecionado = function () {
@@ -211,7 +160,7 @@ $(document).ready(function () {
         customButtons: {
             refresh: {
                 text: 'Recarregar',
-                click: function() {
+                click: function () {
                     alert('clicked the custom button!');
                 }
             }
@@ -221,7 +170,7 @@ $(document).ready(function () {
             center: '',
             right: 'today refresh prev,next'
         },
-        defaultView: 'listWeek',    
+        defaultView: 'listWeek',
         eventAfterAllRender: function () {
             $('.statusMedico').each(function (index, value) {
                 MostraOcultaEventoNoCalendario($(value))
@@ -241,11 +190,11 @@ $(document).ready(function () {
                 var events = [];
                 doc.forEach(function (agendaData) {
                     dataStr = String(agendaData.agendaData.dataConsulta.date);
-                    var data =  moment(dataStr.substr(0,19), "YYYY-MM-DD HH:mm:ss");
+                    var data = moment(dataStr.substr(0, 19), "YYYY-MM-DD HH:mm:ss");
                     var evento = {
                         id: agendaData.agendaData.id,
                         pacienteId: agendaData.agendaData.pacienteId,
-                        title: '['+ agendaData.medicoNome + '] ' + agendaData.pacienteNome,
+                        title: '[' + agendaData.medicoNome + '] ' + agendaData.pacienteNome,
                         className: 'medico-' + agendaData.medicoId,
                         backgroundColor: agendaData.corAgenda,
                         borderColor: agendaData.corAgenda,
@@ -258,28 +207,15 @@ $(document).ready(function () {
                 $('.loader').addClass('hidden');
                 callback(events);
             })
-            .fail(function(){
-                $('.loader').addClass('hidden');
-            });
+                .fail(function () {
+                    $('.loader').addClass('hidden');
+                });
         }, //end events
-        dayClick: function (date, jsEvent, view) {
-            if($('.loader').is(":hidden")){
-                limparFormularioAgendamento()
-                agendamento.data = date.format('YYYY-MM-DD');
-                agendamento.montaSelectMedico();
-                agendamento.pacienteSelecionado();
-                agendamento.buscaHorariosMedicoSelecionado();
-                $('#modalAgendamento').modal('show');
-            }
-        },
+
         eventClick: function (calEvent, jsEvent, view) {
-            if($('.loader').is(":hidden")){
-                limparFormularioAgendamento()
-                agendamento.data = calEvent.start.format('YYYY-MM-DD');
-                agendamento.montaSelectMedico(calEvent.id);
-                agendamento.pacienteSelecionado();
-                agendamento.buscaHorariosMedicoSelecionado();
-                $('#modalAgendamento').modal('show');
+            if ($('.loader').is(":hidden")) {
+                agendamento.buscaDetalhes(calEvent.id);
+                $('#modalAgendamentoDetalhes').modal('show');
             }
         }
     });
@@ -289,31 +225,13 @@ $(document).ready(function () {
         MostraOcultaEventoNoCalendario($(this))
     });
 
-    $('body').on('change','#modalAgendamento select#medico',function () {
-        $('#modalAgendamento select#horario').html('');
-        var option = new Option();
-        $('#modalAgendamento select#horario').append(option);
-        agendamento.medico = $(this).val();
-        agendamento.buscaHorariosMedicoSelecionado();
-    });
-
-    $('body').on('change','#modalAgendamento select#paciente',function () {
-        agendamento.paciente = $(this).val();
-        agendamento.buscaHorariosMedicoSelecionado();
-    });
-
-    $('body').on('change','#modalAgendamento select#horario',function () {
-        agendamento.horario = $(this).val();
-    });
-
-    $('body').on('click','[action="agendar"]',function(){
+    $('body').on('click', '[action="agendar"]', function () {
         ocultarAlertas();
         salvarAgendamento();
     });
 
-    $('body').on('click','[data-dismiss="modal"]',function(){
+    $('body').on('click', '[data-dismiss="modal"]', function () {
         ocultarAlertas();
-        limparFormularioAgendamento();
     });
 
     inicializaBusca('#paciente .busca');

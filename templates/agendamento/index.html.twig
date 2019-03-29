@@ -73,6 +73,51 @@
             </div>
         </div>
     </div>
+
+    <!-- modais -->
+    <div class="modal fade" id="modalAgendamentoDetalhes" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h5 class="modal-title" id="exampleModalLabel">{{ 'titulo.agendamento.index.modal'|trans }}</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="alert hidden" role="mensagem-modal">res.message</div>
+                    
+                        <div class="form-group paciente">
+                            <label for="paciente" class="col-form-label">Paciente:</label>
+                            <p id="paciente">nn</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="medico" class="col-form-label">Médico:</label>
+                            <p id="medico">nn</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="data" class="col-form-label">Data:</label>
+                            <p id="data">nn</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="horario" class="col-form-label">Horario:</label>
+                            <p id="horario">nn</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="status" class="col-form-label">Status:</label>
+                            <p id="status">nn</p>
+                        </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" action="" no-load="false">{{ 'botao.atendimento.iniciar'|trans }}</button>
+                    <button type="button" class="btn btn-success" action="" no-load="false">{{ 'botao.agendamento.confirmar'|trans }}</button>
+                    <button type="button" class="btn btn-danger" action="" no-load="false">{{ 'botao.agendamento.cancelar'|trans }}</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" no-load="true">{{ 'botao.sair'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <!-- end modais -->
 {% endblock %}
 
 

@@ -24,9 +24,10 @@ class AgendaDataRepository extends ServiceEntityRepository
      */
     public function findByParams(Array $params)
     {
-        $qb = $this->createQueryBuilder('AD');
-        $qb->join('AD.agenda','A');
-        $qb->join('A.clinica','C');
+        $qb = $this->getQuerySqueleton();
+        $qb->select([
+            'AD,P,A,M,AG'
+        ]);
 
         if(array_key_exists('id',$params) && !empty($params['id'])){
             $qb->andWhere('AD.id '.$params['id']['operator'].' :id')
@@ -55,18 +56,34 @@ class AgendaDataRepository extends ServiceEntityRepository
             ->setParameter('clinica', $params['clinica']['value']);
         }
 
+        if(array_key_exists('cliente',$params) and  !empty($params['cliente'])){
+            $qb->andWhere('C.cliente = :clienteId')
+            ->setParameter('clienteId',$params['cliente']->getId());
+        }
+
         $qb->orderBy('AD.dataConsulta, AD.id', 'ASC');
         
+        if(array_key_exists('result-format',$params) and  !empty($params['result-format'])){
+            if($params['result-format'] == 'array'){
+                return $qb->getQuery()->getArrayResult();
+            }
+        }
         return $qb->getQuery()->getResult();
     }
 
-    private function getQueryByDate($dataInicio,$dataFim){
+    private function getQuerySqueleton(){
         $qb = $this->createQueryBuilder('AD');
         $qb->join('AD.paciente','P');
         $qb->join('AD.agenda','A');
         $qb->join('A.clinica','C');
         $qb->join('A.medico','M');
         $qb->join('A.agendaConfig','AG');
+    
+        return $qb;
+    }
+
+    private function getQueryByDate($dataInicio,$dataFim){
+        $qb = $this->getQuerySqueleton();
         
         $dataQuery = $qb->expr()->gte('AD.dataConsulta', "'{$dataInicio} 00:00:00'");
         $qb->andWhere($dataQuery);
