@@ -52,11 +52,10 @@ class AgendaController extends Controller
             $session->getFlashBag()->add('_entidade', Agenda::CLASS_NAME );
 
             return $this->redirectToRoute('agenda_index', ['medicoId' => $medicoId]);
+        }elseif(!$form->isSubmitted()) {
+            $medico = $medicoRepository->find($medicoId);
+            $form->get('medico')->setData($medico);
         }
-
-        $medico = $medicoRepository->find($medicoId);
-        $form->get('medico')->setData($medico);
-
 
         return $this->render('agenda/new.html.twig', [
             'agenda' => $agenda,

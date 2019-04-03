@@ -19,7 +19,7 @@ class AgendaConfig
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Agenda", mappedBy="agendaConfig", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Agenda", mappedBy="agendaConfig", cascade={"persist","remove"})
      * @ORM\JoinColumn(name="agenda_id", referencedColumnName="id")
      */
     private $agenda;

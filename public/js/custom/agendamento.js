@@ -164,7 +164,7 @@ var Evento = function (id, medico, cor) {
             var diaInicial = this.start.clone();
 
             for (diaInicial; diaInicial.diff(this.end, "days") <= 0; diaInicial.add(1, 'day')) {
-                if (diaInicial.format('ddd') != 'Sat' && diaInicial.format('ddd') != 'Sun') {
+                if (diaInicial.format('d') != 0 && diaInicial.format('d') != 6) {
                     var evento = {
                         id: this.id,
                         title: this.title,
@@ -193,10 +193,10 @@ var Evento = function (id, medico, cor) {
         var diaInicial = this.start.clone();
 
         for (diaInicial; diaInicial.diff(this.end, "days") <= 0; diaInicial.add(1, 'day')) {
-            if (diaInicial.format('ddd') == 'Mon') {
+            if (diaInicial.format('d') == 1) {
                 diaInicial.add(5, 'day')
             }
-            if (diaInicial.format('ddd') == 'Sat' || diaInicial.format('ddd') == 'Sun') {
+            if (diaInicial.format('d') == 0 || diaInicial.format('d') == 6) {
                 var evento = {
                     id: this.id,
                     title: this.title,
