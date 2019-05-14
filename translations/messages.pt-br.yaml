@@ -8,8 +8,15 @@ botao:
   exibir: Exibir
   novo: Novo
   opcoes: Configurações
+  salvar: Salvar
+  sair: Sair
   usuarios: usuários
   voltar: Voltar
+  agendamento:
+    cancelar: Cancelar
+    confirmar: Confirmar
+  atendimento:
+    iniciar: Iniciar atendimento
 
 entidade:
   agenda: agenda
@@ -18,10 +25,14 @@ entidade:
   paciente: paciente
 info:
   email: Email
+  sem-informacao: Não foi encontrado nenhum valor
 
 menu:
   administracao: Administração do sistema
-  agendamento: Agendamento
+  agendamento: 
+    menu-nome: Agendamentos
+    index: Marcados
+    agenda: Agenda
   clientes: Clientes
   clinicas: Clinicas
   medicos: Medicos
@@ -56,8 +67,12 @@ titulo:
   agenda_config:
     editar: Editar Configurações da agenda
   agendamento:
-    index: Agenda
-    modal: Novo agendamento
+    agenda: 
+      titulo: Agenda
+      modal: Novo agendamento
+    index:
+      titulo: Agendamentos Marcados
+      modal: Detalhes do agendamento
 
   cliente:
     editar: Editar cliente

@@ -12,5 +12,8 @@
         {{ form_errors(form.duracaoConsulta) }}
     </div>
 
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <a class="btn btn-default btn-float-left" href="{{ path('agenda_index',{'medicoId': medicoId}) }}">
+        {{'botao.voltar'|trans}}
+    </a>
+    <button class="btn btn-success btn-float-left">{{ button_label|default('botao.salvar'|trans) }}</button>
 {{ form_end(form) }}
