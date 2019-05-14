@@ -10,7 +10,6 @@ use App\Repository\AgendaDataStatusRepository;
 use App\Repository\MedicoRepository;
 use App\Service\AgendaService;
 use App\Form\AgendamentoType;
-use App\Factory\AgendaDataStatusFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -151,8 +150,8 @@ class AgendamentoController extends Controller
                 $agendaData->setDataAtualizacao(new DateTime());
                 $agendaData->setUsuarioAtualizacaoId($user);
 
-                $statusAgendado = AgendaDataStatusFactory::getAgendaDataStatus('agendado',$agendaDataStatusRepository);
-                $agendaData->setStatus($statusAgendado);
+                $agendaDataStatus = $agendaDataStatusRepository->findOneBy(['nome'=>'agendado']);
+                $agendaData->setStatus($agendaDataStatus);
             
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($agendaData);
