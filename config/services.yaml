@@ -25,7 +25,15 @@ services:
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+
+    # factory
+    Factory\AgendaDataStatusFactory:
+        # call the static method
+        factory: 'App\Factory\AgendaDataStatusFactory:getAgendaDataStatus'
+        #factory: ['@App\Factory\AgendaDataStatusFactory', getAgendaDataStatus]
+        arguments: ['@status']
+
+    # custom validations
     App\Validator\Constraints\AgendaContainsValidator:
         arguments: ['@doctrine.orm.entity_manager']
         tags: [validator.constraints]

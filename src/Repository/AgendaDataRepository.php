@@ -26,7 +26,7 @@ class AgendaDataRepository extends ServiceEntityRepository
     {
         $qb = $this->getQuerySqueleton();
         $qb->select([
-            'AD,P,A,M,AG'
+            'AD,P,A,M,AG,S'
         ]);
 
         if(array_key_exists('id',$params) && !empty($params['id'])){
@@ -75,9 +75,11 @@ class AgendaDataRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('AD');
         $qb->join('AD.paciente','P');
         $qb->join('AD.agenda','A');
+        $qb->join('AD.status','S');
         $qb->join('A.clinica','C');
         $qb->join('A.medico','M');
         $qb->join('A.agendaConfig','AG');
+        
     
         return $qb;
     }

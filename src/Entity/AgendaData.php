@@ -59,6 +59,12 @@ class AgendaData
     private $dataAtualizacao;
 
     /**
+     * @ORM\ManyToOne(targetEntity="AgendaDataStatus")
+     * @ORM\JoinColumn(name="status", referencedColumnName="id")
+     */
+    private $status;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
@@ -173,6 +179,18 @@ class AgendaData
     public function setUsuarioAtualizacaoId(User $usuarioAtualizacaoId): self
     {
         $this->usuarioAtualizacaoId = $usuarioAtualizacaoId;
+
+        return $this;
+    }
+
+    public function getStatus(): ?User
+    {
+        return $this->status;
+    }
+
+    public function setStatus(AgendaDataStatus $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

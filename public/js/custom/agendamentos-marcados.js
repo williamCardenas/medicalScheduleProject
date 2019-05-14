@@ -129,8 +129,13 @@ var Agendamento = function () {
                 }
             })
                 .done(function (doc) {
-                    console.log(doc);
                     $('.loader').addClass('hidden');
+                    $('#modalAgendamentoDetalhes #paciente').html(doc.paciente.nome);
+                    $('#modalAgendamentoDetalhes #medico').html(doc.agenda.medico.nome);
+                    var data = moment(doc.dataConsulta.date.substr(0, 19), "YYYY-MM-DD HH:mm:ss");
+                    $('#modalAgendamentoDetalhes #data').html(data.format('YYYY-MM-DD'),);
+                    $('#modalAgendamentoDetalhes #horario').html(data.format('HH:mm'),);
+                    $('#modalAgendamentoDetalhes #status').html(doc.status.nome);
                 })
                 .fail(function () {
                     $('.loader').addClass('hidden');

@@ -6,9 +6,11 @@ use App\Entity\AgendaData;
 use App\Entity\Agenda;
 use App\Repository\AgendaRepository;
 use App\Repository\AgendaDataRepository;
+use App\Repository\AgendaDataStatusRepository;
 use App\Repository\MedicoRepository;
 use App\Service\AgendaService;
 use App\Form\AgendamentoType;
+use App\Factory\AgendaDataStatusFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -126,10 +128,9 @@ class AgendamentoController extends Controller
     /**
      * @Route("/new", name="agendamento_new", methods="POST")
      */
-    public function new(Request $request, AgendaRepository $agendaRepository, UserInterface  $user, TranslatorInterface $translator, ValidatorInterface $validation): JsonResponse
+    public function new(Request $request, AgendaRepository $agendaRepository, UserInterface  $user, AgendaDataStatusRepository $agendaDataStatusRepository, TranslatorInterface $translator, ValidatorInterface $validation): JsonResponse
     {
         try{
-            
             $agendaData = new AgendaData();
             $form = $this->createForm(AgendamentoType::class, $agendaData, ['user'=>$user]);
             $form->handleRequest($request);
@@ -149,6 +150,9 @@ class AgendamentoController extends Controller
                 $agendaData->setAgenda($agendas[0]);
                 $agendaData->setDataAtualizacao(new DateTime());
                 $agendaData->setUsuarioAtualizacaoId($user);
+
+                $statusAgendado = AgendaDataStatusFactory::getAgendaDataStatus('agendado',$agendaDataStatusRepository);
+                $agendaData->setStatus($statusAgendado);
             
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($agendaData);
@@ -185,7 +189,7 @@ class AgendamentoController extends Controller
      */
     public function agendamentosMarcados(Request $request, TranslatorInterface $translator, AgendaDataRepository $agendaDataRepository, UserInterface  $user): JsonResponse
     {
-        //try{
+        try{
             $params = [
                 'cliente' => $user->getCliente(),
             ];
@@ -193,11 +197,11 @@ class AgendamentoController extends Controller
             $horariosMarcados = $agendaDataRepository->getAgendamentoByDate($request->get('start'),$request->get('end'),$params);
             
             return new JsonResponse($horariosMarcados);
-        /*}catch(\Exception $e){
+        }catch(\Exception $e){
             $mensagem = $translator->trans('mensagem.erro.padrao');
                 
             return new JsonResponse(array('message' => $mensagem), 500);
-        }*/
+        }
     }
 
     /**
@@ -216,7 +220,6 @@ class AgendamentoController extends Controller
             ];
 
             $horarioDetalhe = $agendaDataRepository->findByParams($params);
-            
             return new JsonResponse($horarioDetalhe[0]);
         }catch(\Exception $e){
             return new JsonResponse($e->getMessage(),500);
