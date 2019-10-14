@@ -151,6 +151,7 @@ class AgendamentoController extends Controller
                 $agendaData->setUsuarioAtualizacaoId($user);
 
                 $agendaDataStatus = $agendaDataStatusRepository->findOneBy(['nome'=>'agendado']);
+                dump($agendaDataStatus);
                 $agendaData->setStatus($agendaDataStatus);
             
                 $em = $this->getDoctrine()->getManager();
