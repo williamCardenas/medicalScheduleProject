@@ -269,4 +269,84 @@ class AgendamentoController extends Controller
             return new JsonResponse($e->getMessage(),500);
         }
     }
+
+    /**
+     * @Route("/cancelar", name="agendamento_cancelar", methods="POST")
+     */
+    public function cancelar(Request $request, AgendaDataRepository $agendaDataRepository, AgendaDataStatusRepository $agendaDataStatusRepository, UserInterface  $user): Response
+    {
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+
+        $serializer = new Serializer($normalizers, $encoders);
+        try{
+            $params = [
+                'cliente'   => $user->getCliente(),
+                'id'        => [
+                    'operator'  => '=',
+                    'value'     => $request->get('id') ,
+                ],
+                'result-format' => 'object'
+            ];
+
+            $agendaData = $agendaDataRepository->findByParams($params);
+            $agendaData = $agendaData[0];
+            
+            $date = new DateTime();
+            $agendaData->setConfirmacao(true)->setDataConfirmacao($date);
+            
+            $agendaDataStatus = $agendaDataStatusRepository->findOneBy(['nome'=>'cancelado']);
+            $agendaData->setStatus($agendaDataStatus);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($agendaData);
+            $em->flush();
+
+            $agendaDataSerializer = $serializer->serialize($agendaDataStatus, 'json');
+
+            return new JsonResponse(['status'=>'success','message'=>'OK','agendaStatus'=>$agendaDataSerializer]);
+        }catch(\Exception $e){
+            return new JsonResponse($e->getMessage(),500);
+        }
+    }
+
+    /**
+     * @Route("/iniciar", name="agendamento_iniciar", methods="POST")
+     */
+    public function iniciar(Request $request, AgendaDataRepository $agendaDataRepository, AgendaDataStatusRepository $agendaDataStatusRepository, UserInterface  $user): Response
+    {
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+
+        $serializer = new Serializer($normalizers, $encoders);
+        try{
+            $params = [
+                'cliente'   => $user->getCliente(),
+                'id'        => [
+                    'operator'  => '=',
+                    'value'     => $request->get('id') ,
+                ],
+                'result-format' => 'object'
+            ];
+
+            $agendaData = $agendaDataRepository->findByParams($params);
+            $agendaData = $agendaData[0];
+            
+            $date = new DateTime();
+            $agendaData->setConfirmacao(true)->setDataConfirmacao($date);
+            
+            $agendaDataStatus = $agendaDataStatusRepository->findOneBy(['nome'=>'atendido']);
+            $agendaData->setStatus($agendaDataStatus);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($agendaData);
+            $em->flush();
+
+            $agendaDataSerializer = $serializer->serialize($agendaDataStatus, 'json');
+
+            return new JsonResponse(['status'=>'success','message'=>'OK','agendaStatus'=>$agendaDataSerializer]);
+        }catch(\Exception $e){
+            return new JsonResponse($e->getMessage(),500);
+        }
+    }
 }

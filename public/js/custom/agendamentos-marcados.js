@@ -152,33 +152,49 @@ var Agendamento = function () {
     };
 
     this.confirmarAgendamento = function(){
-        console.log('if',$('.loader').is(':hidden'));
         if ($('.loader').is(':hidden')) {
             $('.loader').removeClass('hidden');
-            $.ajax({
-                url: '/agendamento/confirmar',
-                dataType: 'json',
-                method: 'POST',
-                global: false,
-                data: {
-                    id: this.id
-                }
-            })
-                .done(function (doc) {
-                    exibeAlert(doc.status, doc.message);
-                    if(typeof doc.agendaStatus == 'string'){
-                        doc.agendaStatus = JSON.parse(doc.agendaStatus);
-                    }
-                    $('#modalAgendamentoDetalhes #status').html(doc.agendaStatus.nome);
-                    $('.loader').addClass('hidden');
-                })
-                .fail(function (doc) {
-                    exibeAlert(false, doc.message);
-                    $('.loader').addClass('hidden');
-                });
+            this.setStatusAjax('/agendamento/confirmar');
         }
     }
 
+    this.cancelarAgendamento = function(){
+        if ($('.loader').is(':hidden')) {
+            $('.loader').removeClass('hidden');
+            this.setStatusAjax('/agendamento/cancelar');
+        }
+    }
+
+    this.IniciarAgendamento = function(){
+        if ($('.loader').is(':hidden')) {
+            $('.loader').removeClass('hidden');
+            this.setStatusAjax('/agendamento/iniciar');
+        }
+    }
+
+    this.setStatusAjax = function(url){
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            method: 'POST',
+            global: false,
+            data: {
+                id: this.id
+            }
+        })
+        .done(function (doc) {
+            exibeAlert(doc.status, doc.message);
+            if(typeof doc.agendaStatus == 'string'){
+                doc.agendaStatus = JSON.parse(doc.agendaStatus);
+            }
+            $('#modalAgendamentoDetalhes #status').html(doc.agendaStatus.nome);
+            $('.loader').addClass('hidden');
+        })
+        .fail(function (doc) {
+            exibeAlert(false, doc.message);
+            $('.loader').addClass('hidden');
+        });
+    }
     
 }
 var agendamento = new Agendamento();
@@ -258,6 +274,14 @@ $(document).ready(function () {
 
     $('body').on('click', '[action="confirmar"]', function () {
         agendamento.confirmarAgendamento();
+    });
+
+    $('body').on('click', '[action="cancelar"]', function () {
+        agendamento.cancelarAgendamento();
+    });
+
+    $('body').on('click', '[action="iniciar"]', function () {
+        agendamento.IniciarAgendamento();
     });
 
     $('body').on('click', '[data-dismiss="modal"]', function () {
