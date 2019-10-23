@@ -166,6 +166,9 @@ var Agendamento = function () {
             })
                 .done(function (doc) {
                     exibeAlert(doc.status, doc.message);
+                    if(typeof doc.agendaStatus == 'string'){
+                        doc.agendaStatus = JSON.parse(doc.agendaStatus);
+                    }
                     $('#modalAgendamentoDetalhes #status').html(doc.agendaStatus.nome);
                     $('.loader').addClass('hidden');
                 })

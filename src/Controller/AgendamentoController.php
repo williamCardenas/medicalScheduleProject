@@ -231,7 +231,7 @@ class AgendamentoController extends Controller
     }
 
     /**
-     * @Route("/confirmar", name="agendamento_agenda", methods="POST")
+     * @Route("/confirmar", name="agendamento_confirmar", methods="POST")
      */
     public function confirmar(Request $request, AgendaDataRepository $agendaDataRepository, AgendaDataStatusRepository $agendaDataStatusRepository, UserInterface  $user): Response
     {
