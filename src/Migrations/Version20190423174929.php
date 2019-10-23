@@ -16,7 +16,7 @@ final class Version20190423174929 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE agenda_data_status (id INT AUTO_INCREMENT NOT NULL, nome VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_A822B4C354BD530C (nome), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
-        $this->addSql('INSERT INTO agenda_data_status (nome) VALUES ("agendado"),("reagendado"),("cancelado"),("atendido")');
+        $this->addSql('INSERT INTO agenda_data_status (nome) VALUES ("agendado"),("reagendado"),("cancelado"),("atendido"),("confirmado")');
         $this->addSql('ALTER TABLE agenda DROP FOREIGN KEY FK_2CEDC8776E05FB77');
         $this->addSql('ALTER TABLE agenda CHANGE medico_id medico_id INT DEFAULT NULL, CHANGE clinica_id clinica_id INT DEFAULT NULL, CHANGE agenda_config_id agenda_config_id INT DEFAULT NULL, CHANGE horario_inicio_atendimento horario_inicio_atendimento TIME DEFAULT NULL, CHANGE horario_fim_atendimento horario_fim_atendimento TIME DEFAULT NULL, CHANGE data_inicio_atendimento data_inicio_atendimento DATE DEFAULT NULL, CHANGE data_fim_atendimento data_fim_atendimento DATE DEFAULT NULL');
         $this->addSql('ALTER TABLE agenda ADD CONSTRAINT FK_2CEDC8776E05FB77 FOREIGN KEY (agenda_config_id) REFERENCES agenda_config (id)');

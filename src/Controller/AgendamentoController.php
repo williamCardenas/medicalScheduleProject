@@ -20,6 +20,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+
 use DateTime;
 
 /**
@@ -151,7 +156,6 @@ class AgendamentoController extends Controller
                 $agendaData->setUsuarioAtualizacaoId($user);
 
                 $agendaDataStatus = $agendaDataStatusRepository->findOneBy(['nome'=>'agendado']);
-                dump($agendaDataStatus);
                 $agendaData->setStatus($agendaDataStatus);
             
                 $em = $this->getDoctrine()->getManager();
@@ -221,6 +225,46 @@ class AgendamentoController extends Controller
 
             $horarioDetalhe = $agendaDataRepository->findByParams($params);
             return new JsonResponse($horarioDetalhe[0]);
+        }catch(\Exception $e){
+            return new JsonResponse($e->getMessage(),500);
+        }
+    }
+
+    /**
+     * @Route("/confirmar", name="agendamento_agenda", methods="POST")
+     */
+    public function confirmar(Request $request, AgendaDataRepository $agendaDataRepository, AgendaDataStatusRepository $agendaDataStatusRepository, UserInterface  $user): Response
+    {
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+
+        $serializer = new Serializer($normalizers, $encoders);
+        try{
+            $params = [
+                'cliente'   => $user->getCliente(),
+                'id'        => [
+                    'operator'  => '=',
+                    'value'     => $request->get('id') ,
+                ],
+                'result-format' => 'object'
+            ];
+
+            $agendaData = $agendaDataRepository->findByParams($params);
+            $agendaData = $agendaData[0];
+            
+            $date = new DateTime();
+            $agendaData->setConfirmacao(true)->setDataConfirmacao($date);
+            
+            $agendaDataStatus = $agendaDataStatusRepository->findOneBy(['nome'=>'confirmado']);
+            $agendaData->setStatus($agendaDataStatus);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($agendaData);
+            $em->flush();
+
+            $agendaDataSerializer = $serializer->serialize($agendaDataStatus, 'json');
+
+            return new JsonResponse(['status'=>'success','message'=>'OK','agendaStatus'=>$agendaDataSerializer]);
         }catch(\Exception $e){
             return new JsonResponse($e->getMessage(),500);
         }

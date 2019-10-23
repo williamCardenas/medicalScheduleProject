@@ -183,7 +183,7 @@ class AgendaData
         return $this;
     }
 
-    public function getStatus(): ?User
+    public function getStatus(): ? User
     {
         return $this->status;
     }

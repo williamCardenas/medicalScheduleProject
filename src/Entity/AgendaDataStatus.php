@@ -22,10 +22,8 @@ class AgendaDataStatus
      */
     private $nome;
 
-    /*
-    static agendado     = "agendado";
-    static reagendado = "reagendado"; 
-    static cancelado = "cancelado";
-    static atendido = "atendido";
-    */
+    public function getNome():String 
+    {
+        return $this->nome;
+    }
 }

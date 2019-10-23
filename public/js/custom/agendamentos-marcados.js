@@ -43,6 +43,16 @@ function dateHasEvent(date) {
     return event.length > 0;
 }
 
+function exibeAlert(status, message){
+    var modal = $('.modal [role="mensagem-modal"]');
+    modal.removeClass('alert-success');
+    if(status == 'success'){
+        modal.addClass('alert-success').removeClass('hidden').html(message);
+    }else{
+        modal.addClass('alert-danger').removeClass('hidden').html(message)
+    }
+}
+
 
 var Evento = function (id, medico, cor) {
     this.title = medico;
@@ -110,13 +120,10 @@ var Evento = function (id, medico, cor) {
 };
 
 var Agendamento = function () {
-    this.medico;
-    this.paciente;
-    this.horario;
-    this.data;
+    this.id;
 
     this.buscaDetalhes = function (id) {
-        this.horario = '';
+        this.id = id;
         if ($('.loader').is(':hidden')) {
             $('.loader').removeClass('hidden');
             $.ajax({
@@ -144,18 +151,32 @@ var Agendamento = function () {
 
     };
 
-    this.pacienteSelecionado = function () {
-        var selectPaciente = $('#paciente .buscaPaciente option:selected');
-        var selectPacienteModal = $('#modalAgendamento .buscaPaciente');
-
-        selectPacienteModal.val('').html('');
-
-        if (selectPaciente.val() != '') {
-            var option = new Option(selectPaciente.text(), selectPaciente.val(), false, false);
-            selectPacienteModal.append(option).trigger('change');
-            this.buscaHorariosMedicoSelecionado();
+    this.confirmarAgendamento = function(){
+        console.log('if',$('.loader').is(':hidden'));
+        if ($('.loader').is(':hidden')) {
+            $('.loader').removeClass('hidden');
+            $.ajax({
+                url: '/agendamento/confirmar',
+                dataType: 'json',
+                method: 'POST',
+                global: false,
+                data: {
+                    id: this.id
+                }
+            })
+                .done(function (doc) {
+                    exibeAlert(doc.status, doc.message);
+                    $('#modalAgendamentoDetalhes #status').html(doc.agendaStatus.nome);
+                    $('.loader').addClass('hidden');
+                })
+                .fail(function (doc) {
+                    exibeAlert(false, doc.message);
+                    $('.loader').addClass('hidden');
+                });
         }
     }
+
+    
 }
 var agendamento = new Agendamento();
 
@@ -220,6 +241,8 @@ $(document).ready(function () {
         eventClick: function (calEvent, jsEvent, view) {
             if ($('.loader').is(":hidden")) {
                 agendamento.buscaDetalhes(calEvent.id);
+                var modalAlert = $('.modal [role="mensagem-modal"]');
+                modalAlert.addClass('hidden');
                 $('#modalAgendamentoDetalhes').modal('show');
             }
         }
@@ -230,13 +253,12 @@ $(document).ready(function () {
         MostraOcultaEventoNoCalendario($(this))
     });
 
-    $('body').on('click', '[action="agendar"]', function () {
-        ocultarAlertas();
-        salvarAgendamento();
+    $('body').on('click', '[action="confirmar"]', function () {
+        agendamento.confirmarAgendamento();
     });
 
     $('body').on('click', '[data-dismiss="modal"]', function () {
-        ocultarAlertas();
+        //ocultarAlertas();
     });
 
     inicializaBusca('#paciente .busca');
