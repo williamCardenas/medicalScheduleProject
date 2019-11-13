@@ -162,7 +162,12 @@ var Evento = function (id, medico, cor) {
         this.generateEvents = function (callback) {
             this.eventsDay = [];
             var diaInicial = this.start.clone();
-
+            var diaHoje = new moment();
+            
+            if(diaInicial < diaHoje){
+                diaInicial = diaHoje;
+            }
+            
             for (diaInicial; diaInicial.diff(this.end, "days") <= 0; diaInicial.add(1, 'day')) {
                 if (diaInicial.format('d') != 0 && diaInicial.format('d') != 6) {
                     var evento = {
@@ -191,6 +196,11 @@ var Evento = function (id, medico, cor) {
     this.generateWeekendEvents = function (callback) {
         this.eventsDay = [];
         var diaInicial = this.start.clone();
+        var diaHoje = new moment();
+            
+        if(diaInicial < diaHoje){
+            diaInicial = diaHoje;
+        }
 
         for (diaInicial; diaInicial.diff(this.end, "days") <= 0; diaInicial.add(1, 'day')) {
             if (diaInicial.format('d') == 1) {
@@ -297,6 +307,9 @@ var agendamento = new Agendamento();
 $(document).ready(function () {
 
     $('#agendamento').fullCalendar({
+        validRange: {
+            start: moment().subtract(1, 'day')
+        },
         eventAfterAllRender: function () {
             $('.statusMedico').each(function (index, value) {
                 MostraOcultaEventoNoCalendario($(value))
@@ -304,6 +317,11 @@ $(document).ready(function () {
         },
         events: function (start, end, timezone, callback) {
             $('.loader').removeClass('hidden');
+            now = moment();
+            if(start.format('YYYY-MM-DD') < now.format('YYYY-MM-DD')){
+                start = now;
+            }
+            
             $.ajax({
                 url: '/agendamento/agendas-medicas',
                 dataType: 'json',
@@ -379,12 +397,14 @@ $(document).ready(function () {
         }, //end events
         dayClick: function (date, jsEvent, view) {
             if($('.loader').is(":hidden")){
-                limparFormularioAgendamento()
-                agendamento.data = date.format('YYYY-MM-DD');
-                agendamento.montaSelectMedico();
-                agendamento.pacienteSelecionado();
-                agendamento.buscaHorariosMedicoSelecionado();
-                $('#modalAgendamento').modal('show');
+                if(dateHasEvent(date.format("YYYY-MM-DD"))){
+                    limparFormularioAgendamento()
+                    agendamento.data = date.format('YYYY-MM-DD');
+                    agendamento.montaSelectMedico();
+                    agendamento.pacienteSelecionado();
+                    agendamento.buscaHorariosMedicoSelecionado();
+                    $('#modalAgendamento').modal('show');
+                }
             }
         },
         eventClick: function (calEvent, jsEvent, view) {
