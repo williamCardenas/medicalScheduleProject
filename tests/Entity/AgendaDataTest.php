@@ -11,14 +11,6 @@ use App\Entity\Paciente;
 
 class AgendaDataTest extends TestCase
 {
-
-    /**
-    * {@inheritDoc}
-    */
-    protected function setUp()
-    {
-    }
-
     public function testNovaAgendaData(): AgendaData
     {
         $agendaData = new AgendaData();

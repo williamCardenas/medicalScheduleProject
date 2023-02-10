@@ -17,7 +17,7 @@ class AgendaTest extends TestCase
 {
     private $agendaValidator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $objectManager = $this->createMock(EntityManager::class);
         $this->agendaValidator = new AgendaConstraintsValidator($objectManager);

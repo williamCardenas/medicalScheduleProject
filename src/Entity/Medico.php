@@ -5,45 +5,32 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Repository\MedicoRepository;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\MedicoRepository")
- */
+#[ORM\Entity(repositoryClass:MedicoRepository::class)]
 class Medico
 {
     const CLASS_NAME = 'Medico';
     
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type:"string", length:255)]
     private $nome;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type:"string", length:255)]
     private $numeroDocumento;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Agenda", mappedBy="medico")
-     */
+    #[ORM\OneToMany(targetEntity:"Agenda", mappedBy:"medico")]
     private $agenda;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Cliente", inversedBy="medico")
-     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity:"Cliente", inversedBy:"medico")]
+    #[ORM\JoinColumn(name:"cliente_id", referencedColumnName:"id")]
     private $cliente;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
+    #[ORM\Column(type:"string", length:10)]
     private $corAgenda;
 
     public function __construct(){

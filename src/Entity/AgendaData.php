@@ -3,71 +3,51 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\AgendaDataRepository;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AgendaDataRepository")
- */
+#[ORM\Entity(repositoryClass: AgendaDataRepository::class)]
 class AgendaData
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Agenda", inversedBy="agendaData")
-     * @ORM\JoinColumn(name="agenda_id", referencedColumnName="id")
-     */
+    
+    #[ORM\ManyToOne(targetEntity:Agenda::class, inversedBy:"agendaData")]
+    #[ORM\JoinColumn(name:"agenda_id", referencedColumnName:"id")]
     private $agenda;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Paciente", inversedBy="agendaData")
-     * @ORM\JoinColumn(name="paciente_id", referencedColumnName="id")
-     */
+    
+    #[ORM\ManyToOne(targetEntity:Paciente::class, inversedBy:"agendaData")]
+    #[ORM\JoinColumn(name:"paciente_id", referencedColumnName:"id")]
     private $paciente;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    
+    #[ORM\Column(type:"datetime")]
     private $dataConsulta;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type:"datetime", nullable:true)]
     private $dataConfirmacao;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type:"boolean", nullable:true)]
     private $confirmacaoPeloPaciente;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true ,options={"usigned":true, "default":false})
-     */
+    #[ORM\Column(type:"boolean", nullable:true ,options:["usigned"=>true, "default"=>false])]
     private $confirmacao;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true ,options={"usigned":true, "default":false})
-     */
+    #[ORM\Column(type:"boolean", nullable:true ,options:["usigned"=>true, "default"=>false])]
     private $pagamentoEfetuado;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type:"datetime")]
     private $dataAtualizacao;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="AgendaDataStatus")
-     * @ORM\JoinColumn(name="status", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity:AgendaDataStatus::class)]
+    #[ORM\JoinColumn(name:"status", referencedColumnName:"id")]
     private $status;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity:"User")]
+    #[ORM\JoinColumn(name:"user_id", referencedColumnName:"id")]
     private $usuarioAtualizacaoId;
 
     public function getId()

@@ -13,23 +13,17 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * @Route("/paciente")
- */
+#[Route("/paciente")]
 class PacienteController extends AbstractController
 {
-    /**
-     * @Route("/", name="paciente_index", methods="GET")
-     */
+    #[Route("/", name:"paciente_index", methods:"GET")]
     public function index(PacienteRepository $pacienteRepository, UserInterface $user): Response
     {
         $pacientes = $pacienteRepository->searchResult(['cliente'=>$user->getCliente()]);
         return $this->render('paciente/index.html.twig', ['pacientes' => $pacientes]);
     }
 
-    /**
-     * @Route("/new", name="paciente_new", methods="GET|POST")
-     */
+    #[Route("/new", name:"paciente_new", methods:"GET|POST")]
     public function new(Request $request, SessionInterface $session, UserInterface $user): Response
     {
         $paciente = new Paciente();
@@ -54,17 +48,13 @@ class PacienteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="paciente_show", methods="GET")
-     */
+    #[Route("/{id}", name:"paciente_show", methods:"GET")]
     public function show(Paciente $paciente): Response
     {
         return $this->render('paciente/show.html.twig', ['paciente' => $paciente]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="paciente_edit", methods="GET|POST")
-     */
+    #[Route("/{id}/edit", name:"paciente_edit", methods:"GET|POST")]
     public function edit(Request $request, Paciente $paciente, SessionInterface $session): Response
     {
         $form = $this->createForm(PacienteType::class, $paciente);
@@ -85,9 +75,7 @@ class PacienteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="paciente_delete", methods="DELETE")
-     */
+    #[Route("/{id}", name:"paciente_delete", methods:"DELETE")]
     public function delete(Request $request, Paciente $paciente, SessionInterface $session): Response
     {
         if ($this->isCsrfTokenValid('delete'.$paciente->getId(), $request->request->get('_token'))) {
@@ -102,9 +90,7 @@ class PacienteController extends AbstractController
         return $this->redirectToRoute('paciente_index');
     }
 
-    /**
-     * @Route("/buscar", name="paciente_busca", methods="POST")
-     */
+    #[Route("/buscar", name:"paciente_busca", methods:"POST")]
     public function busca(Request $request, PacienteRepository $pacienteRepository, SessionInterface $session, UserInterface $user): Response
     {
         

@@ -19,7 +19,7 @@ class AdminVoter extends Voter
         $this->decisionManager = $decisionManager;
     }
 
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
@@ -27,7 +27,7 @@ class AdminVoter extends Voter
             && ($subject instanceof User);
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
 
@@ -53,7 +53,7 @@ class AdminVoter extends Voter
         return false;
     }
 
-    private function canEdit(TokenInterface $token)
+    private function canEdit(TokenInterface $token): bool
     {
         if ($this->decisionManager->decide($token, array(self::ADMIN))) {
             return true;

@@ -10,14 +10,6 @@ use App\Entity\Cliente;
 
 class PacienteTest extends TestCase
 {
-
-    /**
-    * {@inheritDoc}
-    */
-   protected function setUp()
-   {
-   }
-
    public function testNovoPaciente() :Paciente
    {
        $paciente = new Paciente();

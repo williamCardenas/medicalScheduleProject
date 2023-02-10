@@ -12,14 +12,6 @@ use App\Entity\Medico;
 
 class AgendaTest extends TestCase
 {
-
-    /**
-    * {@inheritDoc}
-    */
-    protected function setUp()
-    {
-    }
-
     public function testNovaAgenda(): Agenda
     {
         $agenda = new Agenda();

@@ -10,14 +10,13 @@ use App\Repository\AgendaDataStatusRepository;
 use App\Repository\MedicoRepository;
 use App\Service\AgendaService;
 use App\Form\AgendamentoType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -27,14 +26,10 @@ use Symfony\Component\Serializer\Serializer;
 
 use DateTime;
 
-/**
- * @Route("/agendamento")
- */
-class AgendamentoController extends Controller
+#[Route("/agendamento")]
+class AgendamentoController extends AbstractController
 {
-    /**
-     * @Route("/", name="agendamento_index", methods="GET")
-     */
+    #[Route("/", name:"agendamento_index", methods:"GET")]
     public function index(MedicoRepository $medicoRepository, UserInterface  $user): Response
     {
         $agendaData = new AgendaData();
@@ -47,9 +42,7 @@ class AgendamentoController extends Controller
         ]);
     }
 
-    /**
-     * @Route("/agenda", name="agendamento_agenda", methods="GET")
-     */
+    #[Route("/agenda", name:"agendamento_agenda", methods:"GET")]
     public function agenda(MedicoRepository $medicoRepository, UserInterface  $user): Response
     {
         $agendaData = new AgendaData();
@@ -62,9 +55,7 @@ class AgendamentoController extends Controller
         ]);
     }
 
-    /**
-     * @Route("/agendas-medicas", name="agendamento_agendas", methods="POST")
-     */
+    #[Route("/agendas-medicas", name:"agendamento_agendas", methods:"POST")]
     public function agendaMedica(Request $request, MedicoRepository $medicoRepository, AgendaDataRepository $agendaDataRepository, UserInterface  $user): JsonResponse
     {
         try{
@@ -104,9 +95,7 @@ class AgendamentoController extends Controller
         }
     }
 
-    /**
-     * @Route("/horarios-agenda-medico", name="horarios_agenda_medico", methods="POST")
-     */
+    #[Route("/horarios-agenda-medico", name:"horarios_agenda_medico", methods:"POST")]
     public function horarioDisponivelAgenda(Request $request, AgendaRepository $agendaRepository, AgendaDataRepository $agendaDataRepository, UserInterface  $user): JsonResponse
     {
         try{
@@ -129,9 +118,7 @@ class AgendamentoController extends Controller
         }
     }
 
-    /**
-     * @Route("/new", name="agendamento_new", methods="POST")
-     */
+    #[Route("/new", name:"agendamento_new", methods:"POST")]
     public function new(Request $request, AgendaRepository $agendaRepository, UserInterface  $user, AgendaDataStatusRepository $agendaDataStatusRepository, TranslatorInterface $translator, ValidatorInterface $validation): JsonResponse
     {
         try{
@@ -188,9 +175,7 @@ class AgendamentoController extends Controller
         }
     }
 
-    /**
-     * @Route("/agendamentos-marcados", name="agendamento_marcados", methods="POST")
-     */
+    #[Route("/agendamentos-marcados", name:"agendamento_marcados", methods:"POST")]
     public function agendamentosMarcados(Request $request, TranslatorInterface $translator, AgendaDataRepository $agendaDataRepository, UserInterface  $user): JsonResponse
     {
         try{
@@ -208,9 +193,7 @@ class AgendamentoController extends Controller
         }
     }
 
-    /**
-     * @Route("/buscaDetalhes", name="agendamento_busca_detalhes", methods="POST")
-     */
+    #[Route("/buscaDetalhes", name:"agendamento_busca_detalhes", methods:"POST")]
     public function buscaDetalhes(Request $request, AgendaDataRepository $agendaDataRepository, UserInterface  $user): JsonResponse
     {
         try{
@@ -230,9 +213,7 @@ class AgendamentoController extends Controller
         }
     }
 
-    /**
-     * @Route("/confirmar", name="agendamento_confirmar", methods="POST")
-     */
+    #[Route("/confirmar", name:"agendamento_confirmar", methods:"POST")]
     public function confirmar(Request $request, AgendaDataRepository $agendaDataRepository, AgendaDataStatusRepository $agendaDataStatusRepository, UserInterface  $user): Response
     {
         $encoders = [new XmlEncoder(), new JsonEncoder()];
@@ -270,9 +251,7 @@ class AgendamentoController extends Controller
         }
     }
 
-    /**
-     * @Route("/cancelar", name="agendamento_cancelar", methods="POST")
-     */
+    #[Route("/cancelar", name:"agendamento_cancelar", methods:"POST")]
     public function cancelar(Request $request, AgendaDataRepository $agendaDataRepository, AgendaDataStatusRepository $agendaDataStatusRepository, UserInterface  $user): Response
     {
         $encoders = [new XmlEncoder(), new JsonEncoder()];
@@ -310,9 +289,7 @@ class AgendamentoController extends Controller
         }
     }
 
-    /**
-     * @Route("/iniciar", name="agendamento_iniciar", methods="POST")
-     */
+    #[Route("/iniciar", name:"agendamento_iniciar", methods:"POST")]
     public function iniciar(Request $request, AgendaDataRepository $agendaDataRepository, AgendaDataStatusRepository $agendaDataStatusRepository, UserInterface  $user): Response
     {
         $encoders = [new XmlEncoder(), new JsonEncoder()];

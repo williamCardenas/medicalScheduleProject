@@ -3,60 +3,44 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Entity\Cliente;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- */
-class User implements UserInterface, \Serializable
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     const CLASS_NAME = 'Usuario';
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
-     */
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $username;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
+    #[ORM\Column(type: 'string', length: 254, unique: true)]
     private $login;
 
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
+    #[ORM\Column(type: 'string', length: 64)]
     private $password;
 
-    /**
-     * @ORM\Column(type="string", length=254, unique=true)
-     */
+    #[ORM\Column(type: 'string', length: 254, unique: true)]
     private $email;
 
-    /**
-     * @ORM\Column(name="is_active", type="boolean",options={"default" : 1})
-     */
+    #[ORM\Column(name:"is_active", type:"boolean")]
     private $isActive;
 
-    /**
-     * @ORM\Column(name="is_admin", type="boolean")
-     */
+    #[ORM\Column(name:"is_admin", type:"boolean")]
     private $isAdmin;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Cliente", inversedBy="user")
-     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity:Cliente::class, inversedBy:"user")]
+    #[ORM\JoinColumn(name:"cliente_id", referencedColumnName:"id")]
     private $clienteId;
 
-    /**
-     * @ORM\Column(name="roles", type="json")
-     */
+    #[ORM\Column(name:"roles", type:"json")]
     private $roles;
 
 
@@ -120,7 +104,7 @@ class User implements UserInterface, \Serializable
         return null;
     }
 
-    public function getRoles()
+    public function getRoles():  array
     {
         return $this->roles;
     }
@@ -165,6 +149,16 @@ class User implements UserInterface, \Serializable
     public function isAccountNonExpired()
     {
         return true;
+    }
+
+     /**
+     * The public representation of the user (e.g. a username, an email address, etc.)
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
     }
 
     public function isAccountNonLocked()

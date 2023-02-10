@@ -10,14 +10,6 @@ use App\Entity\AgendaConfig;
 
 class AgendaConfigTest extends TestCase
 {
-
-    /**
-    * {@inheritDoc}
-    */
-    protected function setUp()
-    {
-    }
-
     public function testNovaAgendaConfig(): AgendaConfig
     {
         $agendaConfig = new AgendaConfig();

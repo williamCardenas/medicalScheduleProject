@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Agenda;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 use DateTime;
 use DateInterval;
@@ -17,7 +17,7 @@ use DateInterval;
  */
 class AgendaRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Agenda::class);
     }

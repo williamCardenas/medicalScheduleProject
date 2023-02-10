@@ -3,44 +3,31 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PacienteRepository;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\PacienteRepository")
- */
+#[ORM\Entity(repositoryClass:PacienteRepository::class)]
 class Paciente
 {
     const CLASS_NAME = 'Paciente';
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type:"string", length:255)]
     private $nome;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type:"string", length:255)]
     private $apelido;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type:"integer")]
     private $idade;
 
-    /**
-     * @ORM\OneToMany(targetEntity="AgendaData", mappedBy="paciente")
-     */
+    #[ORM\OneToMany(targetEntity:"AgendaData", mappedBy:"paciente")]
     private $agendaData;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Cliente", inversedBy="paciente")
-     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity:"Cliente", inversedBy:"paciente")]
+    #[ORM\JoinColumn(name:"cliente_id", referencedColumnName:"id")]
     private $cliente;
 
 

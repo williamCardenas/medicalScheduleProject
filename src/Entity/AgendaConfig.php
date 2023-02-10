@@ -3,35 +3,26 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\AgendaConfigRepository;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AgendaConfigRepository")
- */
+#[ORM\Entity(repositoryClass:AgendaConfigRepository::class)]
 class AgendaConfig
 {
     const CLASS_NAME = "Configuração";
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type:"integer")]
     private $id;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Agenda", mappedBy="agendaConfig", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="agenda_id", referencedColumnName="id")
-     */
+    #[ORM\OneToOne(targetEntity:Agenda::class, mappedBy:"agendaConfig", cascade:["persist","remove"])]
+    #[ORM\JoinColumn(name:"agenda_id", referencedColumnName:"id")]
     private $agenda;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    #[ORM\Column(type:"float")]
     private $valorConsulta = 10000;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type:"integer")]
     private $duracaoConsulta = 30;
 
     public function getId()

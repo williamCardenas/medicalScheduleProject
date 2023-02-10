@@ -9,7 +9,7 @@ use App\Repository\ClienteRepository;
 use App\Repository\UserRepository;
 use App\Security\Voter\AdminVoter;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,14 +17,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 use Exception;
-/**
- * @Route("/admin/cliente/{clienteId}/usuario")
- */
-class ClienteUserController extends Controller
+
+#[Route("/admin/cliente/{clienteId}/usuario")]
+class ClienteUserController extends AbstractController
 {
-    /**
-     * @Route("/", name="cliente_user_index", methods="GET")
-     */
+    #[Route("/", name:"cliente_user_index", methods:"GET")]
     public function index(ClienteRepository $clienteRepository, UserRepository $userRepository, $clienteId): Response
     {
         $cliente = $clienteRepository->find($clienteId);
@@ -32,9 +29,7 @@ class ClienteUserController extends Controller
         return $this->render('clienteUser/index.html.twig', ['cliente' => $cliente, 'usuarios'=> $usuarios]);
     }
 
-    /**
-     * @Route("/novo", name="cliente_user_new", methods="GET|POST")
-     */
+    #[Route("/novo", name:"cliente_user_new", methods:"GET|POST")]
     public function new(Request $request, UserPasswordEncoderInterface $encode, ClienteRepository $clienteRepository, SessionInterface $session, $clienteId): Response
     { 
         $cliente = $clienteRepository->find($clienteId);
@@ -74,9 +69,7 @@ class ClienteUserController extends Controller
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="cliente_user_show", methods="GET")
-     */
+    #[Route("/{id}", name:"cliente_user_show", methods:"GET")]
     public function show(User $user, Request $request, ClienteRepository $clienteRepository, $clienteId): Response
     {
         $cliente = $clienteRepository->find($clienteId);
@@ -84,9 +77,7 @@ class ClienteUserController extends Controller
         return $this->render('clienteUser/show.html.twig', ['cliente' => $cliente, 'user' => $user]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="cliente_user_edit", methods="GET|POST")
-     */
+    #[Route("/{id}/edit", name:"cliente_user_edit", methods:"GET|POST")]
     public function edit(Request $request, UserPasswordEncoderInterface $encode, ClienteRepository $clienteRepository, SessionInterface $session, User $user, $clienteId): Response
     {
         $cliente = $clienteRepository->find($clienteId);
@@ -124,9 +115,7 @@ class ClienteUserController extends Controller
         ]);
     }
 
-    /**
-     * @Route("/{id}/delete", name="cliente_user_delete", methods="DELETE")
-     */
+    #[Route("/{id}/delete", name:"cliente_user_delete", methods:"DELETE")]
     public function delete(Request $request, User $user, SessionInterface $session, $clienteId): Response
     {
         try{
