@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SecurityController extends AbstractController
 {
@@ -35,8 +37,15 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/logout', name: 'logout')]
-    public function logout()
+    public function logout(SessionInterface $session, Security $security)
     {
+        // $response = $security->logout();
+
+        $response = $security->logout(false);
+
+        $session->getFlashBag()->add('success', 'mensagem.sucesso.logout');
+        $session->getFlashBag()->add('_entidade', Security::class );
+
         return $this->render('security/logout.html.twig', [
             'controller_name' => 'SecurityController',
         ]);

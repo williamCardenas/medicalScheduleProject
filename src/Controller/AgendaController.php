@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 #[Route("/agenda/medico/{medicoId}")]
 class AgendaController extends AbstractController
@@ -26,7 +27,7 @@ class AgendaController extends AbstractController
     }
 
     #[Route("/new", name:"agenda_new", methods:"GET|POST")]
-    public function new(Request $request, SessionInterface $session, $medicoId, MedicoRepository $medicoRepository): Response
+    public function new(Request $request, SessionInterface $session, $medicoId, MedicoRepository $medicoRepository, ManagerRegistry $doctrine): Response
     {
         $agenda = new Agenda();
         $form = $this->createForm(AgendaType::class, $agenda,array('user' => $this->getUser()));
@@ -38,9 +39,9 @@ class AgendaController extends AbstractController
             
             $agenda->setAgendaConfig($agendaConfig);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($agendaConfig,$agenda);
-            $em->flush();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($agendaConfig,$agenda);
+            $entityManager->flush();
 
             $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');
             $session->getFlashBag()->add('_entidade', Agenda::CLASS_NAME );
@@ -65,13 +66,13 @@ class AgendaController extends AbstractController
     }
 
     #[Route("/edit/{id}", name:"agenda_edit", methods:"GET|POST")]
-    public function edit(Request $request, Agenda $agenda, SessionInterface $session, $medicoId): Response
+    public function edit(Request $request, Agenda $agenda, SessionInterface $session, ManagerRegistry $doctrine, $medicoId): Response
     {
         $form = $this->createForm(AgendaType::class, $agenda, array('user' => $this->getUser()));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $doctrine->getManager()->flush();
 
             $session->getFlashBag()->add('success', 'mensagem.sucesso.editado');
             $session->getFlashBag()->add('_entidade', Agenda::CLASS_NAME );
@@ -79,7 +80,7 @@ class AgendaController extends AbstractController
             return $this->redirectToRoute('agenda_index', ['medicoId' => $medicoId]);
         }
 
-        $form->get('medico')->setData($medicoId);
+        // $form->get('medico')->setData($medicoId);
 
         return $this->render('agenda/edit.html.twig', [
             'agenda' => $agenda,
@@ -88,13 +89,13 @@ class AgendaController extends AbstractController
         ]);
     }
 
-    #[Route("/{id}", name:"agenda_delete", methods:"DELETE")]
+    #[Route("/{id}", name:"agenda_delete", methods:"POST")]
     public function delete(Request $request, Agenda $agenda, SessionInterface $session, $medicoId): Response
     {
         if ($this->isCsrfTokenValid('delete'.$agenda->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($agenda);
-            $em->flush();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($agenda);
+            $entityManager->flush();
 
             $session->getFlashBag()->add('success', 'mensagem.sucesso.deletar');
             $session->getFlashBag()->add('_entidade', Agenda::CLASS_NAME );

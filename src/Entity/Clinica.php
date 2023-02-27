@@ -9,7 +9,8 @@ use App\Repository\ClinicaRepository;
 #[ORM\Entity(repositoryClass:ClinicaRepository::class)]
 class Clinica
 {
-    const CLASS_NAME = 'clinica';
+    const CLASS_NAME = 'Clinica';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]

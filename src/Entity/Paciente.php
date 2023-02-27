@@ -4,11 +4,14 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PacienteRepository;
+use App\Entity\Cliente;
+use App\Entity\AgendaData;
 
 #[ORM\Entity(repositoryClass:PacienteRepository::class)]
 class Paciente
 {
     const CLASS_NAME = 'Paciente';
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -23,10 +26,10 @@ class Paciente
     #[ORM\Column(type:"integer")]
     private $idade;
 
-    #[ORM\OneToMany(targetEntity:"AgendaData", mappedBy:"paciente")]
+    #[ORM\OneToMany(targetEntity:AgendaData::class, mappedBy:"paciente")]
     private $agendaData;
 
-    #[ORM\ManyToOne(targetEntity:"Cliente", inversedBy:"paciente")]
+    #[ORM\ManyToOne(targetEntity:Cliente::class, inversedBy:"paciente")]
     #[ORM\JoinColumn(name:"cliente_id", referencedColumnName:"id")]
     private $cliente;
 

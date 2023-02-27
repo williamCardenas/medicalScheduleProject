@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 #[Route("/medico")]
 class MedicoController extends AbstractController
@@ -23,20 +24,20 @@ class MedicoController extends AbstractController
     }
 
     #[Route("/new", name:"medico_new", methods:"GET|POST")]
-    public function new(Request $request, SessionInterface $session): Response
+    public function new(Request $request, SessionInterface $session, ManagerRegistry $doctrine): Response
     {
         $medico = new Medico();
         $form = $this->createForm(MedicoType::class, $medico);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $entityManager = $doctrine->getManager();
 
             if(!empty($this->getUser()->getCliente())){
                 $medico->setCliente($this->getUser()->getCliente());
             }
-            $em->persist($medico);
-            $em->flush();
+            $entityManager->persist($medico);
+            $entityManager->flush();
 
             $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');
             $session->getFlashBag()->add('_entidade', Medico::CLASS_NAME );
@@ -57,16 +58,16 @@ class MedicoController extends AbstractController
     }
 
     #[Route("/{id}/edit", name:"medico_edit", methods:"GET|POST")]
-    public function edit(Request $request, Medico $medico, SessionInterface $session): Response
+    public function edit(Request $request, Medico $medico, SessionInterface $session, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(MedicoType::class, $medico);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $entityManager = $doctrine->getManager();
 
-            $em->persist($medico);
-            $em->flush();
+            $entityManager->persist($medico);
+            $entityManager->flush();
 
             $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');
             $session->getFlashBag()->add('_entidade', Medico::CLASS_NAME );
@@ -80,13 +81,13 @@ class MedicoController extends AbstractController
         ]);
     }
 
-    #[Route("/{id}", name:"medico_delete", methods:"DELETE")]
-    public function delete(Request $request, SessionInterface $session, Medico $medico): Response
+    #[Route("/{id}", name:"medico_delete", methods:"POST")]
+    public function delete(Request $request, SessionInterface $session, ManagerRegistry $doctrine, Medico $medico): Response
     {
         if ($this->isCsrfTokenValid('delete'.$medico->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($medico);
-            $em->flush();
+            $entityManager = $doctrine->getManager();
+            $entityManager->remove($medico);
+            $entityManager->flush();
 
             $session->getFlashBag()->add('success', 'mensagem.sucesso.deletar');
             $session->getFlashBag()->add('_entidade', Medico::CLASS_NAME );

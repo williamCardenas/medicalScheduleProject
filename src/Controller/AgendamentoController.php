@@ -23,6 +23,8 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 use DateTime;
 
@@ -119,7 +121,7 @@ class AgendamentoController extends AbstractController
     }
 
     #[Route("/new", name:"agendamento_new", methods:"POST")]
-    public function new(Request $request, AgendaRepository $agendaRepository, UserInterface  $user, AgendaDataStatusRepository $agendaDataStatusRepository, TranslatorInterface $translator, ValidatorInterface $validation): JsonResponse
+    public function new(Request $request, ManagerRegistry $doctrine, AgendaRepository $agendaRepository, UserInterface  $user, AgendaDataStatusRepository $agendaDataStatusRepository, TranslatorInterface $translator, ValidatorInterface $validation): JsonResponse
     {
         try{
             $agendaData = new AgendaData();
@@ -145,9 +147,9 @@ class AgendamentoController extends AbstractController
                 $agendaDataStatus = $agendaDataStatusRepository->findOneBy(['nome'=>'agendado']);
                 $agendaData->setStatus($agendaDataStatus);
             
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($agendaData);
-                $em->flush();
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($agendaData);
+                $entityManager->flush();
 
                 $mensagem = $translator->trans('mensagem.sucesso.novo');
                 $mensagem = str_replace('_entidade','Agendamento',$mensagem);
@@ -214,7 +216,7 @@ class AgendamentoController extends AbstractController
     }
 
     #[Route("/confirmar", name:"agendamento_confirmar", methods:"POST")]
-    public function confirmar(Request $request, AgendaDataRepository $agendaDataRepository, AgendaDataStatusRepository $agendaDataStatusRepository, UserInterface  $user): Response
+    public function confirmar(Request $request, ManagerRegistry $doctrine, AgendaDataRepository $agendaDataRepository, AgendaDataStatusRepository $agendaDataStatusRepository, UserInterface  $user): Response
     {
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
@@ -239,9 +241,9 @@ class AgendamentoController extends AbstractController
             $agendaDataStatus = $agendaDataStatusRepository->findOneBy(['nome'=>'confirmado']);
             $agendaData->setStatus($agendaDataStatus);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($agendaData);
-            $em->flush();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($agendaData);
+            $entityManager->flush();
 
             $agendaDataSerializer = $serializer->serialize($agendaDataStatus, 'json');
 
@@ -252,7 +254,7 @@ class AgendamentoController extends AbstractController
     }
 
     #[Route("/cancelar", name:"agendamento_cancelar", methods:"POST")]
-    public function cancelar(Request $request, AgendaDataRepository $agendaDataRepository, AgendaDataStatusRepository $agendaDataStatusRepository, UserInterface  $user): Response
+    public function cancelar(Request $request, ManagerRegistry $doctrine, AgendaDataRepository $agendaDataRepository, AgendaDataStatusRepository $agendaDataStatusRepository, UserInterface  $user): Response
     {
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
@@ -277,9 +279,9 @@ class AgendamentoController extends AbstractController
             $agendaDataStatus = $agendaDataStatusRepository->findOneBy(['nome'=>'cancelado']);
             $agendaData->setStatus($agendaDataStatus);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($agendaData);
-            $em->flush();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($agendaData);
+            $entityManager->flush();
 
             $agendaDataSerializer = $serializer->serialize($agendaDataStatus, 'json');
 
@@ -290,7 +292,7 @@ class AgendamentoController extends AbstractController
     }
 
     #[Route("/iniciar", name:"agendamento_iniciar", methods:"POST")]
-    public function iniciar(Request $request, AgendaDataRepository $agendaDataRepository, AgendaDataStatusRepository $agendaDataStatusRepository, UserInterface  $user): Response
+    public function iniciar(Request $request, ManagerRegistry $doctrine, AgendaDataRepository $agendaDataRepository, AgendaDataStatusRepository $agendaDataStatusRepository, UserInterface  $user): Response
     {
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
@@ -315,9 +317,9 @@ class AgendamentoController extends AbstractController
             $agendaDataStatus = $agendaDataStatusRepository->findOneBy(['nome'=>'atendido']);
             $agendaData->setStatus($agendaDataStatus);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($agendaData);
-            $em->flush();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($agendaData);
+            $entityManager->flush();
 
             $agendaDataSerializer = $serializer->serialize($agendaDataStatus, 'json');
 

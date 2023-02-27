@@ -79,7 +79,6 @@ class ClienteController extends AbstractController
     #[Route("/delete/{id}", name:"cliente_delete", methods:"POST")]
     public function delete(Request $request, Cliente $cliente, SessionInterface $session, ManagerRegistry $doctrine): Response
     {
-        exit('test');
         if ($this->isCsrfTokenValid('delete'.$cliente->getId(), $request->request->get('_token'))) {
             $entityManager = $doctrine->getManager();
 

@@ -14,7 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 use Exception;
 
@@ -30,7 +31,7 @@ class ClienteUserController extends AbstractController
     }
 
     #[Route("/novo", name:"cliente_user_new", methods:"GET|POST")]
-    public function new(Request $request, UserPasswordEncoderInterface $encode, ClienteRepository $clienteRepository, SessionInterface $session, $clienteId): Response
+    public function new(Request $request, UserPasswordHasherInterface $passwordHasher, ClienteRepository $clienteRepository, SessionInterface $session, ManagerRegistry $doctrine, $clienteId): Response
     { 
         $cliente = $clienteRepository->find($clienteId);
         $user = new User();
@@ -42,12 +43,12 @@ class ClienteUserController extends AbstractController
             if ($form->isValid()) {
                 try{
                     $user->setRoles(array(AdminVoter::CLIENT_USER));
-                    $encoded = $encode->encodePassword($user, $user->getPassword());
-                    $user->setPassword($encoded);
+                    $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
+                    $user->setPassword($hashedPassword);
                     
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($user);
-                    $em->flush();
+                    $entityManager = $doctrine->getManager();
+                    $entityManager->persist($user);
+                    $entityManager->flush();
                     
                     $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');
                     $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
@@ -78,7 +79,7 @@ class ClienteUserController extends AbstractController
     }
 
     #[Route("/{id}/edit", name:"cliente_user_edit", methods:"GET|POST")]
-    public function edit(Request $request, UserPasswordEncoderInterface $encode, ClienteRepository $clienteRepository, SessionInterface $session, User $user, $clienteId): Response
+    public function edit(Request $request, UserPasswordHasherInterface $passwordHasher, ClienteRepository $clienteRepository, SessionInterface $session, User $user, $clienteId, ManagerRegistry $doctrine): Response
     {
         $cliente = $clienteRepository->find($clienteId);
         $form = $this->createForm(UserType::class, $user);
@@ -88,12 +89,12 @@ class ClienteUserController extends AbstractController
             
             try{
                 $user = $form->getData();
-                $encoded = $encode->encodePassword($user, $user->getPassword());
-                $user->setPassword($encoded);
+                $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
+                $user->setPassword($hashedPassword);
                 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
                 
                 $session->getFlashBag()->add('success', 'mensagem.sucesso.editado');
                 $session->getFlashBag()->add('_entidade', User::CLASS_NAME );
@@ -115,14 +116,14 @@ class ClienteUserController extends AbstractController
         ]);
     }
 
-    #[Route("/{id}/delete", name:"cliente_user_delete", methods:"DELETE")]
-    public function delete(Request $request, User $user, SessionInterface $session, $clienteId): Response
+    #[Route("/{id}/delete", name:"cliente_user_delete", methods:"POST")]
+    public function delete(Request $request, User $user, SessionInterface $session, $clienteId, ManagerRegistry $doctrine): Response
     {
         try{
             if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($user);
-                $em->flush();
+                $entityManager = $doctrine->getManager();
+                $entityManager->remove($user);
+                $entityManager->flush();
     
                 $session->getFlashBag()->add('success', 'mensagem.sucesso.deletar');
                 $session->getFlashBag()->add('_entidade', User::CLASS_NAME );

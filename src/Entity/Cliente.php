@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 #[ORM\Entity(repositoryClass:"App\Repository\ClienteRepository")]
 class Cliente
 {
-    const CLASS_NAME = 'cliente';
+    const CLASS_NAME = 'Cliente';
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
