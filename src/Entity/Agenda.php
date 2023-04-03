@@ -5,66 +5,51 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Repository\AgendaRepository;
 
-
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AgendaRepository")
- */
+#[ORM\Entity(repositoryClass:AgendaRepository::class)]
 class Agenda
 {
     const CLASS_NAME = 'Agenda';
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type:"integer")]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Medico", inversedBy="agenda")
-     * @ORM\JoinColumn(name="medico_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity:"Medico", inversedBy:"agenda")]
+    #[ORM\JoinColumn(name:"medico_id", referencedColumnName:"id")]
     private $medico;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Clinica", inversedBy="agenda")
-     * @ORM\JoinColumn(name="clinica_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity:"Clinica", inversedBy:"agenda")]
+    #[ORM\JoinColumn(name:"clinica_id", referencedColumnName:"id")]
     private $clinica;
 
-    /**
-     * @ORM\Column(type="time", nullable=true)
-     */
+    #[ORM\Column(type:"time", nullable:true)]
     private $horarioInicioAtendimento;
 
-    /**
-     * @ORM\Column(type="time", nullable=true)
-     */
+    
+    #[ORM\Column(type:"time", nullable:true)]
     private $horarioFimAtendimento;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+    
+    #[ORM\Column(type:"date", nullable:true)]
     private $dataInicioAtendimento;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+    
+    #[ORM\Column(type:"date", nullable:true)]
     private $dataFimAtendimento;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    
+    #[ORM\Column(type:"boolean")]
     private $fimDeSemana;
 
-    /**
-     * @ORM\OneToOne(targetEntity="AgendaConfig", inversedBy="agenda", cascade={"persist","remove"})
-     */
+    
+    #[ORM\OneToOne(targetEntity:AgendaConfig::class, inversedBy:"agenda", cascade:["persist","remove"])]
     private $agendaConfig;
 
-    /**
-     * @ORM\OneToMany(targetEntity="AgendaData", mappedBy="agenda",cascade={"persist","remove"})
-     */
+    
+    #[ORM\OneToMany(targetEntity:AgendaData::class, mappedBy:"agenda",cascade:["persist","remove"])]
     private $agendaData;
 
 

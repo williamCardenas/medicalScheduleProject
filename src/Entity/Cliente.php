@@ -5,43 +5,29 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ClienteRepository")
- */
+#[ORM\Entity(repositoryClass:"App\Repository\ClienteRepository")]
 class Cliente
 {
-    const CLASS_NAME = 'cliente';
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    const CLASS_NAME = 'Cliente';
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
+    #[ORM\Column(type:"string", length:255, unique:true)]
     private $nome;
 
-    /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="clienteId", orphanRemoval=true)
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\OneToMany(targetEntity:User::class, mappedBy:"clienteId", orphanRemoval:true)]
+    #[ORM\JoinColumn(nullable:true)]
     private $user;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Clinica", mappedBy="cliente", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity:Clinica::class, mappedBy:"cliente", orphanRemoval:true)]
     private $clinica;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Medico", mappedBy="cliente")
-     */
+    #[ORM\OneToMany(targetEntity:Medico::class, mappedBy:"cliente")]
     private $medico;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Paciente", mappedBy="cliente")
-     */
+    #[ORM\OneToMany(targetEntity:Paciente::class, mappedBy:"cliente")]
     private $paciente;
 
     public function __construct()

@@ -15,7 +15,7 @@ class AgendaServiceTest extends TestCase
     private $agendaService;
     private $horarios = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->agendaService = new AgendaService();
 

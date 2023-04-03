@@ -1,5 +1,4 @@
-<form method="post" class="btn-float-left" action="{{ path('cliente_delete', {'id': cliente.id}) }}" onsubmit="return confirm('{% trans with {'_entidade':'cliente'} %}mensagem.deletar{% endtrans %}');">
-    <input type="hidden" name="_method" value="DELETE">
+<form method="POST" class="btn-float-left" action="{{ path('cliente_delete', {'id': cliente.id}) }}" onsubmit="return confirm('{% trans with {'_entidade':'cliente'} %}mensagem.deletar{% endtrans %}');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cliente.id) }}">
     <button type="submit" class="btn btn-danger">Delete</button>
 </form>

@@ -12,14 +12,6 @@ use App\Entity\User;
 
 class ClienteTest extends TestCase
 {
-
-    /**
-    * {@inheritDoc}
-    */
-   protected function setUp()
-   {
-   }
-
    public function testNovoCliente() :Cliente
    {
        $cliente = new Cliente();

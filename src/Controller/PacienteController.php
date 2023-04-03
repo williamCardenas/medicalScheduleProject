@@ -12,25 +12,31 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @Route("/paciente")
- */
+#[Route("/paciente")]
 class PacienteController extends AbstractController
 {
-    /**
-     * @Route("/", name="paciente_index", methods="GET")
-     */
+    #[Route("/", name:"paciente_index", methods:"GET")]
     public function index(PacienteRepository $pacienteRepository, UserInterface $user): Response
     {
         $pacientes = $pacienteRepository->searchResult(['cliente'=>$user->getCliente()]);
         return $this->render('paciente/index.html.twig', ['pacientes' => $pacientes]);
     }
 
-    /**
-     * @Route("/new", name="paciente_new", methods="GET|POST")
-     */
-    public function new(Request $request, SessionInterface $session, UserInterface $user): Response
+    #[Route("/busca", name:"paciente_busca", methods:"POST")]
+    public function busca(Request $request, PacienteRepository $pacienteRepository, UserInterface $user): Response
+    {
+            $buscaPaciente = $pacienteRepository->searchArrayResult([
+                'cliente'       => $user->getCliente(),
+                'pesquisa'       => $request->get('q')
+            ]);
+            return new JsonResponse($buscaPaciente);
+        
+    }
+    
+    #[Route("/new", name:"paciente_new", methods:"GET|POST")]
+    public function new(Request $request, SessionInterface $session, UserInterface $user, ManagerRegistry $doctrine): Response
     {
         $paciente = new Paciente();
         $form = $this->createForm(PacienteType::class, $paciente);
@@ -38,9 +44,9 @@ class PacienteController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $paciente->setCliente($user->getCliente());
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($paciente);
-            $em->flush();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($paciente);
+            $entityManager->flush();
 
             $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');
             $session->getFlashBag()->add('_entidade', Paciente::CLASS_NAME );
@@ -54,27 +60,23 @@ class PacienteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="paciente_show", methods="GET")
-     */
+    #[Route("/{id}", name:"paciente_show", methods:"GET")]
     public function show(Paciente $paciente): Response
     {
         return $this->render('paciente/show.html.twig', ['paciente' => $paciente]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="paciente_edit", methods="GET|POST")
-     */
-    public function edit(Request $request, Paciente $paciente, SessionInterface $session): Response
+    #[Route("/{id}/edit", name:"paciente_edit", methods:"GET|POST")]
+    public function edit(Request $request, Paciente $paciente, SessionInterface $session, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(PacienteType::class, $paciente);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $doctrine->getManager()->flush();
 
             $session->getFlashBag()->add('success', 'mensagem.sucesso.novo');
-            $session->getFlashBag()->add('_entidade', Paciente::CLASS_NAME );
+            $session->getFlashBag()->add('_entidade', Paciente::class );
 
             return $this->redirectToRoute('paciente_edit', ['id' => $paciente->getId()]);
         }
@@ -85,34 +87,18 @@ class PacienteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="paciente_delete", methods="DELETE")
-     */
-    public function delete(Request $request, Paciente $paciente, SessionInterface $session): Response
+    #[Route("/{id}", name:"paciente_delete", methods:"POST")]
+    public function delete(Request $request, Paciente $paciente, SessionInterface $session, ManagerRegistry $doctrine): Response
     {
         if ($this->isCsrfTokenValid('delete'.$paciente->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($paciente);
-            $em->flush();
+            $entityManager = $doctrine->getManager();
+            $entityManager->remove($paciente);
+            $entityManager->flush();
 
             $session->getFlashBag()->add('success', 'mensagem.sucesso.deletar');
-            $session->getFlashBag()->add('_entidade', Paciente::CLASS_NAME );
+            $session->getFlashBag()->add('_entidade', Paciente::class );
         }
 
         return $this->redirectToRoute('paciente_index');
-    }
-
-    /**
-     * @Route("/buscar", name="paciente_busca", methods="POST")
-     */
-    public function busca(Request $request, PacienteRepository $pacienteRepository, SessionInterface $session, UserInterface $user): Response
-    {
-        
-            $paciente = $pacienteRepository->searchArrayResult([
-                'cliente'       => $user->getCliente(),
-                'pesquisa'       => $request->get('q')
-            ]);
-            return new JsonResponse($paciente);
-        
     }
 }
